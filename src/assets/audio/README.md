@@ -1,6 +1,6 @@
 # Audio Assets - Chakra Hearts Episode 1
 
-This folder contains all audio assets organized by category:
+# Audio Assets - Chakra Hearts Episode 1
 
 ## 📁 Folder Structure
 
@@ -11,10 +11,9 @@ This folder contains all audio assets organized by category:
 - `tension_theme.mp3` - Suspenseful moments
 - `temple_ambient.mp3` - Ancient temple atmosphere
 
-### `/sfx/` - Sound Effects
+### ~~`/sfx/` - Sound Effects~~ **REMOVED**
 
-- `low_heartbeat.mp3` - Tension/suspense heartbeat
-- `stone_crack.mp3` - Stone breaking/collapse sounds
+Sound effects have been removed for a cleaner, BGM-only audio experience that prevents audio conflicts and provides better immersion.
 
 ## 🎵 Audio Guidelines
 
@@ -23,12 +22,12 @@ This folder contains all audio assets organized by category:
 - **Format**: MP3 for web compatibility
 - **Sample Rate**: 44.1kHz standard
 - **Bit Rate**: 128-320 kbps depending on content
-- **Channels**: Stereo for music, mono acceptable for SFX
+- **Channels**: Stereo for music
 
 ### File Organization
 
 - **BGM**: Longer tracks (30 seconds - 5 minutes)
-- **SFX**: Short audio clips (0.1 - 10 seconds)
+- Background music creates atmosphere and emotional context
 - Looping music should have seamless loop points
 
 ### Naming Convention
@@ -36,12 +35,11 @@ This folder contains all audio assets organized by category:
 - Use lowercase with underscores
 - Descriptive names indicating usage
 - Theme music includes character/scene reference
-- SFX describes the sound effect
 
 ### Usage in Game
 
 - Background music fades between scenes
-- Sound effects triggered by game actions
+- BGM-only approach for cleaner audio experience
 - Volume controls in game settings
 - Audio preloading for smooth playback
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useGameStore } from "../stores/gameStore";
-import { AVATARS, UI } from "../assets";
+import { AVATARS, UI, AUDIO } from "../assets";
 import "./MainMenu.css";
 
 export interface AvatarOption {
@@ -84,6 +84,67 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
   const { setSelectedAvatar: setGameStoreAvatar } = useGameStore();
 
+  // Audio reference for menu music
+  const menuAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioStartedRef = useRef<boolean>(false);
+
+  // Start background music when component mounts
+  useEffect(() => {
+    // Don't start music if it's already been started
+    if (audioStartedRef.current) {
+      return;
+    }
+
+    const audio = new Audio(AUDIO.BGM.MENU_THEME);
+    audio.loop = true;
+    audio.volume = 0.3; // Set to 30% volume for ambient background
+    menuAudioRef.current = audio;
+    audioStartedRef.current = true;
+
+    const playAudio = async () => {
+      try {
+        await audio.play();
+        console.log("🎵 Menu music started successfully");
+      } catch (error) {
+        console.log("Audio autoplay prevented, will start on user interaction");
+
+        // Single event listener that removes itself after first use
+        const handleFirstInteraction = async () => {
+          try {
+            if (menuAudioRef.current && menuAudioRef.current.paused) {
+              await menuAudioRef.current.play();
+              console.log("🎵 Menu music started on user interaction");
+            }
+          } catch (playError) {
+            console.log("Failed to start audio on interaction:", playError);
+          }
+          // Remove listeners after first use (they should auto-remove with { once: true })
+        };
+
+        // Use { once: true } to ensure listeners are automatically removed
+        document.addEventListener("click", handleFirstInteraction, {
+          once: true,
+        });
+        document.addEventListener("keydown", handleFirstInteraction, {
+          once: true,
+        });
+      }
+    };
+
+    playAudio();
+
+    // Cleanup function to stop audio when component unmounts
+    return () => {
+      if (menuAudioRef.current) {
+        console.log("🛑 Cleaning up menu music");
+        menuAudioRef.current.pause();
+        menuAudioRef.current.currentTime = 0;
+        menuAudioRef.current = null;
+      }
+      audioStartedRef.current = false;
+    };
+  }, []); // Keep empty dependency array but add check inside
+
   const menuButtons = [
     { text: "New Journey", action: () => setShowAvatarSelect(true) },
     { text: "Continue Path", action: onLoadGame },
@@ -126,7 +187,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         setShowAvatarSelect(false);
       }
     },
-    [currentButtons, focusedButtonIndex, showAvatarSelect, selectedAvatar]
+    [currentButtons, focusedButtonIndex, showAvatarSelect]
   );
 
   useEffect(() => {
@@ -139,14 +200,27 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   }, [showAvatarSelect]);
 
   const handleAvatarSelect = (avatarId: string) => {
-    // Set local UI state
-    setSelectedAvatar(avatarId);
-    // Use game store method to save avatar selection
-    setGameStoreAvatar(avatarId);
-    setShowAvatarSelect(false);
-    onStartGame();
-  };
+    console.log("🎮 Avatar selected, stopping menu music");
 
+    // Stop menu music immediately and ensure it's fully stopped
+    if (menuAudioRef.current) {
+      menuAudioRef.current.pause();
+      menuAudioRef.current.currentTime = 0;
+      // Force cleanup
+      menuAudioRef.current = null;
+      console.log("🛑 Menu music forcefully stopped");
+    }
+
+    // Add a small delay to ensure music is fully stopped before game starts
+    setTimeout(() => {
+      // Set local UI state
+      setSelectedAvatar(avatarId);
+      // Use game store method to save avatar selection
+      setGameStoreAvatar(avatarId);
+      setShowAvatarSelect(false);
+      onStartGame();
+    }, 100); // 100ms delay to ensure audio cleanup
+  };
   if (showAvatarSelect) {
     return (
       <div className="main-menu avatar-selection">

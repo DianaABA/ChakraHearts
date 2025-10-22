@@ -223,6 +223,16 @@
   );
 }
 
+/* Aurora - Smaller size and moved up */
+.character-portrait[data-character="AURORA"] img {
+  height: 60vh;
+  transform: translateY(-40px);
+}
+
+.character-portrait[data-character="AURORA"] .portrait-container {
+  transform: translateY(-60px);
+}
+
 .character-portrait[data-character="UMBRA"] .portrait-glow {
   background: radial-gradient(
     ellipse at center bottom,
@@ -230,6 +240,16 @@
     rgba(107, 114, 128, 0.1) 40%,
     transparent 70%
   );
+}
+
+/* Umbra - Smaller size and moved up */
+.character-portrait[data-character="UMBRA"] img {
+  height: 60vh;
+  transform: translateY(-40px);
+}
+
+.character-portrait[data-character="UMBRA"] .portrait-container {
+  transform: translateY(-60px);
 }
 
 /* Hover effects */
@@ -258,5 +278,25 @@
   .portrait-name {
     font-size: 12px;
     padding: 6px 12px;
+  }
+
+  /* Aurora mobile - smaller and moved up */
+  .character-portrait[data-character="AURORA"] img {
+    height: 50vh;
+    transform: translateY(-30px);
+  }
+
+  .character-portrait[data-character="AURORA"] .portrait-container {
+    transform: translateY(-40px);
+  }
+
+  /* Umbra mobile - smaller and moved up */
+  .character-portrait[data-character="UMBRA"] img {
+    height: 50vh;
+    transform: translateY(-30px);
+  }
+
+  .character-portrait[data-character="UMBRA"] .portrait-container {
+    transform: translateY(-40px);
   }
 }

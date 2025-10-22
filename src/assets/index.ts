@@ -21,12 +21,14 @@ export const BACKGROUNDS = {
   SHORE_DAWN: "/src/assets/images/backgrounds/sc6_shore_dawn_wide.png",
 
   // Prologue backgrounds
-  ELENA_CHAKRA_AWAKENING: "/backgrounds/pro_ep1_elena_portrait_correct.png",
-  ELENA_CHAKRA_AWAKENING_ALT: "/backgrounds/pro_ep1_elena_chakra_awakening.png",
+  ELENA_CHAKRA_AWAKENING:
+    "/src/assets/images/backgrounds/pro_ep1_elena_chakra_awakening.png",
   AGNIVESH_DOGTAG_DISCOVERY:
     "/src/assets/images/backgrounds/pro_ep1_agnivesh_dogtag_discovery.png",
-  TEMPLE_BURNING: "/backgrounds/pro_ep1_temple_burning_destruction.png",
-  AGNIVESH_SANTI_SORROW: "/backgrounds/pro_ep1_agnivesh_santi_sorrow.png",
+  TEMPLE_BURNING:
+    "/src/assets/images/backgrounds/pro_ep1_temple_burning_destruction.png",
+  AGNIVESH_SANTI_SORROW:
+    "/src/assets/images/backgrounds/pro_ep1_agnivesh_santi_sorrow.png",
   BETRAYAL_HALL:
     "/src/assets/images/backgrounds/pro_ep1_betrayal_hall_wide.png",
   PSYCH_WARD: "/src/assets/images/backgrounds/pro_ep1_psych_ward_corridor.png",
@@ -39,12 +41,12 @@ export const BACKGROUNDS = {
 
 export const CHARACTERS = {
   // Character portraits - Absolute paths for Vite public folder
-  DAVID_BASE: "/characters/david_base_portrait.png",
+  DAVID_BASE: "/characters/finaldavid.png",
   ELENA_BASE: "/characters/elena_base_portrait.png",
   AGNIVESH_BASE: "/characters/agnivesh_panther_base.png",
   AGNIVESH_HUMAN: "/characters/agnivesh_human_portrait.png",
   SANTI_BASE: "/characters/santi_serpent_base.png",
-  SANTI_HUMAN: "/characters/santi_human_portrait.png",
+  SANTI_HUMAN: "/characters/finalsanti.png",
   AURORA_BASE: "/characters/aurora.png",
   UMBRA_BASE: "/characters/aurora.png",
   MC_BASE: "/characters/mc_avatar_portrait.png", // Separate MC avatar
@@ -98,11 +100,9 @@ export const AUDIO = {
     COMBAT_THEME: "/src/assets/audio/bgm/combat_theme.mp3",
     TENSION_THEME: "/src/assets/audio/bgm/tension_theme.mp3",
     TEMPLE_AMBIENT: "/src/assets/audio/bgm/temple_ambient.mp3",
+    MENU_THEME: "/src/assets/audio/bgm/menu_theme.wav",
   },
-  SFX: {
-    LOW_HEARTBEAT: "/src/assets/audio/sfx/low_heartbeat.mp3",
-    STONE_CRACK: "/src/assets/audio/sfx/stone_crack.mp3",
-  },
+  // SFX removed for better audio experience - BGM only
 } as const;
 
 // Combined assets object

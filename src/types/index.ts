@@ -46,7 +46,6 @@ export interface Choice {
 export interface GameAction {
   type:
     | "show_image"
-    | "play_sfx"
     | "play_bgm"
     | "stop_bgm"
     | "play_vfx"

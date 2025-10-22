@@ -38,13 +38,6 @@ const SCENES: Record<string, Scene> = {
         },
       },
       {
-        type: "action",
-        action: {
-          type: "play_sfx",
-          payload: "LOW_HEARTBEAT",
-        },
-      },
-      {
         type: "narration",
         text: "Shanti's voice cut through the storm — raw, human, trembling with love and fury.",
       },
@@ -213,13 +206,6 @@ const SCENES: Record<string, Scene> = {
         action: {
           type: "play_bgm",
           payload: "TENSION_THEME",
-        },
-      },
-      {
-        type: "action",
-        action: {
-          type: "play_sfx",
-          payload: "STONE_CRACK",
         },
       },
       {

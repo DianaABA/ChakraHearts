@@ -17,9 +17,8 @@ export const GameEngine: React.FC = () => {
     Record<string, string>
   >({});
 
-  // Audio references for background music and sound effects
+  // Audio reference for background music only
   const bgmRef = useRef<HTMLAudioElement | null>(null);
-  const sfxRef = useRef<HTMLAudioElement | null>(null);
   const [currentBGM, setCurrentBGM] = useState<string>("");
 
   const {
@@ -181,34 +180,8 @@ export const GameEngine: React.FC = () => {
   );
 
   const playSFX = useCallback((effectName: string) => {
-    try {
-      const audioPath = AUDIO.SFX[effectName as keyof typeof AUDIO.SFX];
-      if (audioPath) {
-        // Stop previous SFX if still playing
-        if (sfxRef.current) {
-          sfxRef.current.pause();
-        }
-
-        // Create new audio element for SFX
-        sfxRef.current = new Audio(audioPath);
-        sfxRef.current.volume = 0.5; // Balanced volume
-
-        // Add error handling
-        sfxRef.current.onerror = () => {
-          console.log(`❌ Failed to load SFX: ${effectName}`);
-        };
-
-        sfxRef.current.play().catch(() => {
-          console.log("🔇 SFX play blocked - user needs to interact first");
-        });
-
-        console.log(`🔊 Playing SFX: ${effectName}`);
-      } else {
-        console.log(`❌ SFX not found: ${effectName}`);
-      }
-    } catch (error) {
-      console.log("SFX error:", error);
-    }
+    // SFX completely removed - BGM only audio experience
+    console.log(`🔇 SFX removed: ${effectName}`);
   }, []);
 
   // Process current dialogue line for actions and character portraits
@@ -248,9 +221,6 @@ export const GameEngine: React.FC = () => {
       console.log(`⚡ Executing action: ${currentLine.action.type}`);
 
       switch (currentLine.action.type) {
-        case "play_sfx":
-          playSFX(currentLine.action.payload);
-          break;
         case "play_bgm":
           playBGM(currentLine.action.payload);
           break;
@@ -341,9 +311,6 @@ export const GameEngine: React.FC = () => {
     return () => {
       if (bgmRef.current) {
         bgmRef.current.pause();
-      }
-      if (sfxRef.current) {
-        sfxRef.current.pause();
       }
     };
   }, []);
