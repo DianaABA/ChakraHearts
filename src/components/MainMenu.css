@@ -8,8 +8,10 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   font-family: "Inter", sans-serif;
+  scroll-behavior: smooth;
 }
 
 .menu-background {
@@ -274,6 +276,17 @@
   box-shadow: 0 0 30px currentColor, inset 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
+.cyber-button.focused {
+  text-shadow: 0 0 15px currentColor;
+  box-shadow: 0 0 40px currentColor, inset 0 0 40px rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  border: 2px solid currentColor;
+}
+
+.cyber-button.focused .button-glow {
+  left: 100%;
+}
+
 .menu-footer {
   position: absolute;
   bottom: 2rem;
@@ -336,6 +349,16 @@
   }
 }
 
+.keyboard-hint {
+  font-size: 0.75rem;
+  color: rgba(0, 255, 200, 0.8);
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 5px rgba(0, 255, 200, 0.3);
+  font-family: "Orbitron", monospace;
+  margin: 0.5rem 0;
+}
+
 .version-text {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
@@ -357,7 +380,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  overflow-y: auto;
 }
 
 .selection-header {

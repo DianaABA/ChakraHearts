@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useGameStore } from "../stores/gameStore";
 import { AVATARS, UI } from "../assets";
 import "./MainMenu.css";
@@ -81,11 +81,62 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 }) => {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [showAvatarSelect, setShowAvatarSelect] = useState(false);
+  const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
   const { setFlag } = useGameStore();
 
-  const handleNewGame = () => {
-    setShowAvatarSelect(true);
-  };
+  const menuButtons = [
+    { text: "New Journey", action: () => setShowAvatarSelect(true) },
+    { text: "Continue Path", action: onLoadGame },
+    { text: "Settings", action: () => console.log("Settings") },
+    { text: "Gallery", action: () => console.log("Gallery") },
+  ];
+
+  const avatarButtons =
+    showAvatarSelect && selectedAvatar
+      ? [
+          {
+            text: "Begin Journey",
+            action: () => handleAvatarSelect(selectedAvatar),
+          },
+          { text: "Back", action: () => setShowAvatarSelect(false) },
+        ]
+      : showAvatarSelect
+      ? [{ text: "Back", action: () => setShowAvatarSelect(false) }]
+      : [];
+
+  const currentButtons = showAvatarSelect ? avatarButtons : menuButtons;
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        if (currentButtons[focusedButtonIndex]) {
+          currentButtons[focusedButtonIndex].action();
+        }
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setFocusedButtonIndex((prev) => (prev + 1) % currentButtons.length);
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setFocusedButtonIndex(
+          (prev) => (prev - 1 + currentButtons.length) % currentButtons.length
+        );
+      } else if (event.key === "Escape" && showAvatarSelect) {
+        event.preventDefault();
+        setShowAvatarSelect(false);
+      }
+    },
+    [currentButtons, focusedButtonIndex, showAvatarSelect, selectedAvatar]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  useEffect(() => {
+    setFocusedButtonIndex(0);
+  }, [showAvatarSelect]);
 
   const handleAvatarSelect = (avatarId: string) => {
     setSelectedAvatar(avatarId);
@@ -94,10 +145,6 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     setFlag(`avatar_${avatarId}`, true);
     setShowAvatarSelect(false);
     onStartGame();
-  };
-
-  const handleLoadGame = () => {
-    onLoadGame();
   };
 
   if (showAvatarSelect) {
@@ -121,6 +168,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             <p className="spiritual-subtitle">
               Every soul carries a unique chakra signature. Select the avatar
               that resonates with your inner energy.
+            </p>
+            <p className="keyboard-hint">
+              Use ↑↓ Arrow Keys & Enter • Escape to Go Back
             </p>
           </div>
 
@@ -154,21 +204,20 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           </div>
 
           <div className="selection-controls">
-            {selectedAvatar && (
+            {avatarButtons.map((button, index) => (
               <button
-                className="cyber-button primary"
-                onClick={() => handleAvatarSelect(selectedAvatar)}
+                key={button.text}
+                className={`cyber-button ${
+                  button.text === "Begin Journey" ? "primary" : "secondary"
+                } ${focusedButtonIndex === index ? "focused" : ""}`}
+                onClick={button.action}
               >
-                <span className="button-text">Begin Journey</span>
-                <div className="button-glow"></div>
+                <span className="button-text">{button.text}</span>
+                {button.text === "Begin Journey" && (
+                  <div className="button-glow"></div>
+                )}
               </button>
-            )}
-            <button
-              className="cyber-button secondary"
-              onClick={() => setShowAvatarSelect(false)}
-            >
-              <span className="button-text">Back</span>
-            </button>
+            ))}
           </div>
         </div>
       </div>
@@ -204,22 +253,18 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </div>
 
         <div className="menu-buttons">
-          <button className="cyber-button primary" onClick={handleNewGame}>
-            <span className="button-text">New Journey</span>
-            <div className="button-glow"></div>
-          </button>
-
-          <button className="cyber-button secondary" onClick={handleLoadGame}>
-            <span className="button-text">Continue Path</span>
-          </button>
-
-          <button className="cyber-button secondary">
-            <span className="button-text">Settings</span>
-          </button>
-
-          <button className="cyber-button secondary">
-            <span className="button-text">Gallery</span>
-          </button>
+          {menuButtons.map((button, index) => (
+            <button
+              key={button.text}
+              className={`cyber-button ${
+                index === 0 ? "primary" : "secondary"
+              } ${focusedButtonIndex === index ? "focused" : ""}`}
+              onClick={button.action}
+            >
+              <span className="button-text">{button.text}</span>
+              {index === 0 && <div className="button-glow"></div>}
+            </button>
+          ))}
         </div>
 
         <div className="menu-footer">
@@ -232,6 +277,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             <span className="chakra-dot third-eye">●</span>
             <span className="chakra-dot crown">●</span>
           </div>
+          <p className="keyboard-hint">
+            Use ↑↓ Arrow Keys & Enter • Scroll for More
+          </p>
           <p className="version-text">v1.0.0 - Digital Enlightenment Build</p>
         </div>
       </div>
