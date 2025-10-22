@@ -1,0 +1,55 @@
+.game-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.game-menu {
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  min-width: 300px;
+}
+
+.game-menu h3 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.game-menu button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.game-menu button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.character-portrait {
+  position: absolute;
+  z-index: 10;
+}
+
+.character-portrait img {
+  max-height: 80vh;
+  width: auto;
+}
