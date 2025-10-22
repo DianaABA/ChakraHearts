@@ -21,11 +21,19 @@ export const BACKGROUNDS = {
   SHORE_DAWN: "/src/assets/images/backgrounds/sc6_shore_dawn_wide.png",
 
   // Prologue backgrounds
+  ELENA_CHAKRA_AWAKENING:
+    "/src/assets/images/backgrounds/pro_ep1_elena_chakra_awakening.png",
+  AGNIVESH_DOGTAG_DISCOVERY:
+    "/src/assets/images/backgrounds/pro_ep1_agnivesh_dogtag_discovery.png",
+  TEMPLE_BURNING:
+    "/src/assets/images/backgrounds/pro_ep1_temple_burning_destruction.png",
+  AGNIVESH_SANTI_SORROW:
+    "/src/assets/images/backgrounds/pro_ep1_agnivesh_santi_sorrow.png",
   BETRAYAL_HALL:
     "/src/assets/images/backgrounds/pro_ep1_betrayal_hall_wide.png",
   PSYCH_WARD: "/src/assets/images/backgrounds/pro_ep1_psych_ward_corridor.png",
 
-  // Special scenes
+  // Special cinematic scenes
   RUIN_ASH: "/src/assets/images/backgrounds/stinger_ruin_cool_ash.png",
   TWO_SOLDIERS:
     "/src/assets/images/backgrounds/flash_two_soldiers_silhouettes.png",
@@ -33,11 +41,16 @@ export const BACKGROUNDS = {
 
 export const CHARACTERS = {
   // Character portraits
+  DAVID_BASE: "/src/assets/images/characters/david_base_portrait.png", // ✅ Real David portrait
   ELENA_BASE: "/src/assets/images/characters/elena_base_portrait.png",
-  AGNIVESH_BASE: "/src/assets/images/characters/agnivesh_panther_base.png",
-  SANTI_BASE: "/src/assets/images/characters/santi_serpent_base.png",
+  AGNIVESH_BASE: "/src/assets/images/characters/agnivesh_panther_base.png", // Animal form
+  AGNIVESH_HUMAN: "/src/assets/images/characters/agnivesh_human_portrait.png", // ✅ Human form (prologue)
+  SANTI_BASE: "/src/assets/images/characters/santi_serpent_base.png", // Animal form
+  SANTI_HUMAN: "/src/assets/images/characters/santi_human_portrait.png", // ✅ Human form (prologue)
+  AURORA_BASE: "/src/assets/images/characters/santi_serpent_base.png", // Temporary: using Santi for Aurora
+  UMBRA_BASE: "/src/assets/images/characters/umbra_consciousness_portrait.png", // ✅ Real Umbra shadow AI consciousness
+  MC_BASE: "/src/assets/images/characters/elena_base_portrait.png", // Temporary: using Elena for MC
 } as const;
-
 export const PROPS = {
   BRACELET_MUD: "/src/assets/images/props/prop_bracelet_mud.png",
   CHOCOLATE_MASTER: "/src/assets/images/props/prop_chocolate_master.png",
@@ -47,13 +60,13 @@ export const PROPS = {
 } as const;
 
 export const UI = {
+  MAIN_MENU_BG: "/src/assets/images/ui/ui_main_menu_bg.png",
   CHAKRA_UNLOCK_ROOT: "/src/assets/images/ui/ui_chakra_unlock_root.png",
   CHOICE_HOVER: "/src/assets/images/ui/ui_choice_hover.png",
   CHOICE_KARMA_BAD: "/src/assets/images/ui/ui_choice_karma_bad.png",
   CHOICE_KARMA_GOOD: "/src/assets/images/ui/ui_choice_karma_good.png",
   CHOICE_NORMAL: "/src/assets/images/ui/ui_choice_normal.png",
   DIALOGUE_FRAME: "/src/assets/images/ui/ui_dialogue_frame.png",
-  MAIN_MENU_BG: "/src/assets/images/ui/ui_main_menu_bg.png",
   ROMANCE_AGNIVESH: "/src/assets/images/ui/ui_romance_agnivesh.png",
   ROMANCE_AURORA: "/src/assets/images/ui/ui_romance_aurora.png",
   ROMANCE_DAVID: "/src/assets/images/ui/ui_romance_david.png",
@@ -93,15 +106,6 @@ export const AUDIO = {
     STONE_CRACK: "/src/assets/audio/sfx/stone_crack.mp3",
   },
 } as const;
-
-// Helper function to get asset path
-export const getAssetPath = (
-  category: keyof typeof ASSETS,
-  key: string
-): string => {
-  const categoryAssets = ASSETS[category] as Record<string, string>;
-  return categoryAssets[key] || "";
-};
 
 // Combined assets object
 export const ASSETS = {

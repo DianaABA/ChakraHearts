@@ -6,6 +6,7 @@
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   padding: 20px;
   min-height: 150px;
+  z-index: 100;
 }
 
 .dialogue-content,
@@ -63,4 +64,18 @@
 
 .choice-button:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.action-content {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.action-text {
+  color: #00ffff;
+  font-size: 16px;
+  font-style: italic;
 }

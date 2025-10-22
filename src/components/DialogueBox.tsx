@@ -52,6 +52,13 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
           </div>
         );
 
+      case "action":
+        return (
+          <div className="action-content">
+            <div className="action-text">Processing...</div>
+          </div>
+        );
+
       default:
         return null;
     }
