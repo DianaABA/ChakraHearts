@@ -26,6 +26,20 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
+          type: "show_image",
+          payload: BACKGROUNDS.TEMPLE_BURNING,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "temple_burning",
+        },
+      },
+      {
+        type: "action",
+        action: {
           type: "play_sfx",
           payload: "LOW_HEARTBEAT",
         },
@@ -49,6 +63,50 @@ const SCENES: Record<string, Scene> = {
         text: "(softly) 'So that's what faith feels like… when it leaves.'",
       },
       {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.AGNIVESH_SANTI_SORROW,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "agnivesh_santi_sorrow",
+        },
+      },
+      {
+        type: "choice",
+        choices: [
+          {
+            text: "Remember why you loved Agnivesh",
+            action: () =>
+              console.log("Recalling deep connection with Agnivesh"),
+            karma: 1,
+            romance: { character: "AGNIVESH", points: 2 },
+          },
+          {
+            text: "Remember Santi's fierce loyalty",
+            action: () => console.log("Honoring Santi's unwavering support"),
+            karma: 1,
+            romance: { character: "SANTI", points: 2 },
+          },
+          {
+            text: "Remember them both equally",
+            action: () => console.log("Cherishing both relationships"),
+            karma: 2,
+            romance: { character: "AGNIVESH", points: 1 },
+            romanceOptions: [{ character: "SANTI", points: 1 }],
+          },
+          {
+            text: "Try to forget the pain",
+            action: () => console.log("Suppressing memories"),
+            karma: -1,
+          },
+        ],
+      },
+      {
         type: "narration",
         text: "The geometry of betrayal: one walking away, two watching.",
       },
@@ -63,6 +121,20 @@ const SCENES: Record<string, Scene> = {
       {
         type: "narration",
         text: "Silence. Then breath. A vibration beneath the spine — the lotus begins to open.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.ELENA_CHAKRA_AWAKENING,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "elena_chakra_awakening",
+        },
       },
       {
         type: "dialogue",
@@ -296,6 +368,13 @@ const SCENES: Record<string, Scene> = {
         },
       },
       {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "david_chocolate_moment",
+        },
+      },
+      {
         type: "dialogue",
         character: "DAVID",
         text: "Ration number one: emergency morale supply.",
@@ -501,6 +580,16 @@ const SCENES: Record<string, Scene> = {
         text: "Two forms appear: A panther of ember and shadow. A serpent of blue-green healing light.",
       },
       {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(manifesting as shadow panther)",
+      },
+      {
+        type: "dialogue",
+        character: "SANTI",
+        text: "(manifesting as healing serpent)",
+      },
+      {
         type: "narration",
         text: "MC (thoughts): I know them. I abandoned them. The guilt lives in my bones.",
       },
@@ -537,6 +626,39 @@ const SCENES: Record<string, Scene> = {
       {
         type: "narration",
         text: "He closes his hand around it.",
+      },
+      {
+        type: "choice",
+        choices: [
+          {
+            text: "Reach out to Agnivesh's spirit",
+            action: () =>
+              console.log("Connecting with Agnivesh - spiritual bond"),
+            karma: 1,
+            romance: { character: "AGNIVESH", points: 2 },
+          },
+          {
+            text: "Send comfort to Santi",
+            action: () => console.log("Comforting Santi - healing connection"),
+            karma: 1,
+            romance: { character: "SANTI", points: 2 },
+          },
+          {
+            text: "Embrace the guilt and pain",
+            action: () =>
+              console.log("Accepting responsibility - emotional growth"),
+            karma: 2,
+          },
+          {
+            text: "Turn away from the vision",
+            action: () => console.log("Avoiding the past - staying distant"),
+            karma: -1,
+          },
+        ],
+      },
+      {
+        type: "narration",
+        text: "MC (thoughts): Even in spirit form, the bonds between us remain. Some connections transcend physical form.",
       },
       {
         type: "dialogue",
@@ -665,6 +787,49 @@ const SCENES: Record<string, Scene> = {
           type: "show_image",
           payload: BACKGROUNDS.AURORA_LOTUS,
         },
+      },
+      {
+        type: "choice",
+        choices: [
+          {
+            text: "Think of Agnivesh's unwavering spirit",
+            action: () =>
+              console.log(
+                "Deepening connection with Agnivesh's spiritual strength"
+              ),
+            karma: 1,
+            romance: { character: "AGNIVESH", points: 1 },
+          },
+          {
+            text: "Honor Santi's fierce protection",
+            action: () => console.log("Appreciating Santi's loyal heart"),
+            karma: 1,
+            romance: { character: "SANTI", points: 1 },
+          },
+          {
+            text: "Cherish David's steady presence",
+            action: () => console.log("Valuing David's grounding influence"),
+            karma: 1,
+            romance: { character: "DAVID", points: 1 },
+          },
+          {
+            text: "Embrace Elena's awakening wisdom",
+            action: () =>
+              console.log("Connecting with Elena's spiritual growth"),
+            karma: 1,
+            romance: { character: "ELENA", points: 1 },
+          },
+          {
+            text: "Find peace in solitude",
+            action: () =>
+              console.log("Choosing independence and self-discovery"),
+            karma: 2,
+          },
+        ],
+      },
+      {
+        type: "narration",
+        text: "MC (thoughts): The bonds we forge in awakening become the foundation for what comes next. Love, in all its forms, is the true root chakra.",
       },
       {
         type: "narration",

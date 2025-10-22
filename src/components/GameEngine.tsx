@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useGameStore } from "../stores/gameStore";
 import { DialogueBox } from "./DialogueBox";
 import { SceneBackground } from "./SceneBackground";
 import { CharacterPortrait } from "./CharacterPortrait";
 import { GameMenu } from "./GameMenu";
+import { GameHUD } from "./GameHUD";
 import { getScene } from "../utils/sceneLoader";
 import { AUDIO, CHARACTERS } from "../assets";
 import type { Scene } from "../types";
@@ -18,24 +19,48 @@ export const GameEngine: React.FC = () => {
 
   // Character portrait mapping - switches between human and animal forms
   const getCharacterPortrait = (character: string, sceneId: string) => {
+    console.log(`🎭 Getting portrait for ${character} in scene ${sceneId}`);
+
     // Use human forms in prologue, animal forms in visions/spiritual scenes
     if (sceneId === "prologue") {
       switch (character) {
         case "AGNIVESH":
+          console.log(`👤 Using human form for AGNIVESH in prologue`);
           return CHARACTERS.AGNIVESH_HUMAN;
         case "SANTI":
+          console.log(`👤 Using human form for SANTI in prologue`);
           return CHARACTERS.SANTI_HUMAN;
+        case "DAVID":
+          return CHARACTERS.DAVID_BASE;
+        case "ELENA":
+          return CHARACTERS.ELENA_BASE;
+        case "MC":
+          return CHARACTERS.MC_BASE;
         default:
           break;
       }
     }
 
-    // Default mapping for all scenes
+    // Vision scene - use animal forms for Agnivesh and Santi
+    if (sceneId === "vision") {
+      switch (character) {
+        case "AGNIVESH":
+          console.log(`🐾 Using panther form for AGNIVESH in vision`);
+          return CHARACTERS.AGNIVESH_BASE;
+        case "SANTI":
+          console.log(`🐍 Using serpent form for SANTI in vision`);
+          return CHARACTERS.SANTI_BASE;
+        default:
+          break;
+      }
+    }
+
+    // Default mapping for all other scenes
     const CHARACTER_PORTRAITS: Record<string, string> = {
       DAVID: CHARACTERS.DAVID_BASE,
       ELENA: CHARACTERS.ELENA_BASE,
-      AGNIVESH: CHARACTERS.AGNIVESH_BASE, // Animal form for spiritual scenes
-      SANTI: CHARACTERS.SANTI_BASE, // Animal form for spiritual scenes
+      AGNIVESH: CHARACTERS.AGNIVESH_BASE, // Animal form for most scenes
+      SANTI: CHARACTERS.SANTI_BASE, // Animal form for most scenes
       AURORA: CHARACTERS.AURORA_BASE,
       UMBRA: CHARACTERS.UMBRA_BASE,
       MC: CHARACTERS.MC_BASE,
@@ -47,6 +72,7 @@ export const GameEngine: React.FC = () => {
   // Audio references for background music and sound effects
   const bgmRef = useRef<HTMLAudioElement | null>(null);
   const sfxRef = useRef<HTMLAudioElement | null>(null);
+  const [currentBGM, setCurrentBGM] = useState<string>("");
 
   const {
     currentScene,
@@ -59,46 +85,69 @@ export const GameEngine: React.FC = () => {
 
   const [scene, setScene] = useState<Scene | null>(null);
 
-  // Audio functions
-  const playBGM = (trackName: string) => {
-    try {
-      const audioPath = AUDIO.BGM[trackName as keyof typeof AUDIO.BGM];
-      if (audioPath) {
-        // Stop current BGM if playing
-        if (bgmRef.current) {
-          bgmRef.current.pause();
-        }
-
-        // Create new audio element
-        bgmRef.current = new Audio(audioPath);
-        bgmRef.current.loop = true;
-        bgmRef.current.volume = 0.4; // Reduced volume for better experience
-
-        // Add error handling
-        bgmRef.current.onerror = () => {
-          console.log(`❌ Failed to load BGM: ${trackName}`);
-        };
-
-        bgmRef.current.play().catch(() => {
-          console.log("🔇 BGM play blocked - user needs to interact first");
-        });
-
-        console.log(`🎵 Playing BGM: ${trackName}`);
-      } else {
-        console.log(`❌ BGM track not found: ${trackName}`);
+  // Audio functions with overlap prevention
+  const playBGM = useCallback(
+    (trackName: string) => {
+      // Prevent playing the same BGM twice
+      if (currentBGM === trackName) {
+        console.log(`🎵 BGM ${trackName} already playing, skipping`);
+        return;
       }
-    } catch (error) {
-      console.log("BGM error:", error);
-    }
-  };
 
-  const playSFX = (effectName: string) => {
+      try {
+        const audioPath = AUDIO.BGM[trackName as keyof typeof AUDIO.BGM];
+        if (audioPath) {
+          // Stop current BGM if playing
+          if (bgmRef.current) {
+            bgmRef.current.pause();
+            bgmRef.current.currentTime = 0;
+          }
+
+          // Create new audio element
+          bgmRef.current = new Audio(audioPath);
+          bgmRef.current.loop = true;
+          bgmRef.current.volume = 0.3; // Reduced volume to prevent overlap issues
+
+          // Add error handling
+          bgmRef.current.onerror = () => {
+            console.log(`❌ Failed to load BGM: ${trackName}`);
+            setCurrentBGM("");
+          };
+
+          bgmRef.current.onended = () => {
+            setCurrentBGM("");
+          };
+
+          bgmRef.current.play().catch(() => {
+            console.log("🔇 BGM play blocked - user needs to interact first");
+            setCurrentBGM("");
+          });
+
+          setCurrentBGM(trackName);
+          console.log(`🎵 Playing BGM: ${trackName}`);
+        } else {
+          console.log(`❌ BGM track not found: ${trackName}`);
+        }
+      } catch (error) {
+        console.log("BGM error:", error);
+        setCurrentBGM("");
+      }
+    },
+    [currentBGM]
+  );
+
+  const playSFX = useCallback((effectName: string) => {
     try {
       const audioPath = AUDIO.SFX[effectName as keyof typeof AUDIO.SFX];
       if (audioPath) {
+        // Stop previous SFX if still playing
+        if (sfxRef.current) {
+          sfxRef.current.pause();
+        }
+
         // Create new audio element for SFX
         sfxRef.current = new Audio(audioPath);
-        sfxRef.current.volume = 0.6; // Balanced volume
+        sfxRef.current.volume = 0.5; // Balanced volume
 
         // Add error handling
         sfxRef.current.onerror = () => {
@@ -116,7 +165,7 @@ export const GameEngine: React.FC = () => {
     } catch (error) {
       console.log("SFX error:", error);
     }
-  };
+  }, []);
 
   // Process current dialogue line for actions and character portraits
   useEffect(() => {
@@ -164,8 +213,11 @@ export const GameEngine: React.FC = () => {
         case "stop_bgm":
           if (bgmRef.current) {
             bgmRef.current.pause();
+            bgmRef.current.currentTime = 0;
             bgmRef.current = null;
           }
+          setCurrentBGM("");
+          console.log("🔇 BGM stopped");
           break;
         case "show_image":
           setCurrentImage(currentLine.action.payload);
@@ -190,17 +242,51 @@ export const GameEngine: React.FC = () => {
     scene,
     currentDialogue,
     setCurrentDialogue,
+    setCurrentScene,
     currentScene,
-    getCharacterPortrait,
+    playBGM,
+    playSFX,
   ]);
 
   useEffect(() => {
     const loadScene = async () => {
       const sceneData = await getScene(currentScene);
       setScene(sceneData);
+
       // Clear portraits when changing scenes
       setCurrentPortraits({});
-      console.log(`🎬 Scene changed to: ${currentScene}, cleared portraits`);
+
+      // Pre-load key characters for specific scenes
+      const preloadCharacters: Record<string, string[]> = {
+        rescue: ["DAVID", "ELENA"],
+        chocolate_moment: ["DAVID", "ELENA"],
+        safe_perimeter: ["DAVID", "ELENA"],
+        vision: [], // Characters will be added dynamically
+        shore_opening: ["DAVID", "ELENA"],
+      };
+
+      if (preloadCharacters[currentScene]) {
+        const newPortraits: Record<string, string> = {};
+        preloadCharacters[currentScene].forEach((character) => {
+          const portrait = getCharacterPortrait(character, currentScene);
+          console.log(`🔍 Preloading ${character}: ${portrait}`);
+          if (portrait) {
+            newPortraits[character] = portrait;
+          } else {
+            console.log(
+              `⚠️ No portrait found for preload character: ${character}`
+            );
+          }
+        });
+        setCurrentPortraits(newPortraits);
+        console.log(
+          `🎬 Scene ${currentScene}: Preloaded characters:`,
+          Object.keys(newPortraits),
+          newPortraits
+        );
+      }
+
+      console.log(`🎬 Scene changed to: ${currentScene}`);
     };
     loadScene();
   }, [currentScene]);
@@ -277,20 +363,50 @@ export const GameEngine: React.FC = () => {
   }
 
   const currentLine = scene.dialogues[currentDialogue];
+  // Get character positioning based on number of active characters
+  const getCharacterPosition = (index: number, total: number) => {
+    if (total === 1) return "center";
+    if (total === 2) return index === 0 ? "left" : "right";
+    if (total === 3) {
+      if (index === 0) return "left";
+      if (index === 1) return "center";
+      return "right";
+    }
+    // For more than 3 characters, alternate positions
+    return index % 2 === 0 ? "left" : "right";
+  };
+
+  const activeCharacters = Object.entries(currentPortraits);
+  const currentSpeaker =
+    currentLine?.type === "dialogue" ? currentLine.character : null;
+
   console.log(
     `📋 Rendering dialogue ${currentDialogue}/${scene.dialogues.length - 1}:`,
     currentLine
+  );
+  console.log(
+    `👥 Active characters:`,
+    activeCharacters.map(([char]) => char)
   );
 
   return (
     <div className="game-engine">
       <SceneBackground background={currentImage || scene.background} />
 
-      {Object.entries(currentPortraits).map(([character, portrait]) => (
+      <GameHUD />
+
+      {activeCharacters.map(([character, portrait], index) => (
         <CharacterPortrait
           key={character}
           character={character}
           portrait={portrait}
+          position={
+            getCharacterPosition(index, activeCharacters.length) as
+              | "left"
+              | "right"
+              | "center"
+          }
+          isActive={currentSpeaker === character || currentSpeaker === null}
         />
       ))}
 

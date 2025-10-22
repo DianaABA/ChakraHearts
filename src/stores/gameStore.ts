@@ -23,7 +23,13 @@ const initialState: GameState = {
   currentDialogue: 0,
   flags: {},
   karma: 0,
-  romance: {},
+  romance: {
+    // Initialize with small values to show meters from start
+    DAVID: 0,
+    ELENA: 0,
+    AGNIVESH: 0,
+    SANTI: 0,
+  },
   unlockedArt: [],
   badges: [],
   codexEntries: [],

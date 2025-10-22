@@ -21,14 +21,11 @@ export const BACKGROUNDS = {
   SHORE_DAWN: "/src/assets/images/backgrounds/sc6_shore_dawn_wide.png",
 
   // Prologue backgrounds
-  ELENA_CHAKRA_AWAKENING:
-    "/src/assets/images/backgrounds/pro_ep1_elena_chakra_awakening.png",
+  ELENA_CHAKRA_AWAKENING: "/backgrounds/pro_ep1_elena_chakra_awakening.png",
   AGNIVESH_DOGTAG_DISCOVERY:
     "/src/assets/images/backgrounds/pro_ep1_agnivesh_dogtag_discovery.png",
-  TEMPLE_BURNING:
-    "/src/assets/images/backgrounds/pro_ep1_temple_burning_destruction.png",
-  AGNIVESH_SANTI_SORROW:
-    "/src/assets/images/backgrounds/pro_ep1_agnivesh_santi_sorrow.png",
+  TEMPLE_BURNING: "/backgrounds/pro_ep1_temple_burning_destruction.png",
+  AGNIVESH_SANTI_SORROW: "/backgrounds/pro_ep1_agnivesh_santi_sorrow.png",
   BETRAYAL_HALL:
     "/src/assets/images/backgrounds/pro_ep1_betrayal_hall_wide.png",
   PSYCH_WARD: "/src/assets/images/backgrounds/pro_ep1_psych_ward_corridor.png",
@@ -40,20 +37,20 @@ export const BACKGROUNDS = {
 } as const;
 
 export const CHARACTERS = {
-  // Character portraits
-  DAVID_BASE: "/src/assets/images/characters/david_base_portrait.png", // ✅ Real David portrait
-  ELENA_BASE: "/src/assets/images/characters/elena_base_portrait.png",
-  AGNIVESH_BASE: "/src/assets/images/characters/agnivesh_panther_base.png", // Animal form
-  AGNIVESH_HUMAN: "/src/assets/images/characters/agnivesh_human_portrait.png", // ✅ Human form (prologue)
-  SANTI_BASE: "/src/assets/images/characters/santi_serpent_base.png", // Animal form
-  SANTI_HUMAN: "/src/assets/images/characters/santi_human_portrait.png", // ✅ Human form (prologue)
-  AURORA_BASE: "/src/assets/images/characters/santi_serpent_base.png", // Temporary: using Santi for Aurora
-  UMBRA_BASE: "/src/assets/images/characters/umbra_consciousness_portrait.png", // ✅ Real Umbra shadow AI consciousness
-  MC_BASE: "/src/assets/images/characters/elena_base_portrait.png", // Temporary: using Elena for MC
+  // Character portraits - Absolute paths for Vite public folder
+  DAVID_BASE: "/characters/david_base_portrait.png",
+  ELENA_BASE: "/characters/elena_base_portrait.png",
+  AGNIVESH_BASE: "/characters/agnivesh_panther_base.png",
+  AGNIVESH_HUMAN: "/characters/agnivesh_human_portrait.png",
+  SANTI_BASE: "/characters/santi_serpent_base.png",
+  SANTI_HUMAN: "/characters/santi_human_portrait.png",
+  AURORA_BASE: "/characters/aurora.png",
+  UMBRA_BASE: "/characters/aurora.png",
+  MC_BASE: "/characters/mc_avatar_portrait.png", // Separate MC avatar
 } as const;
 export const PROPS = {
   BRACELET_MUD: "/src/assets/images/props/prop_bracelet_mud.png",
-  CHOCOLATE_MASTER: "/src/assets/images/props/prop_chocolate_master.png",
+  CHOCOLATE_MASTER: "/props/prop_chocolate_master.png",
   DOGTAG_CLOSEUP: "/src/assets/images/props/prop_dogtag_closeup.png",
   DOGTAG_IN_HAND: "/src/assets/images/props/prop_dogtag_in_hand.png",
   DOGTAG_MASTER: "/src/assets/images/props/prop_dogtag_master.png",

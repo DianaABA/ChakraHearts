@@ -1,0 +1,188 @@
+.character-portrait {
+  position: absolute;
+  bottom: 0;
+  z-index: 500;
+  transition: all 0.5s ease;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
+}
+
+.portrait-container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.character-portrait img {
+  height: 80vh;
+  width: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  filter: brightness(1.1) contrast(1.05);
+}
+
+.portrait-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 40%;
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(138, 43, 226, 0.3) 0%,
+    rgba(138, 43, 226, 0.1) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portrait-name {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(138, 43, 226, 0.5);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Position Classes */
+.portrait-left {
+  left: 5%;
+  transform: translateX(0);
+}
+
+.portrait-right {
+  right: 5%;
+  transform: translateX(0);
+}
+
+.portrait-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Active/Inactive States */
+.character-portrait.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.character-portrait.active .portrait-glow {
+  opacity: 1;
+}
+
+.character-portrait.active .portrait-name {
+  opacity: 1;
+}
+
+.character-portrait.active img {
+  filter: brightness(1.2) contrast(1.1) saturate(1.1);
+}
+
+.character-portrait.inactive {
+  opacity: 0.7;
+  transform: translateY(20px) scale(0.95);
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.3));
+}
+
+.character-portrait.inactive img {
+  filter: brightness(0.8) contrast(0.9) saturate(0.8);
+}
+
+/* Character-specific styling */
+.character-portrait[data-character="DAVID"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(34, 197, 94, 0.3) 0%,
+    rgba(34, 197, 94, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+.character-portrait[data-character="ELENA"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(236, 72, 153, 0.3) 0%,
+    rgba(236, 72, 153, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+.character-portrait[data-character="AGNIVESH"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(249, 115, 22, 0.3) 0%,
+    rgba(249, 115, 22, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+.character-portrait[data-character="SANTI"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(59, 130, 246, 0.3) 0%,
+    rgba(59, 130, 246, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+.character-portrait[data-character="AURORA"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(168, 85, 247, 0.3) 0%,
+    rgba(168, 85, 247, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+.character-portrait[data-character="UMBRA"] .portrait-glow {
+  background: radial-gradient(
+    ellipse at center bottom,
+    rgba(107, 114, 128, 0.3) 0%,
+    rgba(107, 114, 128, 0.1) 40%,
+    transparent 70%
+  );
+}
+
+/* Hover effects */
+.character-portrait:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.character-portrait:hover .portrait-glow {
+  opacity: 1.5;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .character-portrait img {
+    height: 70vh;
+  }
+
+  .portrait-left {
+    left: 2%;
+  }
+
+  .portrait-right {
+    right: 2%;
+  }
+
+  .portrait-name {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
