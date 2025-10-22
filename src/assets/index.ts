@@ -21,7 +21,8 @@ export const BACKGROUNDS = {
   SHORE_DAWN: "/src/assets/images/backgrounds/sc6_shore_dawn_wide.png",
 
   // Prologue backgrounds
-  ELENA_CHAKRA_AWAKENING: "/backgrounds/pro_ep1_elena_chakra_awakening.png",
+  ELENA_CHAKRA_AWAKENING: "/backgrounds/pro_ep1_elena_portrait_correct.png",
+  ELENA_CHAKRA_AWAKENING_ALT: "/backgrounds/pro_ep1_elena_chakra_awakening.png",
   AGNIVESH_DOGTAG_DISCOVERY:
     "/src/assets/images/backgrounds/pro_ep1_agnivesh_dogtag_discovery.png",
   TEMPLE_BURNING: "/backgrounds/pro_ep1_temple_burning_destruction.png",
@@ -82,13 +83,13 @@ export const TRANSITIONS = {
 } as const;
 
 export const AVATARS = {
-  BINARY: "/src/assets/images/avatars/av_binary.png",
-  IRON: "/src/assets/images/avatars/av_iron.png",
-  LOTUS: "/src/assets/images/avatars/av_lotus.png",
-  NOMAD: "/src/assets/images/avatars/av_nomad.png",
-  OCEAN: "/src/assets/images/avatars/av_ocean.png",
-  SKY: "/src/assets/images/avatars/av_sky.png",
-  STONE: "/src/assets/images/avatars/av_stone.png",
+  BINARY: "/avatars/av_binary.png",
+  IRON: "/avatars/av_iron.png",
+  LOTUS: "/avatars/av_lotus.png",
+  NOMAD: "/avatars/av_nomad.png",
+  OCEAN: "/avatars/av_ocean.png",
+  SKY: "/avatars/av_sky.png",
+  STONE: "/avatars/av_stone.png",
 } as const;
 
 export const AUDIO = {

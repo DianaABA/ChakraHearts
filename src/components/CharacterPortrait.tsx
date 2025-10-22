@@ -6,6 +6,8 @@ interface CharacterPortraitProps {
   portrait: string;
   position?: "left" | "right" | "center";
   isActive?: boolean;
+  positionIndex?: number;
+  totalCharacters?: number;
 }
 
 export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
@@ -13,6 +15,8 @@ export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   portrait,
   position = "left",
   isActive = true,
+  positionIndex = 0,
+  totalCharacters = 1,
 }) => {
   const [imageSrc, setImageSrc] = React.useState<string>("");
 
@@ -61,6 +65,8 @@ export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
         isActive ? "active" : "inactive"
       }`}
       data-character={character}
+      data-position-index={positionIndex}
+      data-total-characters={totalCharacters}
       style={{
         minHeight: "200px",
         minWidth: "150px",

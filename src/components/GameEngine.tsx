@@ -6,7 +6,7 @@ import { CharacterPortrait } from "./CharacterPortrait";
 import { GameMenu } from "./GameMenu";
 import { GameHUD } from "./GameHUD";
 import { getScene } from "../utils/sceneLoader";
-import { AUDIO, CHARACTERS } from "../assets";
+import { AUDIO, CHARACTERS, AVATARS } from "../assets";
 import type { Scene } from "../types";
 import "./GameEngine.css";
 
@@ -16,58 +16,6 @@ export const GameEngine: React.FC = () => {
   const [currentPortraits, setCurrentPortraits] = useState<
     Record<string, string>
   >({});
-
-  // Character portrait mapping - switches between human and animal forms
-  const getCharacterPortrait = (character: string, sceneId: string) => {
-    console.log(`🎭 Getting portrait for ${character} in scene ${sceneId}`);
-
-    // Use human forms in prologue, animal forms in visions/spiritual scenes
-    if (sceneId === "prologue") {
-      switch (character) {
-        case "AGNIVESH":
-          console.log(`👤 Using human form for AGNIVESH in prologue`);
-          return CHARACTERS.AGNIVESH_HUMAN;
-        case "SANTI":
-          console.log(`👤 Using human form for SANTI in prologue`);
-          return CHARACTERS.SANTI_HUMAN;
-        case "DAVID":
-          return CHARACTERS.DAVID_BASE;
-        case "ELENA":
-          return CHARACTERS.ELENA_BASE;
-        case "MC":
-          return CHARACTERS.MC_BASE;
-        default:
-          break;
-      }
-    }
-
-    // Vision scene - use animal forms for Agnivesh and Santi
-    if (sceneId === "vision") {
-      switch (character) {
-        case "AGNIVESH":
-          console.log(`🐾 Using panther form for AGNIVESH in vision`);
-          return CHARACTERS.AGNIVESH_BASE;
-        case "SANTI":
-          console.log(`🐍 Using serpent form for SANTI in vision`);
-          return CHARACTERS.SANTI_BASE;
-        default:
-          break;
-      }
-    }
-
-    // Default mapping for all other scenes
-    const CHARACTER_PORTRAITS: Record<string, string> = {
-      DAVID: CHARACTERS.DAVID_BASE,
-      ELENA: CHARACTERS.ELENA_BASE,
-      AGNIVESH: CHARACTERS.AGNIVESH_BASE, // Animal form for most scenes
-      SANTI: CHARACTERS.SANTI_BASE, // Animal form for most scenes
-      AURORA: CHARACTERS.AURORA_BASE,
-      UMBRA: CHARACTERS.UMBRA_BASE,
-      MC: CHARACTERS.MC_BASE,
-    };
-
-    return CHARACTER_PORTRAITS[character];
-  };
 
   // Audio references for background music and sound effects
   const bgmRef = useRef<HTMLAudioElement | null>(null);
@@ -81,7 +29,103 @@ export const GameEngine: React.FC = () => {
     setCurrentScene,
     addKarma,
     addRomance,
+    getSelectedAvatar,
   } = useGameStore();
+
+  // Character portrait mapping - switches between human and animal forms
+  const getCharacterPortrait = useCallback(
+    (character: string, sceneId: string) => {
+      console.log(`🎭 Getting portrait for ${character} in scene ${sceneId}`);
+
+      // Use human forms in prologue, animal forms in visions/spiritual scenes
+      if (sceneId === "prologue") {
+        switch (character) {
+          case "AGNIVESH":
+            console.log(`👤 Using human form for AGNIVESH in prologue`);
+            return CHARACTERS.AGNIVESH_HUMAN;
+          case "SANTI":
+            console.log(`👤 Using human form for SANTI in prologue`);
+            return CHARACTERS.SANTI_HUMAN;
+          case "DAVID":
+            return CHARACTERS.DAVID_BASE;
+          case "ELENA":
+            return CHARACTERS.ELENA_BASE;
+          case "MC": {
+            const selectedAvatar = getSelectedAvatar();
+            console.log(`🔍 DEBUG MC: selectedAvatar = "${selectedAvatar}"`);
+            console.log(`🔍 DEBUG MC: type = ${typeof selectedAvatar}`);
+            if (selectedAvatar) {
+              const avatarKey =
+                selectedAvatar.toUpperCase() as keyof typeof AVATARS;
+              console.log(`🔍 DEBUG MC: avatarKey = "${avatarKey}"`);
+              console.log(
+                `🔍 DEBUG MC: AVATARS[avatarKey] = "${AVATARS[avatarKey]}"`
+              );
+              console.log(
+                `🎯 MC character using selected avatar: ${selectedAvatar}`
+              );
+              return AVATARS[avatarKey];
+            }
+            console.log(
+              `🎯 MC character using fallback: ${CHARACTERS.MC_BASE}`
+            );
+            return CHARACTERS.MC_BASE;
+          }
+          default:
+            break;
+        }
+      }
+
+      // Vision scene - use animal forms for Agnivesh and Santi
+      if (sceneId === "vision") {
+        switch (character) {
+          case "AGNIVESH":
+            console.log(`🐾 Using panther form for AGNIVESH in vision`);
+            return CHARACTERS.AGNIVESH_BASE;
+          case "SANTI":
+            console.log(`🐍 Using serpent form for SANTI in vision`);
+            return CHARACTERS.SANTI_BASE;
+          default:
+            break;
+        }
+      }
+
+      // Default mapping for all other scenes
+      if (character === "MC") {
+        const selectedAvatar = getSelectedAvatar();
+        console.log(`🔍 Debug: selectedAvatar value: "${selectedAvatar}"`);
+        console.log(`🔍 Debug: selectedAvatar type: ${typeof selectedAvatar}`);
+        if (selectedAvatar) {
+          const avatarKey =
+            selectedAvatar.toUpperCase() as keyof typeof AVATARS;
+          console.log(
+            `🎯 MC character using selected avatar: ${selectedAvatar}`
+          );
+          return AVATARS[avatarKey];
+        }
+        console.log(`🎯 MC character using fallback: ${CHARACTERS.MC_BASE}`);
+        return CHARACTERS.MC_BASE;
+      }
+
+      const CHARACTER_PORTRAITS: Record<string, string> = {
+        DAVID: CHARACTERS.DAVID_BASE,
+        ELENA: CHARACTERS.ELENA_BASE,
+        AGNIVESH: CHARACTERS.AGNIVESH_BASE, // Animal form for most scenes
+        SANTI: CHARACTERS.SANTI_BASE, // Animal form for most scenes
+        AURORA: CHARACTERS.AURORA_BASE,
+        UMBRA: CHARACTERS.UMBRA_BASE,
+      };
+
+      const result = CHARACTER_PORTRAITS[character];
+      if (character === "MC") {
+        console.log(
+          `🎯 Default MC mapping: ${result} (from ${CHARACTERS.MC_BASE})`
+        );
+      }
+      return result;
+    },
+    [getSelectedAvatar]
+  );
 
   const [scene, setScene] = useState<Scene | null>(null);
 
@@ -246,6 +290,7 @@ export const GameEngine: React.FC = () => {
     currentScene,
     playBGM,
     playSFX,
+    getCharacterPortrait,
   ]);
 
   useEffect(() => {
@@ -289,7 +334,7 @@ export const GameEngine: React.FC = () => {
       console.log(`🎬 Scene changed to: ${currentScene}`);
     };
     loadScene();
-  }, [currentScene]);
+  }, [currentScene, getCharacterPortrait]);
 
   // Cleanup audio on unmount
   useEffect(() => {
@@ -372,7 +417,12 @@ export const GameEngine: React.FC = () => {
       if (index === 1) return "center";
       return "right";
     }
-    // For more than 3 characters, alternate positions
+    // For 4+ characters, use smart positioning to prevent overlaps
+    if (total === 4) {
+      const positions = ["left", "center", "center", "right"];
+      return positions[index];
+    }
+    // For many characters, alternate left/right
     return index % 2 === 0 ? "left" : "right";
   };
 
@@ -406,6 +456,8 @@ export const GameEngine: React.FC = () => {
               | "right"
               | "center"
           }
+          positionIndex={index}
+          totalCharacters={activeCharacters.length}
           isActive={currentSpeaker === character || currentSpeaker === null}
         />
       ))}

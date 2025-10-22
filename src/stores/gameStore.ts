@@ -10,6 +10,8 @@ interface GameStore extends GameState {
   getFlag: (key: string) => boolean;
   addKarma: (points: number) => void;
   addRomance: (character: string, points: number) => void;
+  getSelectedAvatar: () => string;
+  setSelectedAvatar: (avatarId: string) => void;
   unlockArt: (artId: string) => void;
   awardBadge: (badgeId: string) => void;
   unlockCodexEntry: (entryId: string) => void;
@@ -73,6 +75,52 @@ export const useGameStore = create<GameStore>()(
           },
         })),
 
+      getSelectedAvatar: () => {
+        const state = get();
+        console.log(`🔍 STORE DEBUG: All flags:`, state.flags);
+        // Check which avatar flag is set
+        const avatarFlags = Object.keys(state.flags).filter((flag) =>
+          flag.startsWith("avatar_")
+        );
+        console.log(`🔍 STORE DEBUG: Avatar flags:`, avatarFlags);
+        if (avatarFlags.length > 0) {
+          const selectedAvatar = avatarFlags[0].replace("avatar_", "");
+          console.log(
+            `🔍 STORE DEBUG: Returning selected avatar:`,
+            selectedAvatar
+          );
+          return selectedAvatar;
+        }
+        console.log(
+          `🔍 STORE DEBUG: No avatar flags found, returning default: LOTUS`
+        );
+        return "LOTUS"; // Default avatar
+      },
+
+      setSelectedAvatar: (avatarId: string) => {
+        console.log(`🔍 SETTING AVATAR: ${avatarId}`);
+        const state = get();
+        console.log(`🔍 CURRENT FLAGS BEFORE:`, state.flags);
+        // Clear all avatar flags first
+        const clearedFlags = { ...state.flags };
+        Object.keys(clearedFlags).forEach((key) => {
+          if (key.startsWith("avatar_")) {
+            delete clearedFlags[key];
+          }
+        });
+        // Set the new avatar flag
+        const newFlags = {
+          ...clearedFlags,
+          [`avatar_${avatarId}`]: true,
+          selectedAvatar: true,
+        };
+        console.log(`🔍 NEW FLAGS:`, newFlags);
+        set({
+          flags: newFlags,
+        });
+        console.log(`🔍 AVATAR SET COMPLETE`);
+      },
+
       unlockArt: (artId: string) =>
         set((state) => ({
           unlockedArt: [...new Set([...state.unlockedArt, artId])],
@@ -123,7 +171,21 @@ export const useGameStore = create<GameStore>()(
         }
       },
 
-      resetGame: () => set(initialState),
+      resetGame: () => {
+        const state = get();
+        // Preserve avatar selection when resetting
+        const avatarFlags: Record<string, boolean> = {};
+        Object.keys(state.flags).forEach((key) => {
+          if (key.startsWith("avatar_") || key === "selectedAvatar") {
+            avatarFlags[key] = state.flags[key];
+          }
+        });
+        console.log(`🔄 Resetting game, preserving avatar flags:`, avatarFlags);
+        set({
+          ...initialState,
+          flags: avatarFlags,
+        });
+      },
     }),
     {
       name: "chakra-hearts-save",

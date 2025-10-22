@@ -82,7 +82,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [showAvatarSelect, setShowAvatarSelect] = useState(false);
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
-  const { setFlag } = useGameStore();
+  const { setSelectedAvatar: setGameStoreAvatar } = useGameStore();
 
   const menuButtons = [
     { text: "New Journey", action: () => setShowAvatarSelect(true) },
@@ -139,10 +139,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   }, [showAvatarSelect]);
 
   const handleAvatarSelect = (avatarId: string) => {
+    // Set local UI state
     setSelectedAvatar(avatarId);
-    setFlag("selectedAvatar", true);
-    // Store avatar ID as a separate flag
-    setFlag(`avatar_${avatarId}`, true);
+    // Use game store method to save avatar selection
+    setGameStoreAvatar(avatarId);
     setShowAvatarSelect(false);
     onStartGame();
   };

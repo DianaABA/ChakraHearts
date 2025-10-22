@@ -2,8 +2,9 @@
   position: absolute;
   bottom: 0;
   z-index: 500;
-  transition: all 0.5s ease;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
+  will-change: transform, opacity;
 }
 
 .portrait-container {
@@ -19,8 +20,9 @@
   height: 80vh;
   width: auto;
   object-fit: contain;
-  transition: all 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   filter: brightness(1.1) contrast(1.05);
+  will-change: filter, transform;
 }
 
 .portrait-glow {
@@ -59,7 +61,7 @@
   transition: opacity 0.3s ease;
 }
 
-/* Position Classes */
+/* Position Classes - Non-overlapping layout */
 .portrait-left {
   left: 5%;
   transform: translateX(0);
@@ -75,18 +77,66 @@
   transform: translateX(-50%);
 }
 
+/* Multi-character positioning to prevent overlaps */
+.character-portrait[data-position-index="0"] {
+  left: 5%;
+}
+
+.character-portrait[data-position-index="1"] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.character-portrait[data-position-index="2"] {
+  right: 5%;
+}
+
+/* When 3+ characters, compress spacing */
+.character-portrait[data-total-characters="3"][data-position-index="0"] {
+  left: 2%;
+}
+
+.character-portrait[data-total-characters="3"][data-position-index="1"] {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.character-portrait[data-total-characters="3"][data-position-index="2"] {
+  right: 2%;
+}
+
+/* When 4+ characters, use grid layout */
+.character-portrait[data-total-characters="4"][data-position-index="0"] {
+  left: 0%;
+}
+
+.character-portrait[data-total-characters="4"][data-position-index="1"] {
+  left: 33%;
+}
+
+.character-portrait[data-total-characters="4"][data-position-index="2"] {
+  left: 66%;
+}
+
+.character-portrait[data-total-characters="4"][data-position-index="3"] {
+  right: 0%;
+}
+
 /* Active/Inactive States */
 .character-portrait.active {
   opacity: 1;
   transform: translateY(0) scale(1);
+  transition-delay: 0.1s;
 }
 
 .character-portrait.active .portrait-glow {
   opacity: 1;
+  transition: opacity 0.6s ease 0.3s;
 }
 
 .character-portrait.active .portrait-name {
   opacity: 1;
+  transition: opacity 0.4s ease 0.5s;
 }
 
 .character-portrait.active img {
@@ -97,10 +147,34 @@
   opacity: 0.7;
   transform: translateY(20px) scale(0.95);
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.3));
+  transition-delay: 0s;
 }
 
 .character-portrait.inactive img {
   filter: brightness(0.8) contrast(0.9) saturate(0.8);
+}
+
+/* Entry and exit animations */
+.character-portrait-enter {
+  opacity: 0;
+  transform: translateY(100px) scale(0.8);
+}
+
+.character-portrait-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.character-portrait-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.character-portrait-exit-active {
+  opacity: 0;
+  transform: translateY(-50px) scale(0.9);
+  transition: all 0.5s cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
 
 /* Character-specific styling */
