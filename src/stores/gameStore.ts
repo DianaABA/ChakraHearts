@@ -2,7 +2,16 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { GameState, SaveSlot } from "../types";
 
+interface PlayerSettings {
+  name: string;
+  pronouns: "he/him" | "she/her" | "they/them";
+  hasSeenContentWarning: boolean;
+}
+
 interface GameStore extends GameState {
+  // Player Settings
+  playerSettings: PlayerSettings;
+
   // Actions
   setCurrentScene: (scene: string) => void;
   setCurrentDialogue: (index: number) => void;
@@ -18,6 +27,12 @@ interface GameStore extends GameState {
   saveGame: (slotId: number) => void;
   loadGame: (slotId: number) => void;
   resetGame: () => void;
+
+  // Player Settings Actions
+  setPlayerSettings: (settings: Partial<PlayerSettings>) => void;
+  getPlayerName: () => string;
+  getPlayerPronouns: () => PlayerSettings["pronouns"];
+  markContentWarningSeen: () => void;
 }
 
 const initialState: GameState = {
@@ -46,10 +61,17 @@ const initialState: GameState = {
     })),
 };
 
+const initialPlayerSettings: PlayerSettings = {
+  name: "",
+  pronouns: "they/them",
+  hasSeenContentWarning: false,
+};
+
 export const useGameStore = create<GameStore>()(
   persist(
     (set, get) => ({
       ...initialState,
+      playerSettings: initialPlayerSettings,
 
       setCurrentScene: (scene: string) => set({ currentScene: scene }),
 
@@ -173,7 +195,7 @@ export const useGameStore = create<GameStore>()(
 
       resetGame: () => {
         const state = get();
-        // Preserve avatar selection when resetting
+        // Preserve avatar selection and player settings when resetting
         const avatarFlags: Record<string, boolean> = {};
         Object.keys(state.flags).forEach((key) => {
           if (key.startsWith("avatar_") || key === "selectedAvatar") {
@@ -184,8 +206,33 @@ export const useGameStore = create<GameStore>()(
         set({
           ...initialState,
           flags: avatarFlags,
+          playerSettings: state.playerSettings, // Preserve player settings
         });
       },
+
+      // Player Settings Actions
+      setPlayerSettings: (settings: Partial<PlayerSettings>) =>
+        set((state) => ({
+          playerSettings: { ...state.playerSettings, ...settings },
+        })),
+
+      getPlayerName: () => {
+        const settings = get().playerSettings;
+        return settings.name || "Player";
+      },
+
+      getPlayerPronouns: () => {
+        const settings = get().playerSettings;
+        return settings.pronouns;
+      },
+
+      markContentWarningSeen: () =>
+        set((state) => ({
+          playerSettings: {
+            ...state.playerSettings,
+            hasSeenContentWarning: true,
+          },
+        })),
     }),
     {
       name: "chakra-hearts-save",

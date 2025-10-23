@@ -3,6 +3,7 @@ import { useGameStore } from "../../stores/gameStore";
 import { UI } from "../../assets";
 import EducationalPanel from "../educational/EducationalPanel";
 import Gallery, { type GalleryArtwork } from "../Gallery";
+import PlayerSettings from "./PlayerSettings";
 import "./GameHUD.css";
 
 export const GameHUD: React.FC = () => {
@@ -10,6 +11,7 @@ export const GameHUD: React.FC = () => {
   const [showKarmaDialog, setShowKarmaDialog] = useState(false);
   const [showEducationalPanel, setShowEducationalPanel] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+  const [showPlayerSettings, setShowPlayerSettings] = useState(false);
   const [educationalSection, setEducationalSection] = useState<
     "chakras" | "romance" | "karma" | "concepts"
   >("chakras");
@@ -156,6 +158,13 @@ export const GameHUD: React.FC = () => {
     <div className="game-hud">
       {/* Educational Guide Button */}
       <div className="educational-guide-button">
+        <button
+          className="guide-button settings"
+          onClick={() => setShowPlayerSettings(true)}
+          title="Player Settings"
+        >
+          ⚙️ Settings
+        </button>
         <button
           className="guide-button chakras"
           onClick={() => {
@@ -356,6 +365,12 @@ export const GameHUD: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Player Settings */}
+      <PlayerSettings
+        isOpen={showPlayerSettings}
+        onClose={() => setShowPlayerSettings(false)}
+      />
 
       {/* Educational Panel */}
       <EducationalPanel

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useGameStore } from "../../stores/gameStore";
 import { AVATARS, UI, AUDIO } from "../../assets";
+import { PaymentOptions } from "../PaymentOptions";
 import "./MainMenu.css";
 
 export interface AvatarOption {
@@ -9,6 +10,17 @@ export interface AvatarOption {
   description: string;
   image: string;
   chakra: string;
+}
+
+interface PaymentOption {
+  id: string;
+  character: string;
+  avatar: string;
+  title: string;
+  description: string;
+  price: string;
+  message: string;
+  className: string;
 }
 
 const AVATAR_OPTIONS: AvatarOption[] = [
@@ -81,6 +93,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 }) => {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [showAvatarSelect, setShowAvatarSelect] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
   const { setSelectedAvatar: setGameStoreAvatar } = useGameStore();
 
@@ -146,7 +159,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   }, []); // Keep empty dependency array but add check inside
 
   const menuButtons = [
-    { text: "New Journey", action: () => setShowAvatarSelect(true) },
+    { text: "New Journey", action: () => setShowPaymentOptions(true) },
     { text: "Continue Path", action: onLoadGame },
     { text: "Settings", action: () => console.log("Settings") },
     { text: "Gallery", action: () => console.log("Gallery") },
@@ -166,6 +179,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       : [];
 
   const currentButtons = showAvatarSelect ? avatarButtons : menuButtons;
+
+  const handlePaymentSelect = (paymentOption: PaymentOption) => {
+    // Store payment choice in game store if needed
+    console.log("💰 Payment option selected:", paymentOption);
+    setShowPaymentOptions(false);
+    setShowAvatarSelect(true);
+  };
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -221,6 +241,28 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       onStartGame();
     }, 100); // 100ms delay to ensure audio cleanup
   };
+
+  // Show payment options first
+  if (showPaymentOptions) {
+    return (
+      <>
+        <div className="main-menu">
+          <div
+            className="menu-background"
+            style={{ backgroundImage: `url(${UI.MAIN_MENU_BG})` }}
+          >
+            <div className="cyber-overlay"></div>
+            <div className="spiritual-particles"></div>
+          </div>
+        </div>
+        <PaymentOptions
+          onSelectPayment={handlePaymentSelect}
+          onClose={() => setShowPaymentOptions(false)}
+        />
+      </>
+    );
+  }
+
   if (showAvatarSelect) {
     return (
       <div className="main-menu avatar-selection">
