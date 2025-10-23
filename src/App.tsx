@@ -50,11 +50,9 @@ function App() {
 
   return (
     <div className="app">
-      {showContentWarning && (
+      {showContentWarning ? (
         <ContentWarning isOpen={true} onAccept={handleContentWarningAccept} />
-      )}
-
-      {gameState === "menu" ? (
+      ) : gameState === "menu" ? (
         <MainMenu onStartGame={handleStartGame} onLoadGame={handleLoadGame} />
       ) : (
         <GameEngine />

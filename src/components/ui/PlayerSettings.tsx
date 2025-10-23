@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGameStore } from "../../stores/gameStore";
 import "./PlayerSettings.css";
 
@@ -18,6 +18,15 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   const [sfxVolume, setSfxVolume] = useState(playerSettings.sfxVolume ?? 0.5);
   const [textSpeed, setTextSpeed] = useState(playerSettings.textSpeed ?? 25);
   const [autoDelay, setAutoDelay] = useState(playerSettings.autoDelay ?? 500);
+
+  // Close on ESC
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -43,8 +52,16 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   };
 
   return (
-    <div className="player-settings-overlay">
-      <div className="player-settings-panel">
+    <div
+      className="player-settings-overlay"
+      onClick={(e) => {
+        if (e.currentTarget === e.target) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Player Settings"
+    >
+      <div className="player-settings-panel" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
           <h2>⚙️ Player Settings</h2>
           <button className="settings-close" onClick={onClose}>
@@ -149,7 +166,12 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
                 max={1}
                 step={0.01}
                 value={bgmVolume}
-                onChange={(e) => setBgmVolume(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  const v = parseFloat(e.target.value);
+                  setBgmVolume(v);
+                  // Live-apply so changes are responsive immediately
+                  setPlayerSettings({ bgmVolume: v });
+                }}
               />
             </div>
             <div className="setting-group">
@@ -161,7 +183,11 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
                 max={1}
                 step={0.01}
                 value={sfxVolume}
-                onChange={(e) => setSfxVolume(parseFloat(e.target.value))}
+                onChange={(e) => {
+                  const v = parseFloat(e.target.value);
+                  setSfxVolume(v);
+                  setPlayerSettings({ sfxVolume: v });
+                }}
               />
             </div>
           </div>
@@ -177,7 +203,11 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
                 max={60}
                 step={1}
                 value={textSpeed}
-                onChange={(e) => setTextSpeed(parseInt(e.target.value))}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value);
+                  setTextSpeed(v);
+                  setPlayerSettings({ textSpeed: v });
+                }}
               />
             </div>
             <div className="setting-group">
@@ -189,7 +219,11 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
                 max={1500}
                 step={50}
                 value={autoDelay}
-                onChange={(e) => setAutoDelay(parseInt(e.target.value))}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value);
+                  setAutoDelay(v);
+                  setPlayerSettings({ autoDelay: v });
+                }}
               />
             </div>
           </div>
