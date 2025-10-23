@@ -14,7 +14,7 @@ export const audio = {
         try {
           loopAudio.pause();
           loopAudio.currentTime = 0;
-        } catch (e) {
+        } catch {
           // ignore
         }
         loopAudio = null;
@@ -44,10 +44,19 @@ export const audio = {
       try {
         loopAudio.pause();
         loopAudio.currentTime = 0;
-      } catch (e) {
+      } catch {
         // ignore
       }
       loopAudio = null;
+    }
+  },
+
+  /** Update loop volume if a loop is active. */
+  setLoopVolume(volume: number) {
+    try {
+      if (loopAudio) loopAudio.volume = Math.max(0, Math.min(1, volume));
+    } catch {
+      // ignore
     }
   },
 
@@ -59,7 +68,7 @@ export const audio = {
       a.play().catch(() => {
         /* ignore */
       });
-    } catch (e) {
+    } catch {
       // ignore
     }
   },
@@ -72,11 +81,11 @@ export const audio = {
         try {
           n.pause();
           (n as HTMLAudioElement).currentTime = 0;
-        } catch (e) {
+        } catch {
           // ignore
         }
       });
-    } catch (e) {
+    } catch {
       // ignore
     }
     // Also stop our loop if not captured above
@@ -84,7 +93,7 @@ export const audio = {
       try {
         loopAudio.pause();
         loopAudio.currentTime = 0;
-      } catch (e) {
+      } catch {
         // ignore
       }
       loopAudio = null;

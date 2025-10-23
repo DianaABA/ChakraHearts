@@ -8,7 +8,7 @@ interface GameMenuProps {
 }
 
 export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
-  const { saveGame, loadGame, resetGame, resetContentWarning } = useGameStore();
+  const { saveGame, loadGame, resetGame, resetContentWarning, saveSlots } = useGameStore();
   const [currentSection, setCurrentSection] = useState<
     "main" | "settings" | "save" | "load"
   >("main");
@@ -73,18 +73,40 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
     </>
   );
 
+  const fmt = (ts: number) =>
+    ts
+      ? new Date(ts).toLocaleString(undefined, {
+          hour12: false,
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "empty";
+
   const renderSaveMenu = () => (
     <>
       <h3>💾 Save Game</h3>
       <div className="save-slots">
-        {[0, 1, 2].map((slot) => (
+        {saveSlots.map((slot) => (
           <button
-            key={slot}
-            onClick={() => handleSaveGame(slot)}
+            key={slot.id}
+            onClick={() => handleSaveGame(slot.id)}
             className="save-slot-button"
           >
-            <div className="slot-header">Slot {slot + 1}</div>
-            <div className="slot-info">Click to save</div>
+            <div className="slot-header">Slot {slot.id + 1}</div>
+            <div className="slot-info">
+              {slot.timestamp ? (
+                <>
+                  <div>{fmt(slot.timestamp)}</div>
+                  <div>Scene: {slot.sceneName || "?"}</div>
+                  <div>Line: {slot.dialogueIndex}</div>
+                </>
+              ) : (
+                <div>Empty — click to save</div>
+              )}
+            </div>
           </button>
         ))}
       </div>
@@ -101,14 +123,25 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
     <>
       <h3>📁 Load Game</h3>
       <div className="save-slots">
-        {[0, 1, 2].map((slot) => (
+        {saveSlots.map((slot) => (
           <button
-            key={slot}
-            onClick={() => handleLoadGame(slot)}
+            key={slot.id}
+            onClick={() => handleLoadGame(slot.id)}
             className="save-slot-button"
+            disabled={!slot.timestamp}
           >
-            <div className="slot-header">Slot {slot + 1}</div>
-            <div className="slot-info">Click to load</div>
+            <div className="slot-header">Slot {slot.id + 1}</div>
+            <div className="slot-info">
+              {slot.timestamp ? (
+                <>
+                  <div>{fmt(slot.timestamp)}</div>
+                  <div>Scene: {slot.sceneName || "?"}</div>
+                  <div>Line: {slot.dialogueIndex}</div>
+                </>
+              ) : (
+                <div>Empty</div>
+              )}
+            </div>
           </button>
         ))}
       </div>

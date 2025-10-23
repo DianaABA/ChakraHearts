@@ -19,13 +19,22 @@ export const GameHUD: React.FC = () => {
     const saved = storage.getItem("hudCollapsed");
     try {
       return saved ? JSON.parse(saved) === true : false;
-    } catch (e) {
+    } catch {
       return false;
     }
   });
   const [educationalSection, setEducationalSection] = useState<
     "chakras" | "romance" | "karma" | "concepts"
   >("chakras");
+  const { backlogOpen, setBacklogOpen, uiHidden, toggleUiHidden, autoMode, skipMode, toggleAutoMode, toggleSkipMode } = useGameStore();
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  
+  // Track fullscreen state for icon update
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
 
   // Consistent color palette with muted, blended tones
   const COLORS = {
@@ -159,7 +168,7 @@ export const GameHUD: React.FC = () => {
       id: "lotus_birth",
       title: "Lotus Birth",
       description: "Aurora's consciousness emerging from the void",
-      imageSrc: "/backgrounds/sc0_lotus_birth_void.png",
+      imageSrc: "/backgrounds/scenes/sc0_lotus_birth_void.png",
       category: "concepts",
       unlocked: true,
     },
@@ -175,7 +184,7 @@ export const GameHUD: React.FC = () => {
       id: "shore_dawn",
       title: "Dawn at the Shore",
       description: "The peaceful ending shore where healing begins",
-      imageSrc: "/backgrounds/sc6_shore_dawn_wide.png",
+      imageSrc: "/backgrounds/scenes/sc6_shore_dawn_wide.png",
       category: "scenes",
       unlocked: true,
     },
@@ -183,7 +192,7 @@ export const GameHUD: React.FC = () => {
       id: "sacred_cow",
       title: "Sacred Cow Carving",
       description: "Ancient wall carving of the sacred cow spirit",
-      imageSrc: "/backgrounds/sc2_cow_carving_wall.jpg",
+      imageSrc: "/backgrounds/scenes/sc2_cow_carving_wall.jpg",
       category: "special",
       unlocked: true,
     },
@@ -212,11 +221,46 @@ export const GameHUD: React.FC = () => {
       {/* Educational Guide Button */}
       <div className="educational-guide-button">
         <button
+          className="guide-button backlog"
+          onClick={() => setBacklogOpen(!backlogOpen)}
+          title="Backlog (B)"
+        >
+          📝 Backlog
+        </button>
+        <button
+          className="guide-button fullscreen"
+          onClick={() => import("../../platform/screen").then(m=>m.display.toggleFullscreen())}
+          title="Fullscreen (F)"
+        >
+          {isFullscreen ? "🧭 Windowed" : "🖥 Fullscreen"}
+        </button>
+        <button
+          className="guide-button hide-ui"
+          onClick={() => toggleUiHidden()}
+          title="Hide UI (H)"
+        >
+          {uiHidden ? "👁 Show UI" : "🙈 Hide UI"}
+        </button>
+        <button
           className="guide-button settings"
           onClick={() => setShowPlayerSettings(true)}
           title="Player Settings"
         >
           ⚙️ Settings
+        </button>
+        <button
+          className={`guide-button ${autoMode ? "active" : ""}`}
+          onClick={() => toggleAutoMode()}
+          title="Auto mode"
+        >
+          {autoMode ? "⏸ Auto" : "▶ Auto"}
+        </button>
+        <button
+          className={`guide-button ${skipMode ? "active" : ""}`}
+          onClick={() => toggleSkipMode()}
+          title="Skip mode"
+        >
+          {skipMode ? "⏹ Skip" : "⏭ Skip"}
         </button>
         <button
           className="guide-button chakras"

@@ -54,3 +54,35 @@
     inset 0 0 24px rgba(0, 255, 255, 0.12);
   transform: translateY(-1px);
 }
+
+/* Small always-available handle to reveal UI when hidden */
+.ui-reveal-handle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 7000;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.ui-reveal-handle:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.ui-hidden-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f5f3f0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  z-index: 7000;
+}

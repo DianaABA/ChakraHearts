@@ -142,3 +142,11 @@ export interface EpisodeConfig {
   /** Optional summary and notes */
   summary?: string;
 }
+
+// VN UX: Backlog entries for message history
+export interface BacklogEntry {
+  type: "dialogue" | "narration" | "choice" | "system";
+  character?: string;
+  text: string;
+  timestamp?: number;
+}

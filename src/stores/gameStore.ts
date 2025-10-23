@@ -1,21 +1,41 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { GameState, SaveSlot, EpisodeId } from "../types";
+import type { GameState, SaveSlot, EpisodeId, DialogueLine, BacklogEntry } from "../types";
 
 interface PlayerSettings {
   name: string;
   pronouns: "he/him" | "she/her" | "they/them";
   hasSeenContentWarning: boolean;
+  // Audio & reading
+  bgmVolume?: number; // 0..1
+  sfxVolume?: number; // 0..1
+  textSpeed?: number; // ms per char
+  autoDelay?: number; // base ms
 }
 
 interface GameStore extends GameState {
   // Player Settings
   playerSettings: PlayerSettings;
+  // VN Backlog & UI state
+  backlog: BacklogEntry[];
+  backlogOpen: boolean;
+  uiHidden: boolean;
+  autoMode: boolean;
+  skipMode: boolean; // simple skip-all for now
 
   // Actions
   setCurrentEpisode: (episode: EpisodeId) => void;
   setCurrentScene: (scene: string) => void;
   setCurrentDialogue: (index: number) => void;
+  addBacklogFromLine: (line: DialogueLine) => void;
+  addBacklogEntry: (entry: BacklogEntry) => void;
+  clearBacklog: () => void;
+  setBacklogOpen: (open: boolean) => void;
+  toggleUiHidden: () => void;
+  setAutoMode: (on: boolean) => void;
+  toggleAutoMode: () => void;
+  setSkipMode: (on: boolean) => void;
+  toggleSkipMode: () => void;
   setFlag: (key: string, value: boolean) => void;
   getFlag: (key: string) => boolean;
   addKarma: (points: number) => void;
@@ -68,6 +88,10 @@ const initialPlayerSettings: PlayerSettings = {
   name: "",
   pronouns: "they/them",
   hasSeenContentWarning: false,
+  bgmVolume: 0.3,
+  sfxVolume: 0.5,
+  textSpeed: 25,
+  autoDelay: 500,
 };
 
 export const useGameStore = create<GameStore>()(
@@ -75,12 +99,50 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
       ...initialState,
       playerSettings: initialPlayerSettings,
+      backlog: [],
+      backlogOpen: false,
+      uiHidden: false,
+  autoMode: false,
+  skipMode: false,
 
       setCurrentEpisode: (episode: EpisodeId) => set({ currentEpisode: episode }),
 
       setCurrentScene: (scene: string) => set({ currentScene: scene }),
 
       setCurrentDialogue: (index: number) => set({ currentDialogue: index }),
+
+      addBacklogFromLine: (line: DialogueLine) => {
+        if (!line) return;
+        if (line.type === "dialogue" || line.type === "narration") {
+          const entry: BacklogEntry = {
+            type: line.type,
+            character: line.character,
+            text: line.text || "",
+            timestamp: Date.now(),
+          };
+          set((state) => {
+            const next = [...state.backlog, entry];
+            // keep last 200
+            if (next.length > 200) next.splice(0, next.length - 200);
+            return { backlog: next };
+          });
+        }
+      },
+
+      addBacklogEntry: (entry: BacklogEntry) =>
+        set((state) => {
+          const next = [...state.backlog, { ...entry, timestamp: Date.now() }];
+          if (next.length > 200) next.splice(0, next.length - 200);
+          return { backlog: next };
+        }),
+
+      clearBacklog: () => set({ backlog: [] }),
+      setBacklogOpen: (open: boolean) => set({ backlogOpen: open }),
+      toggleUiHidden: () => set((s) => ({ uiHidden: !s.uiHidden })),
+  setAutoMode: (on: boolean) => set({ autoMode: on }),
+  toggleAutoMode: () => set((s) => ({ autoMode: !s.autoMode })),
+  setSkipMode: (on: boolean) => set({ skipMode: on }),
+  toggleSkipMode: () => set((s) => ({ skipMode: !s.skipMode })),
 
       setFlag: (key: string, value: boolean) =>
         set((state) => ({

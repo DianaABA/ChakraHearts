@@ -14,6 +14,10 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   const { playerSettings, setPlayerSettings } = useGameStore();
   const [tempName, setTempName] = useState(playerSettings.name);
   const [tempPronouns, setTempPronouns] = useState(playerSettings.pronouns);
+  const [bgmVolume, setBgmVolume] = useState(playerSettings.bgmVolume ?? 0.3);
+  const [sfxVolume, setSfxVolume] = useState(playerSettings.sfxVolume ?? 0.5);
+  const [textSpeed, setTextSpeed] = useState(playerSettings.textSpeed ?? 25);
+  const [autoDelay, setAutoDelay] = useState(playerSettings.autoDelay ?? 500);
 
   if (!isOpen) return null;
 
@@ -21,6 +25,10 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
     setPlayerSettings({
       name: tempName.trim() || "Player",
       pronouns: tempPronouns,
+      bgmVolume,
+      sfxVolume,
+      textSpeed,
+      autoDelay,
     });
     onClose();
   };
@@ -28,6 +36,10 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   const handleReset = () => {
     setTempName(playerSettings.name);
     setTempPronouns(playerSettings.pronouns);
+    setBgmVolume(playerSettings.bgmVolume ?? 0.3);
+    setSfxVolume(playerSettings.sfxVolume ?? 0.5);
+    setTextSpeed(playerSettings.textSpeed ?? 25);
+    setAutoDelay(playerSettings.autoDelay ?? 500);
   };
 
   return (
@@ -124,6 +136,62 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
               and reverence. Our use of sacred concepts is intended for healing
               and growth.
             </p>
+          </div>
+
+          <div className="setting-section">
+            <h3>🔊 Audio</h3>
+            <div className="setting-group">
+              <label htmlFor="bgm-volume">BGM Volume: {Math.round(bgmVolume * 100)}%</label>
+              <input
+                id="bgm-volume"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={bgmVolume}
+                onChange={(e) => setBgmVolume(parseFloat(e.target.value))}
+              />
+            </div>
+            <div className="setting-group">
+              <label htmlFor="sfx-volume">SFX Volume: {Math.round(sfxVolume * 100)}%</label>
+              <input
+                id="sfx-volume"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={sfxVolume}
+                onChange={(e) => setSfxVolume(parseFloat(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div className="setting-section">
+            <h3>📖 Reading</h3>
+            <div className="setting-group">
+              <label htmlFor="text-speed">Text Speed (ms/char): {textSpeed}</label>
+              <input
+                id="text-speed"
+                type="range"
+                min={5}
+                max={60}
+                step={1}
+                value={textSpeed}
+                onChange={(e) => setTextSpeed(parseInt(e.target.value))}
+              />
+            </div>
+            <div className="setting-group">
+              <label htmlFor="auto-delay">Auto Delay (ms): {autoDelay}</label>
+              <input
+                id="auto-delay"
+                type="range"
+                min={0}
+                max={1500}
+                step={50}
+                value={autoDelay}
+                onChange={(e) => setAutoDelay(parseInt(e.target.value))}
+              />
+            </div>
           </div>
         </div>
 

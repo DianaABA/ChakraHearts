@@ -5,9 +5,11 @@ import { SceneBackground } from "./SceneBackground";
 import { CharacterPortrait } from "./CharacterPortrait";
 import { GameMenu } from "../ui/GameMenu";
 import { GameHUD } from "../ui/GameHUD";
+import Backlog from "../ui/Backlog";
 import { getSceneForEpisode } from "../../utils/episodeSceneLoader";
 import { AUDIO, CHARACTERS, AVATARS } from "../../assets";
 import { audio } from "../../platform/audio";
+import { display } from "../../platform/screen";
 import type { Scene } from "../../types";
 import "./GameEngine.css";
 
@@ -17,6 +19,7 @@ export const GameEngine: React.FC = () => {
   const [currentPortraits, setCurrentPortraits] = useState<
     Record<string, string>
   >({});
+  const [showUiHint, setShowUiHint] = useState(false);
 
   const [currentBGM, setCurrentBGM] = useState<string>("");
 
@@ -29,6 +32,12 @@ export const GameEngine: React.FC = () => {
     addKarma,
     addRomance,
     getSelectedAvatar,
+    addBacklogFromLine,
+    addBacklogEntry,
+    backlogOpen,
+    setBacklogOpen,
+    uiHidden,
+    toggleUiHidden,
   } = useGameStore();
 
   // Character portrait mapping - switches between human and animal forms
@@ -129,6 +138,8 @@ export const GameEngine: React.FC = () => {
   const [scene, setScene] = useState<Scene | null>(null);
 
   // Audio functions with overlap prevention
+  const { playerSettings } = useGameStore();
+
   const playBGM = useCallback(
     (trackName: string) => {
       // Prevent playing the same BGM twice
@@ -142,7 +153,7 @@ export const GameEngine: React.FC = () => {
         if (audioPath) {
           audio.stopLoop();
           audio
-            .playLoop(audioPath, { volume: 0.3 })
+            .playLoop(audioPath, { volume: playerSettings.bgmVolume ?? 0.3 })
             .then(() => {
               setCurrentBGM(trackName);
               console.log(`🎵 Playing BGM: ${trackName}`);
@@ -158,7 +169,7 @@ export const GameEngine: React.FC = () => {
         setCurrentBGM("");
       }
     },
-    [currentBGM]
+    [currentBGM, playerSettings.bgmVolume]
   );
 
   const playSFX = useCallback((effectName: string) => {
@@ -355,9 +366,11 @@ export const GameEngine: React.FC = () => {
     };
   }, []);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!scene) return;
-
+    const currentLine = scene.dialogues[currentDialogue];
+    // Add to backlog before advancing
+    addBacklogFromLine(currentLine);
     const nextIndex = currentDialogue + 1;
     if (nextIndex < scene.dialogues.length) {
       setCurrentDialogue(nextIndex);
@@ -365,7 +378,7 @@ export const GameEngine: React.FC = () => {
       // Scene complete - could advance to next scene
       console.log("Scene complete");
     }
-  };
+  }, [scene, currentDialogue, addBacklogFromLine, setCurrentDialogue]);
 
   const handleChoice = (choiceIndex: number) => {
     const currentLine = scene?.dialogues[currentDialogue];
@@ -393,8 +406,84 @@ export const GameEngine: React.FC = () => {
       }
 
       handleNext();
+
+      // Record choice in backlog
+      addBacklogEntry({ type: "choice", text: choice.text });
     }
   };
+
+  // Global hotkeys: H hide UI, F fullscreen, B backlog
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "h" || e.key === "H") {
+        toggleUiHidden();
+      } else if (e.key === "f" || e.key === "F") {
+        display.toggleFullscreen();
+      } else if (e.key === "b" || e.key === "B") {
+        setBacklogOpen(!backlogOpen);
+      } else if ((e.ctrlKey && (e.key === "s" || e.key === "S"))) {
+        // Quick save to slot 1
+        e.preventDefault();
+        try {
+          useGameStore.getState().saveGame(0);
+        } catch {
+          // ignore
+        }
+      } else if ((e.ctrlKey && (e.key === "l" || e.key === "L"))) {
+        // Quick load from slot 1
+        e.preventDefault();
+        try {
+          useGameStore.getState().loadGame(0);
+        } catch {
+          // ignore
+        }
+      } else if (e.key === "Escape") {
+        if (backlogOpen) setBacklogOpen(false);
+        else if (uiHidden) toggleUiHidden();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [toggleUiHidden, setBacklogOpen, backlogOpen, uiHidden]);
+
+  // Auto / Skip progression
+  useEffect(() => {
+    if (!scene) return;
+    const line = scene.dialogues[currentDialogue];
+    if (!line) return;
+
+    // Stop on choices or actions
+    if (line.type === "choice" || line.type === "action") return;
+
+    let t: number | undefined;
+    const { autoMode, skipMode } = useGameStore.getState();
+    if (skipMode) {
+      t = window.setTimeout(() => handleNext(), 10);
+      return () => clearTimeout(t);
+    }
+    if (autoMode) {
+      const chars = (line.text || "").length;
+      const perChar = playerSettings.textSpeed ?? 25;
+      const base = playerSettings.autoDelay ?? 500;
+      const delay = Math.min(6000, base + chars * perChar);
+      t = window.setTimeout(() => handleNext(), delay);
+      return () => clearTimeout(t);
+    }
+  }, [scene, currentDialogue, playerSettings.textSpeed, playerSettings.autoDelay, handleNext]);
+
+  // Apply volume updates live
+  useEffect(() => {
+    audio.setLoopVolume(playerSettings.bgmVolume ?? 0.3);
+  }, [playerSettings.bgmVolume]);
+
+  // Show a temporary hint when UI is hidden
+  useEffect(() => {
+    if (uiHidden) {
+      setShowUiHint(true);
+      const t = setTimeout(() => setShowUiHint(false), 2500);
+      return () => clearTimeout(t);
+    }
+  }, [uiHidden]);
 
   if (!scene) {
     return (
@@ -446,11 +535,12 @@ export const GameEngine: React.FC = () => {
     activeCharacters.map(([char]) => char)
   );
 
+  
+
   return (
     <div className="game-engine scene-transition">
       <SceneBackground background={currentImage || scene.background} />
-
-      <GameHUD />
+      {!uiHidden && <GameHUD />}
 
       {activeCharacters.map(([character, portrait], index) => (
         <CharacterPortrait
@@ -469,23 +559,42 @@ export const GameEngine: React.FC = () => {
         />
       ))}
 
-      <DialogueBox
-        line={currentLine}
-        onNext={handleNext}
-        onChoice={handleChoice}
-      />
+      {!uiHidden && (
+        <DialogueBox
+          line={currentLine}
+          onNext={handleNext}
+          onChoice={handleChoice}
+        />
+      )}
 
-      <button
-        className="engine-menu-button btn-smooth"
-        onClick={() => setShowMenu(!showMenu)}
-        aria-label={showMenu ? "Close menu" : "Open menu"}
-        title={showMenu ? "Close menu" : "Open menu"}
-        type="button"
-      >
-        ☰
-      </button>
+      {!uiHidden && (
+        <button
+          className="engine-menu-button btn-smooth"
+          onClick={() => setShowMenu(!showMenu)}
+          aria-label={showMenu ? "Close menu" : "Open menu"}
+          title={showMenu ? "Close menu" : "Open menu"}
+          type="button"
+        >
+          ☰
+        </button>
+      )}
 
       {showMenu && <GameMenu onClose={() => setShowMenu(false)} />}
+      {uiHidden && (
+        <>
+          <button
+            className="ui-reveal-handle"
+            onClick={() => toggleUiHidden()}
+            aria-label="Show UI"
+            title="Show UI (H)"
+            type="button"
+          />
+          {showUiHint && (
+            <div className="ui-hidden-hint">UI hidden — tap top-right or press H</div>
+          )}
+        </>
+      )}
+      <Backlog />
     </div>
   );
 };
