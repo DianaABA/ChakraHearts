@@ -6,6 +6,7 @@ import EducationalPanel from "../educational/EducationalPanel";
 import Gallery from "../Gallery";
 import type { GalleryArtwork } from "../Gallery";
 import PlayerSettings from "./PlayerSettings";
+import Codex from "./Codex";
 import "./GameHUD.css";
 
 export const GameHUD: React.FC = () => {
@@ -14,6 +15,7 @@ export const GameHUD: React.FC = () => {
   const [showEducationalPanel, setShowEducationalPanel] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
+  const [showCodex, setShowCodex] = useState(false);
   // Persist HUD collapsed preference across sessions
   const [hudCollapsed, setHudCollapsed] = useState<boolean>(() => {
     const saved = storage.getItem("hudCollapsed");
@@ -247,6 +249,13 @@ export const GameHUD: React.FC = () => {
           title="Player Settings"
         >
           ⚙️ Settings
+        </button>
+        <button
+          className="guide-button"
+          onClick={() => setShowCodex(true)}
+          title="Open Codex"
+        >
+          📖 Codex
         </button>
         <button
           className={`guide-button ${autoMode ? "active" : ""}`}
@@ -493,6 +502,9 @@ export const GameHUD: React.FC = () => {
         isOpen={showPlayerSettings}
         onClose={() => setShowPlayerSettings(false)}
       />
+
+      {/* Codex Overlay */}
+      <Codex isOpen={showCodex} onClose={() => setShowCodex(false)} />
 
       {/* Educational Panel */}
       <EducationalPanel
