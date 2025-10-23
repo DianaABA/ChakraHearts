@@ -203,6 +203,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         document.addEventListener("keydown", handleFirstInteraction, {
           once: true,
         });
+        // Also handle touch/pointer for mobile devices
+        document.addEventListener("pointerdown", handleFirstInteraction, {
+          once: true,
+        });
       }
     };
 
