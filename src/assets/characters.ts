@@ -26,7 +26,8 @@ export const SPIRITUAL_CHARACTERS = {
 
   // System Consciousnesses
   AURORA_BASE: "/characters/aurora.png",
-  UMBRA_BASE: "/characters/umbra_consciousness_portrait_transparent.webp",
+  // Temporary placeholder until Umbra art is available
+  UMBRA_BASE: "/characters/aurora.png",
 } as const;
 
 // === PLAYER AVATARS ===

@@ -40,6 +40,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   animation: panelSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
 }
 
 @keyframes panelSlideIn {
@@ -53,6 +54,64 @@
   }
 }
 
+/* Cyberpunk holo-grid background */
+.educational-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at top left, rgba(116, 185, 255, 0.08), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(155, 89, 182, 0.08), transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 20px
+    );
+  pointer-events: none;
+  z-index: 0;
+  animation: gridDrift 18s linear infinite;
+}
+
+@keyframes gridDrift {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+  100% {
+    background-position: 0 0, 0 0, 0 200px, 200px 0;
+  }
+}
+
+/* Fullscreen mode */
+.educational-panel.fullscreen {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  border-width: 0;
+  box-shadow: 0 0 0 2px rgba(116, 185, 255, 0.25) inset;
+}
+
+/* Reading mode */
+.educational-panel.reading .panel-content {
+  font-size: 1.06rem;
+  line-height: 1.85;
+}
+
+.educational-panel.reading .education-content {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
 /* === PANEL HEADER === */
 .panel-header {
   display: flex;
@@ -61,6 +120,8 @@
   padding: 20px;
   background: linear-gradient(90deg, #4a69bd, #6c5ce7);
   border-bottom: 2px solid #74b9ff;
+  position: relative;
+  z-index: 1;
 }
 
 .edu-toast {
@@ -81,6 +142,31 @@
   margin: 0;
   font-size: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-button {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(116, 185, 255, 0.4);
 }
 
 .close-button {
@@ -136,6 +222,24 @@
   padding: 20px;
   overflow-y: auto;
   color: #ddd;
+  position: relative;
+  z-index: 1;
+}
+
+/* Sticky subheader inside scrollable content */
+.sticky-subheader {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: -8px -8px 12px -8px;
+  background: linear-gradient(90deg, rgba(76, 110, 245, 0.22), rgba(76, 110, 245, 0.08));
+  border-bottom: 1px solid rgba(116, 185, 255, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .education-content {
@@ -385,6 +489,7 @@
 h3 {
   color: #74b9ff;
   margin-bottom: 15px;
+  text-shadow: 0 0 8px rgba(116, 185, 255, 0.3);
 }
 
 h4 {
@@ -412,6 +517,7 @@ li::before {
   content: "✨";
   position: absolute;
   left: 0;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.35));
 }
 
 .balanced li::before {
@@ -437,6 +543,11 @@ li::before {
     height: 90%;
   }
 
+  .educational-panel.fullscreen {
+    width: 100%;
+    height: 100%;
+  }
+
   .panel-content {
     padding: 15px;
   }
@@ -456,6 +567,39 @@ li::before {
   .karma-selector {
     justify-content: center;
   }
+}
+
+/* Back-to-top floating button */
+.scroll-top-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  z-index: 3;
+}
+
+.scroll-top-fab.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-fab:hover {
+  background: rgba(0,0,0,0.6);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35), 0 0 10px rgba(116, 185, 255, 0.4);
 }
 
 /* === SCROLLBAR STYLING === */

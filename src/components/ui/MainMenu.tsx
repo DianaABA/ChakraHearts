@@ -18,7 +18,8 @@ export interface AvatarOption {
 interface PaymentOption {
   id: string;
   character: string;
-  avatar: string;
+  avatar?: string; // emoji fallback
+  avatarUrl?: string; // circular image URL
   title: string;
   description: string;
   price: string;

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { CHARACTERS, BACKGROUNDS } from "../assets";
 import "./PaymentOptions.css";
 
 interface PaymentOption {
   id: string;
   character: string;
-  avatar: string;
+  avatar?: string; // emoji fallback
+  avatarUrl?: string; // image path for circular avatar
   title: string;
   description: string;
   price: string;
@@ -31,6 +33,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       id: "agnivesh",
       character: "Agnivesh",
       avatar: "🧘‍♂️",
+      avatarUrl: CHARACTERS.AGNIVESH_HUMAN,
       title: "Struggling Together",
       description: "If you're in a hard spot financially",
       price: "FREE",
@@ -41,6 +44,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       id: "elena",
       character: "Elena",
       avatar: "✨",
+      avatarUrl: CHARACTERS.ELENA_BASE,
       title: "Rich & Fabulous",
       description: "If you feel abundant and generous",
       price: "Pay What You Want",
@@ -51,6 +55,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       id: "david",
       character: "David",
       avatar: "⚔️",
+      avatarUrl: CHARACTERS.DAVID_BASE,
       title: "Tactical Choice",
       description: "Strategic and practical approach",
       price: "€2.00",
@@ -61,6 +66,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       id: "cow",
       character: "Sacred Cow",
       avatar: "🐄",
+      avatarUrl: BACKGROUNDS.COW_CARVING,
       title: "Moo Choice",
       description: "Just here for the cow pictures",
       price: "FREE",
@@ -84,7 +90,15 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       <div className="payment-overlay">
         <div className="payment-message-panel">
           <div className={`character-message ${selectedOption.className}`}>
-            <div className="character-avatar">{selectedOption.avatar}</div>
+            {selectedOption.avatarUrl ? (
+              <img
+                className="character-avatar-large-img"
+                src={selectedOption.avatarUrl}
+                alt={`${selectedOption.character} avatar`}
+              />
+            ) : (
+              <div className="character-avatar">{selectedOption.avatar}</div>
+            )}
             <h3>{selectedOption.character} says:</h3>
             <p className="character-quote">"{selectedOption.message}"</p>
             <div className="loading-spinner">✨</div>
@@ -107,12 +121,25 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
 
         <div className="payment-options-grid">
           {paymentOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`payment-option ${option.className}`}
-              onClick={() => handleSelectOption(option)}
-            >
-              <div className="character-avatar-large">{option.avatar}</div>
+            <div key={option.id} className={`payment-option ${option.className}`}>
+              <button
+                className="avatar-circle-button"
+                onClick={() => handleSelectOption(option)}
+                aria-label={`Choose ${option.character}`}
+                type="button"
+              >
+                {option.avatarUrl ? (
+                  <img
+                    className="avatar-circle-image"
+                    src={option.avatarUrl}
+                    alt={option.character}
+                  />
+                ) : (
+                  <span className="avatar-circle-emoji" aria-hidden>
+                    {option.avatar}
+                  </span>
+                )}
+              </button>
               <h3>{option.title}</h3>
               <p className="option-description">{option.description}</p>
               <div className="price-tag">{option.price}</div>

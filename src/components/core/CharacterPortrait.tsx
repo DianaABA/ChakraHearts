@@ -18,35 +18,8 @@ export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
   positionIndex = 0,
   totalCharacters = 1,
 }) => {
-  const [imageSrc, setImageSrc] = React.useState<string>("");
-
-  // Load image via fetch and convert to blob URL
-  React.useEffect(() => {
-    const loadImage = async () => {
-      try {
-        setImageSrc("");
-        const response = await fetch(portrait);
-        if (response.ok) {
-          const blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          setImageSrc(blobUrl);
-        }
-      } catch (error) {
-        console.log(`❌ Error loading image for ${character}:`, error);
-      }
-    };
-
-    loadImage();
-  }, [portrait, character]);
-
-  // Cleanup blob URL when imageSrc changes or on unmount
-  React.useEffect(() => {
-    return () => {
-      if (imageSrc && imageSrc.startsWith("blob:")) {
-        URL.revokeObjectURL(imageSrc);
-      }
-    };
-  }, [imageSrc]);
+  // Directly use provided image URL. This avoids CORS/fetch issues and is faster.
+  const [errorCount, setErrorCount] = React.useState<number>(0);
 
   const getPositionClass = () => {
     switch (position) {
@@ -74,22 +47,21 @@ export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
       }}
     >
       <div className="portrait-container">
-        {imageSrc ? (
-          <img
-            src={imageSrc}
-            alt={character}
-            onLoad={() => {
-              // Image loaded successfully
-            }}
-            onError={(e) => {
-              console.log(`❌ Display failed for ${character}:`, e);
-            }}
-            style={{
-              maxWidth: "100%",
-              height: "auto",
-            }}
-          />
-        ) : null}
+        <img
+          src={errorCount === 0 ? portrait : "/characters/aurora.png"}
+          alt={character}
+          onError={() => {
+            // Fallback to Aurora image once if the provided portrait fails
+            if (errorCount === 0) {
+              setErrorCount(1);
+              console.log(`❌ Portrait failed for ${character}. Falling back to Aurora.`);
+            }
+          }}
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+          }}
+        />
         <div className="portrait-glow" />
         <div className="portrait-name">{character}</div>
       </div>
