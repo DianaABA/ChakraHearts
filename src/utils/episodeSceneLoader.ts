@@ -1,5 +1,6 @@
 import { getScene as getEP1Scene } from "./sceneLoader";
 import type { EpisodeId, Scene } from "../types";
+import { getEpisodeLabel } from "../constants/episodeLabels";
 
 /**
  * Episode-aware scene loader. For Episode 1, delegates to the existing EP1 sceneLoader.
@@ -17,7 +18,7 @@ export const getSceneForEpisode = async (
   // Friendly scene for episodes not yet implemented
   const placeholder: Scene = {
     id: sceneId,
-    name: `Episode ${ep} — Coming Soon`,
+    name: `${getEpisodeLabel(ep)} — Coming Soon`,
     background: undefined,
     dialogues: [
       {

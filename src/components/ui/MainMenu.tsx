@@ -6,6 +6,7 @@ import PlayerSettings from "./PlayerSettings";
 import Gallery from "../Gallery";
 import type { GalleryArtwork } from "../Gallery";
 import "./MainMenu.css";
+import { EPISODE_SELECT_OPTIONS, getEpisodeLabel } from "../../constants/episodeLabels";
 import { devLog } from "../../utils/logger";
 
 export interface AvatarOption {
@@ -453,7 +454,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             </span>
           </h1>
           <div className="subtitle-container">
-            <p className="episode-text">EPISODE {currentEpisode ?? 1}</p>
+            <p className="episode-text">{getEpisodeLabel(currentEpisode ?? 1)}</p>
             <div className="lotus-divider">
               <div className="lotus-symbol">🪷</div>
             </div>
@@ -478,8 +479,8 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                   }}
                   aria-label="Select Episode"
                 >
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <option key={i + 1} value={i + 1}>{`Episode ${i + 1}`}</option>
+                  {EPISODE_SELECT_OPTIONS.map((opt) => (
+                    <option key={opt.label} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
