@@ -189,10 +189,30 @@
 
 .episode-text {
   font-family: "Orbitron", monospace;
-  font-size: 1.2rem;
-  color: #ffd700;
+  font-size: 1.1rem;
   margin: 0.5rem 0;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
+  /* Neon gradient text */
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.35), 0 0 18px rgba(255, 105, 180, 0.25),
+    0 0 26px rgba(255, 215, 0, 0.2);
+  animation: episodeGlow 6s ease-in-out infinite;
+}
+
+@keyframes episodeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 0px rgba(0, 255, 255, 0.0));
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.35), 0 0 18px rgba(255, 105, 180, 0.25),
+      0 0 26px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    filter: drop-shadow(0 0 6px rgba(0, 255, 200, 0.25));
+    text-shadow: 0 0 14px rgba(0, 255, 200, 0.5), 0 0 22px rgba(255, 105, 180, 0.35),
+      0 0 30px rgba(255, 215, 0, 0.3);
+  }
 }
 
 .lotus-divider {
