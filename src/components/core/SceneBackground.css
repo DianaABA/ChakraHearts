@@ -1,0 +1,36 @@
+.scene-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(1) contrast(1);
+  will-change: opacity, filter, transform;
+}
+
+.scene-background.loading {
+  opacity: 0;
+  filter: brightness(0.8) contrast(0.9) blur(3px);
+  transform: scale(1.05);
+}
+
+.scene-background.loaded {
+  opacity: 1;
+  filter: brightness(1) contrast(1) blur(0px);
+  transform: scale(1);
+}
+
+.scene-background.transitioning {
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Add subtle parallax effect */
+.scene-background:hover {
+  transform: scale(1.02);
+  transition: transform 3s ease-out;
+}

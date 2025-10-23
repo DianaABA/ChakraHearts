@@ -40,6 +40,18 @@ export interface Choice {
   karma?: number;
   romance?: { character: string; points: number };
   romanceOptions?: Array<{ character: string; points: number }>;
+  flags?: Record<string, boolean | string | number>;
+  unlocks?: {
+    art?: { id: string; title: string };
+    codex?: { id: string; title: string };
+    badge?: { id: string; title: string };
+  };
+  responseText?: string;
+  additionalText?: string;
+  effects?: Array<{
+    type: string;
+    payload: string | number | Record<string, unknown>;
+  }>;
 }
 
 // Game actions
@@ -54,8 +66,19 @@ export interface GameAction {
     | "goto_scene"
     | "unlock_art"
     | "award_badge"
-    | "set_flag";
-  payload?: any;
+    | "set_flag"
+    | "unlock_codex_entry"
+    | "unlock_codex_entries"
+    | "sfx"
+    | "vfx"
+    | "conditional_badge"
+    | "open_codex";
+  payload?:
+    | string
+    | number
+    | Record<string, unknown>
+    | Array<Record<string, string>>;
+  title?: string; // For unlock actions that need titles
 }
 
 // Scene definition
@@ -79,18 +102,18 @@ export interface AssetManifest {
 
 // Component props for React Native compatibility
 export interface ViewProps {
-  style?: any; // React Native uses different style objects
-  children?: any;
+  style?: Record<string, unknown>; // React Native uses different style objects
+  children?: unknown;
 }
 
 export interface TextProps {
-  style?: any;
-  children?: any;
+  style?: Record<string, unknown>;
+  children?: unknown;
   numberOfLines?: number;
 }
 
 export interface ImageProps {
   source: { uri: string } | string;
-  style?: any;
+  style?: Record<string, unknown>;
   resizeMode?: "contain" | "cover" | "stretch" | "center";
 }

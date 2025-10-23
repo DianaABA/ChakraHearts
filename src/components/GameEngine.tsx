@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useGameStore } from "../stores/gameStore";
-import { DialogueBox } from "./DialogueBox";
-import { SceneBackground } from "./SceneBackground";
-import { CharacterPortrait } from "./CharacterPortrait";
-import { GameMenu } from "./GameMenu";
-import { GameHUD } from "./GameHUD";
+import { DialogueBox } from "./core/DialogueBox";
+import { SceneBackground } from "./core/SceneBackground";
+import { CharacterPortrait } from "./core/CharacterPortrait";
+import { GameMenu } from "./ui/GameMenu";
+import { GameHUD } from "./ui/GameHUD";
 import { getScene } from "../utils/sceneLoader";
 import { AUDIO, CHARACTERS, AVATARS } from "../assets";
 import type { Scene } from "../types";
@@ -222,7 +222,9 @@ export const GameEngine: React.FC = () => {
 
       switch (currentLine.action.type) {
         case "play_bgm":
-          playBGM(currentLine.action.payload);
+          if (typeof currentLine.action.payload === "string") {
+            playBGM(currentLine.action.payload);
+          }
           break;
         case "stop_bgm":
           if (bgmRef.current) {
@@ -234,13 +236,72 @@ export const GameEngine: React.FC = () => {
           console.log("🔇 BGM stopped");
           break;
         case "show_image":
-          setCurrentImage(currentLine.action.payload);
-          console.log(`🖼️ Showing image: ${currentLine.action.payload}`);
+          if (typeof currentLine.action.payload === "string") {
+            setCurrentImage(currentLine.action.payload);
+            console.log(`🖼️ Showing image: ${currentLine.action.payload}`);
+          }
           break;
         case "goto_scene":
-          setCurrentScene(currentLine.action.payload);
-          setCurrentDialogue(0);
-          return; // Don't auto-advance for scene changes
+          if (typeof currentLine.action.payload === "string") {
+            setCurrentScene(currentLine.action.payload);
+            setCurrentDialogue(0);
+            return; // Don't auto-advance for scene changes
+          }
+          break;
+        case "unlock_art":
+          console.log(`🎨 Art unlocked: ${currentLine.action.payload}`);
+          if (currentLine.action.title) {
+            console.log(`   Title: ${currentLine.action.title}`);
+          }
+          break;
+        case "award_badge":
+          console.log(
+            `🏆 Badge awarded: ${JSON.stringify(currentLine.action.payload)}`
+          );
+          break;
+        case "set_flag":
+          console.log(
+            `🚩 Flag set: ${JSON.stringify(currentLine.action.payload)}`
+          );
+          break;
+        case "unlock_codex_entry":
+          console.log(
+            `📚 Codex entry unlocked: ${JSON.stringify(
+              currentLine.action.payload
+            )}`
+          );
+          break;
+        case "unlock_codex_entries":
+          console.log(
+            `📚 Multiple codex entries unlocked: ${JSON.stringify(
+              currentLine.action.payload
+            )}`
+          );
+          break;
+        case "sfx":
+          console.log(`🔊 SFX: ${currentLine.action.payload}`);
+          break;
+        case "vfx":
+          console.log(`✨ VFX: ${currentLine.action.payload}`);
+          break;
+        case "fade_to_black":
+          console.log("🌑 Fade to black");
+          break;
+        case "pause":
+          console.log(`⏸️ Pause: ${currentLine.action.payload}ms`);
+          break;
+        case "conditional_badge":
+          console.log(
+            `🏆? Conditional badge: ${JSON.stringify(
+              currentLine.action.payload
+            )}`
+          );
+          break;
+        case "open_codex":
+          console.log(`📖 Opening codex: ${currentLine.action.payload}`);
+          break;
+        default:
+          console.log(`❓ Unknown action type: ${currentLine.action.type}`);
       }
 
       // Auto-advance through action lines (except scene changes)
@@ -270,6 +331,9 @@ export const GameEngine: React.FC = () => {
 
       // Clear portraits when changing scenes
       setCurrentPortraits({});
+
+      // Clear current image to allow scene background to show
+      setCurrentImage("");
 
       // Pre-load key characters for specific scenes
       const preloadCharacters: Record<string, string[]> = {
@@ -358,7 +422,7 @@ export const GameEngine: React.FC = () => {
 
   if (!scene) {
     return (
-      <div className="game-engine loading">
+      <div className="game-engine loading loading-fade">
         <div className="loading-text">Loading...</div>
       </div>
     );
@@ -368,7 +432,7 @@ export const GameEngine: React.FC = () => {
     console.log("⚠️ Dialogue index out of bounds, resetting to 0");
     setCurrentDialogue(0);
     return (
-      <div className="game-engine loading">
+      <div className="game-engine loading loading-fade">
         <div className="loading-text">Scene Complete</div>
       </div>
     );
@@ -407,7 +471,7 @@ export const GameEngine: React.FC = () => {
   );
 
   return (
-    <div className="game-engine">
+    <div className="game-engine scene-transition">
       <SceneBackground background={currentImage || scene.background} />
 
       <GameHUD />
@@ -435,7 +499,10 @@ export const GameEngine: React.FC = () => {
         onChoice={handleChoice}
       />
 
-      <button className="menu-button" onClick={() => setShowMenu(!showMenu)}>
+      <button
+        className="menu-button btn-smooth"
+        onClick={() => setShowMenu(!showMenu)}
+      >
         ☰
       </button>
 

@@ -1,0 +1,186 @@
+/* 🎴 EDUCATIONAL CARD STYLES */
+
+.educational-card {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 46, 0.9) 0%,
+    rgba(22, 33, 62, 0.9) 50%,
+    rgba(15, 52, 96, 0.9) 100%
+  );
+  border: 2px solid rgba(116, 185, 255, 0.3);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.educational-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(116, 185, 255, 0.2);
+  border-color: rgba(116, 185, 255, 0.5);
+}
+
+/* === CARD HEADER === */
+.card-header {
+  padding: 15px 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(116, 185, 255, 0.2),
+    rgba(157, 124, 181, 0.2)
+  );
+  border-bottom: 1px solid rgba(116, 185, 255, 0.3);
+}
+
+.card-title {
+  color: #74b9ff;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+/* === CARD IMAGE === */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.educational-card:hover .card-image {
+  transform: scale(1.02);
+}
+
+/* === CARD DESCRIPTION === */
+.card-description {
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.card-description p {
+  color: #ddd;
+  margin: 0;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* === CARD VARIANTS === */
+.educational-card.chakra-card {
+  border-color: rgba(155, 89, 182, 0.4);
+}
+
+.educational-card.chakra-card .card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(155, 89, 182, 0.2),
+    rgba(142, 68, 173, 0.2)
+  );
+}
+
+.educational-card.chakra-card .card-title {
+  color: #9b59b6;
+}
+
+.educational-card.romance-card {
+  border-color: rgba(233, 30, 99, 0.4);
+}
+
+.educational-card.romance-card .card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(233, 30, 99, 0.2),
+    rgba(173, 20, 87, 0.2)
+  );
+}
+
+.educational-card.romance-card .card-title {
+  color: #e91e63;
+}
+
+.educational-card.karma-card {
+  border-color: rgba(255, 152, 0, 0.4);
+}
+
+.educational-card.karma-card .card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 152, 0, 0.2),
+    rgba(245, 124, 0, 0.2)
+  );
+}
+
+.educational-card.karma-card .card-title {
+  color: #ff9800;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .educational-card {
+    margin-bottom: 15px;
+  }
+
+  .card-header {
+    padding: 12px 15px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-description {
+    padding: 12px 15px;
+  }
+}
+
+/* === SPECIAL EFFECTS === */
+.educational-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.educational-card:hover::before {
+  left: 100%;
+}
+
+/* === LOADING STATE === */
+.card-image[loading] {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

@@ -1,7 +1,10 @@
+@import "./styles/transitions.css";
+
 .app {
   width: 100vw;
   height: 100vh;
   background-color: #000;
   overflow: hidden;
   position: relative;
+  transition: all 0.3s ease;
 }

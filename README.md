@@ -1,17 +1,15 @@
-# Chakra Hearts Episode 1 - Visual Novel
+# 🎮 Chakra Hearts Episode 1 - Visual Novel
 
-A React TypeScript visual novel game with React Native-friendly architecture, featuring Zustand state management and a custom visual novel engine.
+A performance-optimized React TypeScript visual novel with cross-platform architecture.
 
-## 🎮 Project Overview
+## ⚡ Key Features
 
-Chakra Hearts Episode 1 is a visual novel built for web with a React Native-ready architecture. The game features:
-
-- **Visual Novel Engine**: Custom-built engine with dialogue system, character portraits, and scene management
-- **React Native Ready**: Architecture designed for easy migration to React Native
-- **TypeScript**: Full type safety throughout the codebase
-- **Zustand State Management**: Lightweight, performant state management
-- **Save/Load System**: Persistent game state with multiple save slots
-- **Sprite-Reduced Character System**: Optimized character portrait system as per script requirements
+- **🎭 Visual Novel Engine**: Custom dialogue system with character portraits and scene management
+- **📱 Cross-Platform Ready**: Designed for both web and React Native deployment
+- **⚡ Performance Optimized**: WebP image optimization (83% size reduction)
+- **🔧 TypeScript**: Full type safety throughout the codebase
+- **💾 Save/Load System**: Persistent game state with multiple save slots
+- **🎨 Organized Assets**: Modular asset management system
 
 ## 📁 Project Structure
 

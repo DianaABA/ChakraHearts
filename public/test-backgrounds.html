@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Background Test - Chakra Hearts Asset Organization</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #1a1a2e;
+        color: #eee;
+        margin: 20px;
+      }
+      h1 {
+        color: #ff6b6b;
+        text-align: center;
+      }
+      h2 {
+        color: #4ecdc4;
+        border-bottom: 2px solid #4ecdc4;
+        padding-bottom: 5px;
+        margin-top: 30px;
+      }
+      .category-info {
+        background: #16213e;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        border-left: 4px solid #4ecdc4;
+      }
+      .test-bg {
+        width: 200px;
+        height: 150px;
+        background-size: cover;
+        background-position: center;
+        border: 3px solid #ff4757;
+        margin: 10px;
+        display: inline-block;
+        border-radius: 8px;
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+      .test-bg:hover {
+        transform: scale(1.05);
+      }
+      .loaded {
+        border-color: #2ed573;
+        box-shadow: 0 0 10px rgba(46, 213, 115, 0.5);
+      }
+      .test-bg::after {
+        content: attr(id);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px;
+        font-size: 12px;
+        text-align: center;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 15px;
+        background: #16213e;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🌺 Chakra Hearts - Asset Organization Test</h1>
+
+    <div class="category-info">
+      <strong>📂 New Organization:</strong> Assets are now organized into
+      separate categories - EPISODE_BACKGROUNDS, PROLOGUE_BACKGROUNDS,
+      EPILOGUE_BACKGROUNDS, and specialized UI components. <br /><strong
+        >✅ Status:</strong
+      >
+      All imports maintain backward compatibility.
+    </div>
+
+    <h2>📜 Prologue Backgrounds</h2>
+    <div class="category-info">
+      Memory scenes, flashbacks, and character backstory moments
+    </div>
+    <div
+      class="test-bg"
+      id="agnivesh-happy"
+      style="
+        background-image: url('/backgrounds/pro_ep1_agnivesh_hospital_2.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="santi-sorrow"
+      style="
+        background-image: url('/backgrounds/pro_ep1_santi_traditional.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="agnivesh-dogtag"
+      style="
+        background-image: url('/backgrounds/pro_ep1_agnivesh_finds_dogtag.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="psych-ward"
+      style="
+        background-image: url('/backgrounds/pro_ep1_psych_ward_corridor.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="temple-burning"
+      style="
+        background-image: url('/backgrounds/pro_ep1_temple_burning_destruction.png');
+      "
+    ></div>
+
+    <h2>🎭 New Epic Backgrounds</h2>
+    <div class="category-info">
+      Recently added dramatic scenes with enhanced visual storytelling
+    </div>
+    <div
+      class="test-bg"
+      id="elena-chakra-new"
+      style="
+        background-image: url('/backgrounds/elena_chakra_awakening_new.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="agnivesh-dogtag-new"
+      style="
+        background-image: url('/backgrounds/agnivesh_dogtag_discovery_new.png');
+      "
+    ></div>
+    <div
+      class="test-bg"
+      id="chocolate-moment"
+      style="background-image: url('/backgrounds/chocolate_moment_closeup.png')"
+    ></div>
+    <div
+      class="test-bg"
+      id="temple-aftermath"
+      style="background-image: url('/backgrounds/temple_aftermath_rest.png')"
+    ></div>
+    <div
+      class="test-bg"
+      id="dogtag-mud"
+      style="background-image: url('/backgrounds/dogtag_closeup_mud.png')"
+    ></div>
+    <div
+      class="test-bg"
+      id="dogtag-hand"
+      style="background-image: url('/backgrounds/dogtag_closeup_hand.png')"
+    ></div>
+
+    <h2>🐍 Naga Fight Backgrounds</h2>
+    <div class="category-info">Epic battle scenes and creature encounters</div>
+    <div
+      class="test-bg"
+      id="naga-fight-epic"
+      style="background-image: url('/backgrounds/sc1a_naga_fight_epic.png')"
+    ></div>
+    <div
+      class="test-bg"
+      id="naga-emergence"
+      style="background-image: url('/backgrounds/sc1a_naga_emergence_wide.png')"
+    ></div>
+
+    <h2>🌊 Transitions</h2>
+    <div class="category-info">Scene transition effects and visual bridges</div>
+    <div
+      class="test-bg"
+      id="rain-lotus"
+      style="background-image: url('/transitions/trans_rain_to_lotus.png')"
+    ></div>
+    <div
+      class="test-bg"
+      id="collapse-water"
+      style="
+        background-image: url('/transitions/trans_collapse_water_rush.png');
+      "
+    ></div>
+
+    <div class="status">
+      <h3>📊 Asset Loading Status</h3>
+      <p>
+        <strong>Total Assets Testing:</strong> <span id="total-count">0</span>
+      </p>
+      <p>
+        <strong>Successfully Loaded:</strong>
+        <span id="loaded-count">0</span> ✅
+      </p>
+      <p>
+        <strong>Failed to Load:</strong> <span id="failed-count">0</span> ❌
+      </p>
+      <p>
+        <strong>Organization:</strong> New modular structure with
+        EPILOGUE_BACKGROUNDS separated
+      </p>
+    </div>
+
+    <script>
+      // Enhanced test image loading with organization info
+      const backgrounds = [
+        "/backgrounds/pro_ep1_agnivesh_hospital_2.png",
+        "/backgrounds/pro_ep1_santi_traditional.png",
+        "/backgrounds/pro_ep1_agnivesh_finds_dogtag.png",
+        "/backgrounds/pro_ep1_psych_ward_corridor.png",
+        "/backgrounds/pro_ep1_temple_burning_destruction.png",
+        "/backgrounds/elena_chakra_awakening_new.png",
+        "/backgrounds/agnivesh_dogtag_discovery_new.png",
+        "/backgrounds/chocolate_moment_closeup.png",
+        "/backgrounds/temple_aftermath_rest.png",
+        "/backgrounds/dogtag_closeup_mud.png",
+        "/backgrounds/dogtag_closeup_hand.png",
+        "/backgrounds/sc1a_naga_fight_epic.png",
+        "/backgrounds/sc1a_naga_emergence_wide.png",
+        "/transitions/trans_rain_to_lotus.png",
+        "/transitions/trans_collapse_water_rush.png",
+      ];
+
+      let loadedCount = 0;
+      let failedCount = 0;
+
+      document.getElementById("total-count").textContent = backgrounds.length;
+
+      backgrounds.forEach((src, index) => {
+        const img = new Image();
+        img.onload = () => {
+          console.log("✅ Loaded:", src);
+          loadedCount++;
+          document.getElementById("loaded-count").textContent = loadedCount;
+
+          // Update visual indicator
+          const testBg = document.querySelectorAll(".test-bg")[index];
+          if (testBg) testBg.classList.add("loaded");
+        };
+        img.onerror = () => {
+          console.error("❌ Failed to load:", src);
+          failedCount++;
+          document.getElementById("failed-count").textContent = failedCount;
+        };
+        img.src = src;
+      });
+
+      // Organization info
+      console.log("🗂️ Asset Organization Test");
+      console.log("📂 EPISODE_BACKGROUNDS: Main story scenes");
+      console.log("📜 PROLOGUE_BACKGROUNDS: Flashback sequences");
+      console.log("🎬 EPILOGUE_BACKGROUNDS: Ending sequences");
+      console.log(
+        "🎨 UI Components: Separated into menu, dialogue, choice, romance, progression"
+      );
+    </script>
+  </body>
+</html>

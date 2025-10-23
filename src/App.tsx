@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { GameEngine } from "./components/GameEngine";
-import { MainMenu } from "./components/MainMenu";
+import { GameEngine } from "./components/core/GameEngine";
+import { MainMenu } from "./components/ui/MainMenu";
 import { useGameStore } from "./stores/gameStore";
 import "./App.css";
 

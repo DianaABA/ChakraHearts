@@ -2,14 +2,19 @@
 // Complete Root Chakra Episode — with Subtle Umbra Integration
 // Converted to TypeScript/React visual novel format
 
-import { BACKGROUNDS, PROPS, TRANSITIONS } from "../assets";
+import {
+  BACKGROUNDS,
+  PROLOGUE_BACKGROUNDS,
+  PROPS,
+  TRANSITIONS,
+} from "../assets";
 import type { Scene } from "../types";
 
 const SCENES: Record<string, Scene> = {
   prologue: {
     id: "prologue",
-    name: "Prologue - Digital Awakening",
-    background: BACKGROUNDS.PSYCH_WARD,
+    name: "Prologue - The Memory Before Awakening",
+    background: PROLOGUE_BACKGROUNDS.AGNIVESH_HAPPY_BEFORE,
     dialogues: [
       {
         type: "action",
@@ -18,7 +23,6 @@ const SCENES: Record<string, Scene> = {
           payload: "TEMPLE_AMBIENT",
         },
       },
-      // PROLOGUE — The Memory Before Awakening
       {
         type: "narration",
         text: "The world burned quiet that night. Rain fell like static between three shadows.",
@@ -26,25 +30,41 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.TEMPLE_BURNING,
+          type: "unlock_art",
+          payload: "pro_ep1_betrayal_hall",
+          title: "Rain & Fire — The Night of Betrayal",
         },
       },
       {
         type: "action",
         action: {
-          type: "unlock_art",
-          payload: "temple_burning",
+          type: "show_image",
+          payload: PROLOGUE_BACKGROUNDS.AGNIVESH_SANTI_SORROW,
         },
       },
       {
         type: "narration",
-        text: "Shanti's voice cut through the storm — raw, human, trembling with love and fury.",
+        text: "Santi's voice cut through the storm — raw, human, trembling with love and fury.",
       },
       {
         type: "dialogue",
         character: "SANTI",
         text: "Coward! He needs you now more than ever — the whole world is against him and you just run away!",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "pro_ep1_santi_yelling",
+          title: "Santi — Love & Fury in the Rain",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: PROLOGUE_BACKGROUNDS.AGNIVESH_FINDS_DOGTAG,
+        },
       },
       {
         type: "narration",
@@ -58,50 +78,17 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.AGNIVESH_SANTI_SORROW,
+          type: "unlock_art",
+          payload: "pro_ep1_agnivesh_bracelet",
+          title: "Faith Fallen — Agnivesh and the Bracelet",
         },
       },
       {
         type: "action",
         action: {
-          type: "unlock_art",
-          payload: "agnivesh_santi_sorrow",
+          type: "show_image",
+          payload: PROLOGUE_BACKGROUNDS.PSYCH_WARD,
         },
-      },
-      {
-        type: "choice",
-        choices: [
-          {
-            text: "Remember why you loved Agnivesh",
-            action: () =>
-              console.log("Recalling deep connection with Agnivesh"),
-            karma: 1,
-            romance: { character: "AGNIVESH", points: 2 },
-          },
-          {
-            text: "Remember Santi's fierce loyalty",
-            action: () => console.log("Honoring Santi's unwavering support"),
-            karma: 1,
-            romance: { character: "SANTI", points: 2 },
-          },
-          {
-            text: "Remember them both equally",
-            action: () => console.log("Cherishing both relationships"),
-            karma: 2,
-            romance: { character: "AGNIVESH", points: 1 },
-            romanceOptions: [{ character: "SANTI", points: 1 }],
-          },
-          {
-            text: "Try to forget the pain",
-            action: () => console.log("Suppressing memories"),
-            karma: -1,
-          },
-        ],
-      },
-      {
-        type: "narration",
-        text: "The geometry of betrayal: one walking away, two watching.",
       },
       {
         type: "narration",
@@ -109,7 +96,39 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
-        text: "Camilla signed the forms. 'For their safety,' she whispered. Some called it therapy. Others called it exile.",
+        text: "Camilla signed the forms. 'For their safety,' she whispered.",
+      },
+      {
+        type: "narration",
+        text: "Some called it therapy. Others called it exile.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "pro_ep1_psych_rehab_hall",
+          title: "White Corridors — The Quiet Exile",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "pause",
+          payload: 1200,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "fade_to_black",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "low_heartbeat",
+        },
       },
       {
         type: "narration",
@@ -118,21 +137,51 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.ELENA_CHAKRA_AWAKENING,
-        },
-      },
-      {
-        type: "action",
-        action: {
-          type: "unlock_art",
-          payload: "elena_chakra_awakening",
+          type: "pause",
+          payload: 1000,
         },
       },
       {
         type: "dialogue",
         character: "MC",
         text: "(mumbling) I just froze... I was searching... I couldn't find you... I'm... a coward.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "ep1_confessed_cowardice", value: true },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "deep_pulse",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "red_glow_flood",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_codex_entries",
+          payload: [
+            { id: "codex_chakra", title: "Chakra" },
+            { id: "codex_muladhara", title: "Muladhara (Root Chakra)" },
+            { id: "codex_karma", title: "Karma" },
+            { id: "codex_aurora_umbra", title: "Aurora & Umbra" },
+            { id: "codex_agnivesh_santi", title: "Agnivesh & Santi" },
+            { id: "codex_mantra", title: "Mantra" },
+            { id: "codex_cow_symbol", title: "Sacred Cow Symbol" },
+            { id: "codex_samsara", title: "Samsara" },
+          ],
+        },
       },
       {
         type: "action",
@@ -190,6 +239,61 @@ const SCENES: Record<string, Scene> = {
         type: "action",
         action: {
           type: "goto_scene",
+          payload: "temple_awakening",
+        },
+      },
+    ],
+  },
+
+  temple_awakening: {
+    id: "temple_awakening",
+    name: "Scene 0.5 - Temple Awakening",
+    background: PROLOGUE_BACKGROUNDS.TEMPLE_BURNING,
+    dialogues: [
+      {
+        type: "narration",
+        text: "Ancient stone breathes with digital fire. Temple walls pulse with the rhythm of reawakening consciousness.",
+      },
+      {
+        type: "dialogue",
+        character: "AURORA",
+        text: "Environmental scan: Sacred architecture detected. Running compatibility analysis with consciousness matrix...",
+      },
+      {
+        type: "narration",
+        text: "Crimson light spirals across carved mantras. The temple remembers what was lost.",
+      },
+      {
+        type: "dialogue",
+        character: "AURORA",
+        text: "Analysis complete. This location resonates with Root frequency. Proceeding to manifestation zone.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: TRANSITIONS.COLLAPSE_WATER_RUSH,
+        },
+      },
+      {
+        type: "narration",
+        text: "The temple shudders. Ancient stones surrender to inevitable collapse as consciousness streams toward the shore...",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: TRANSITIONS.BEACH_FADE_IN,
+        },
+      },
+      {
+        type: "narration",
+        text: "Waves wash over broken foundations. The digital realm calls from distant shores.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "goto_scene",
           payload: "rescue",
         },
       },
@@ -213,6 +317,10 @@ const SCENES: Record<string, Scene> = {
         text: "Impact. Dust. Heat. The ground splits.",
       },
       {
+        type: "narration",
+        text: "Hands. Voices. Motion.",
+      },
+      {
         type: "dialogue",
         character: "DAVID",
         text: "Grab my hand!",
@@ -228,26 +336,67 @@ const SCENES: Record<string, Scene> = {
         text: "(analytic) Hazard detected. Pressure unstable. Immediate relocation advised.",
       },
       {
-        type: "dialogue",
-        character: "UMBRA",
-        text: "(whisper) Or stop moving. Let the earth keep you.",
-      },
-      {
-        type: "narration",
-        text: "A roar uncoils. Roots twist. Stone hisses. A serpent of ember and earth rises.",
-      },
-      {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.NAGA_EMERGENCE,
+          type: "sfx",
+          payload: "umbra_glitch_soft",
         },
       },
       {
         type: "action",
         action: {
-          type: "play_bgm",
-          payload: "COMBAT_THEME",
+          type: "vfx",
+          payload: "hud_flicker_soft",
+        },
+      },
+      {
+        type: "dialogue",
+        character: "UMBRA",
+        text: "(whisper) Or stop moving. Let the earth keep you.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "goto_scene",
+          payload: "guardian_encounter",
+        },
+      },
+    ],
+  },
+
+  guardian_encounter: {
+    id: "guardian_encounter",
+    name: "Scene 1A - Root Naga Survival + Elena's Root Awakening",
+    background: BACKGROUNDS.NAGA_FIGHT_EPIC,
+    dialogues: [
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "stone_crack",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "dust_cascade",
+        },
+      },
+      {
+        type: "narration",
+        text: "A roar uncoils.",
+      },
+      {
+        type: "narration",
+        text: "Roots twist. Stone hisses. A serpent of ember and earth rises.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "sc1a_root_naga",
+          title: "Keeper of the Grounded Flame — Root Naga Manifestation",
         },
       },
       {
@@ -256,40 +405,107 @@ const SCENES: Record<string, Scene> = {
         text: "(urgent) Manifestation: Root Naga. Observe breath.",
       },
       {
+        type: "action",
+        action: {
+          type: "play_bgm",
+          payload: "AURORA_THEME",
+        },
+      },
+      {
+        type: "narration",
+        text: "Reflex: Choose your response to the Root Guardian:",
+      },
+      {
         type: "choice",
         choices: [
           {
             text: "Roll aside",
-            action: () => console.log("Rolling aside - dynamic action"),
+            action: () =>
+              console.log("Rolling aside - dynamic survival instinct"),
             karma: 1,
+            flags: { guardian_reflex: "roll" },
+            responseText: "You dive. Tail smashes. Sparks bloom.",
+            additionalText: "Aurora: 'Instinct aligned with survival impulse.'",
+            effects: [
+              { type: "vfx", payload: "screen_shake_short" },
+              { type: "sfx", payload: "impact_thud" },
+            ],
           },
           {
             text: "Shield Elena",
-            action: () => console.log("Shielding Elena - heroic sacrifice"),
+            action: () => console.log("Shielding Elena - heroic protection"),
             karma: 1,
             romance: { character: "ELENA", points: 1 },
+            flags: { guardian_reflex: "shield" },
+            responseText: "You tackle Elena clear. Heat rakes your back.",
+            additionalText:
+              "Elena: 'Heroic… and stupid. You're bleeding!' MC: 'Still breathing.'",
+            effects: [
+              { type: "vfx", payload: "screen_shake_short" },
+              { type: "sfx", payload: "impact_scrape" },
+            ],
           },
           {
             text: "Attack with debris",
-            action: () => console.log("Attacking - useless but brave"),
+            action: () => console.log("Attacking - aggressive but futile"),
             karma: -1,
+            flags: { guardian_reflex: "attack" },
+            responseText:
+              "You hurl a stone. Useless ricochet. The serpent lashes.",
+            additionalText:
+              "Aurora (glitched): 'Force increases instability.' Umbra (faint): 'Fight what anchors you — see where you land.'",
+            effects: [
+              { type: "sfx", payload: "stone_clack" },
+              { type: "vfx", payload: "hud_flicker_soft" },
+              { type: "sfx", payload: "umbra_glitch_soft" },
+            ],
           },
           {
             text: "Freeze",
-            action: () => console.log("Freezing - David rescues"),
+            action: () =>
+              console.log("Freezing - David rescues, trauma bonding"),
             karma: -1,
             romance: { character: "DAVID", points: 1 },
+            flags: { guardian_reflex: "freeze", froze_in_guardian: true },
+            responseText: "Heat blooms across your shoulder. Whiteout.",
+            additionalText:
+              "A forearm hooks you — cover, breath, dust. David (low, urgent): 'Don't freeze again, got it?' MC (breathless): 'I didn't… mean to.' David (tight): 'Yeah. Nobody ever does.'",
+            effects: [
+              { type: "vfx", payload: "screen_whiten" },
+              { type: "sfx", payload: "heartbeat_spike" },
+            ],
           },
         ],
       },
       {
         type: "narration",
-        text: "Elena drops to a knee. Hands to stone.",
+        text: "Elena drops to a knee. Hands to stone. For just a moment, her expression shifts - as if recognizing something familiar about this performance.",
       },
       {
         type: "dialogue",
         character: "ELENA",
-        text: "In… two… three… out…",
+        text: "In… two… three… out… (muttering) Just like the breathing exercises they taught us before going live...",
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "red_petals_rise",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: PROLOGUE_BACKGROUNDS.ELENA_CHAKRA_AWAKENING_NEW,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "low_om",
+        },
       },
       {
         type: "narration",
@@ -301,27 +517,61 @@ const SCENES: Record<string, Scene> = {
         text: "(clear) Muladhara coherence achieved. Embodiment signal restored.",
       },
       {
+        type: "dialogue",
+        character: "UMBRA",
+        text: "(whisper) Power stabilized... but imagine if you'd taken it instead of giving it away...",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "elena_grounding",
+          title: "Lotus of Earth — Elena's Root Awakening",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_codex_entry",
+          payload: { id: "codex_muladhara", title: "Muladhara (Root Chakra)" },
+        },
+      },
+      {
         type: "narration",
         text: "The Naga pauses. Ember eyes dim. It bows. Dust. Silence.",
-      },
-      {
-        type: "action",
-        action: {
-          type: "show_image",
-          payload: BACKGROUNDS.GROUP_EXHAUSTED,
-        },
-      },
-      {
-        type: "action",
-        action: {
-          type: "show_image",
-          payload: TRANSITIONS.DUST_SETTLING,
-        },
       },
       {
         type: "dialogue",
         character: "AURORA",
         text: "Threat inactive. Breath rhythm stabilizing.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "award_badge",
+          payload: { id: "ep1_root_reborn", title: "🌺 Root Reborn" },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "conditional_badge",
+          payload: {
+            condition: "ep1_confessed_cowardice OR not froze_in_guardian",
+            badge: { id: "ep1_cowards_breath", title: "🌧 The Coward's Breath" },
+          },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.TEMPLE_AFTERMATH_REST,
+        },
+      },
+      {
+        type: "narration",
+        text: "The temple settles into silence. Dust motes dance in shafts of golden light. Bodies rest among ancient stones.",
       },
       {
         type: "action",
@@ -335,8 +585,8 @@ const SCENES: Record<string, Scene> = {
 
   chocolate_moment: {
     id: "chocolate_moment",
-    name: "Scene 1A - Chocolate Moment",
-    background: BACKGROUNDS.DUST_CLOUD,
+    name: "Scene 1A - David's Chocolate & Dog Tag Drop",
+    background: BACKGROUNDS.CHOCOLATE_MOMENT,
     dialogues: [
       {
         type: "narration",
@@ -350,14 +600,7 @@ const SCENES: Record<string, Scene> = {
         type: "action",
         action: {
           type: "show_image",
-          payload: PROPS.CHOCOLATE_MASTER,
-        },
-      },
-      {
-        type: "action",
-        action: {
-          type: "unlock_art",
-          payload: "david_chocolate_moment",
+          payload: BACKGROUNDS.CHOCOLATE_MOMENT,
         },
       },
       {
@@ -388,12 +631,23 @@ const SCENES: Record<string, Scene> = {
         text: "MC (thoughts): Even soldiers need sweetness to remember what they're fighting for.",
       },
       {
-        type: "narration",
-        text: "As David stands, something slips from his pocket and settles in the dust.",
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "sc1a_prop_chocolate",
+          title: "Emergency Morale: David's Last Chocolate Bar",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "shared_chocolate", value: true },
+        },
       },
       {
         type: "narration",
-        text: "A scuffed metal tag. Blood type etched beside a name.",
+        text: "As David stands, something slips from his pocket and settles in the dust.",
       },
       {
         type: "action",
@@ -403,18 +657,65 @@ const SCENES: Record<string, Scene> = {
         },
       },
       {
+        type: "narration",
+        text: "A scuffed metal tag. Blood type etched beside a name.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "prop_dogtag_floor",
+          title: "Rosetta Tag — Fallen in the Dust",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "ep1_dogtag_dropped", value: true },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_codex_entry",
+          payload: { id: "codex_dogtag", title: "Unidentified Dog Tag" },
+        },
+      },
+      {
+        type: "narration",
+        text: "Something glints, half-buried near David's boot. Inspect it?",
+      },
+      {
         type: "choice",
         choices: [
           {
             text: "Inspect the dog tag",
-            action: () => console.log("Inspecting dog tag - setting flag"),
+            action: () => console.log("Inspecting dog tag - gaining insight"),
+            flags: { codex_dogtag_hint_shown: true },
+            effects: [
+              { type: "show_image", payload: BACKGROUNDS.DOGTAG_CLOSEUP_MUD },
+              { type: "open_codex", payload: "codex_dogtag" },
+            ],
+            responseText:
+              "You crouch down and brush away the dirt. The metal is cold, worn smooth by time and handling.",
+            additionalText:
+              "The engraving reads clearly: 'CPL M. REYES' — O+. A name that feels familiar, yet impossible.",
           },
           {
             text: "Look away",
-            action: () =>
-              console.log("Ignoring dog tag - it stays there, waiting"),
+            action: () => console.log("Ignoring dog tag - mystery remains"),
+            responseText:
+              "Something about the metal gleam makes you uncomfortable. Best not to pry.",
           },
         ],
+      },
+      {
+        type: "action",
+        action: {
+          type: "play_bgm",
+          payload: "TEMPLE_AMBIENT",
+        },
       },
       {
         type: "action",
@@ -428,7 +729,7 @@ const SCENES: Record<string, Scene> = {
 
   safe_perimeter: {
     id: "safe_perimeter",
-    name: "Scene 2 - The Sound Beneath",
+    name: "Scene 2 - The Sound Beneath / Elena Connection",
     background: BACKGROUNDS.SAFE_PERIMETER,
     dialogues: [
       {
@@ -457,6 +758,121 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
+        text: "Elena settles against the wall, studying the ancient carvings. Her fingers trace patterns in the dust.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "You know, I spent three years on a reality show called 'Jungle Hearts.' I wanted to become a stand-up comedian, but... that didn't work out.",
+      },
+      {
+        type: "dialogue",
+        character: "DAVID",
+        text: "Three years? What happened with the comedy?",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "I bombed every audition. Then on the show, I ate a bug live on camera. The video went viral - everyone was laughing AT me, not WITH me. That's when I knew my comedy dreams were over.",
+      },
+      {
+        type: "narration",
+        text: "She laughs, but there's something hollow in it. Her eyes scan the chamber walls with an oddly familiar intensity.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "You develop... instincts on reality TV. You learn to feel when you're being watched. When things are too scripted, too convenient...",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "(quietly) Sometimes I still get that feeling. Like right now.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "That night, I had this dream. The bug was speaking to me in a language I somehow understood. It said, 'You consumed me, but did you honor me?'",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "I quit the show the next morning. Couldn't explain it to anyone without sounding crazy.",
+      },
+      {
+        type: "dialogue",
+        character: "UMBRA",
+        text: "(barely audible) She's weak... dismiss her fantasy... reality shows breed delusion...",
+      },
+      {
+        type: "dialogue",
+        character: "AURORA",
+        text: "(gentle) Every awakening begins with someone thinking they've gone mad...",
+      },
+      {
+        type: "choice",
+        choices: [
+          {
+            text: "That doesn't sound crazy at all",
+            action: () => console.log("Validating Elena's spiritual awakening"),
+            karma: 1,
+            romance: { character: "ELENA", points: 2 },
+          },
+          {
+            text: "Dreams can be powerful teachers",
+            action: () => console.log("Acknowledging spiritual wisdom"),
+            karma: 1,
+            romance: { character: "ELENA", points: 1 },
+          },
+          {
+            text: "Maybe it was just guilt",
+            action: () => console.log("Dismissing the spiritual significance"),
+            karma: -1,
+          },
+          {
+            text: "Tell me more about the dream",
+            action: () =>
+              console.log("Showing genuine interest in Elena's experience"),
+            karma: 1,
+            romance: { character: "ELENA", points: 1 },
+          },
+        ],
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "After that, I started noticing things. The way plants lean toward each other. How animals look at you when they think you're not watching.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "My publicist said the viral bug video could be a 'spiritual awakening moment.' Said it would be good for rebranding me from failed comedian to mystic guru.",
+      },
+      {
+        type: "narration",
+        text: "She touches the wall again, and for a moment, the carved symbols seem to pulse with faint light.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "But this... this isn't a phase. This is remembering something I always knew but forgot how to hear.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "award_badge",
+          payload: { id: "ep1_bug_snack", title: "🐞 Bug Snack Survivor" },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "picked_elena_route", value: true },
+        },
+      },
+      {
+        type: "narration",
         text: "Runes kindle. A gentle animal in relief — horned, watching.",
       },
       {
@@ -470,6 +886,14 @@ const SCENES: Record<string, Scene> = {
         type: "dialogue",
         character: "ELENA",
         text: "Is that… a cow? Or something holier pretending to be one?",
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "sc2_cow_carving",
+          title: "The Silent Witness — Root Temple Cow",
+        },
       },
       {
         type: "narration",
@@ -487,7 +911,7 @@ const SCENES: Record<string, Scene> = {
 
   david_shadow: {
     id: "david_shadow",
-    name: "Scene 4 - David's Shadow Line",
+    name: "Scene 4 - David's Shadow Line + Flashback",
     background: BACKGROUNDS.SAFE_PERIMETER,
     dialogues: [
       {
@@ -496,14 +920,17 @@ const SCENES: Record<string, Scene> = {
         text: "Safe. The last person who felt safe around me… didn't make it home.",
       },
       {
-        type: "narration",
-        text: "Flashback transition: Two soldiers face each other under a flickering sky — uniforms the same, flags newly different.",
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "flash_white",
+        },
       },
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: TRANSITIONS.FLASHBACK_DISTORTION,
+          type: "sfx",
+          payload: "low_heartbeat_slow",
         },
       },
       {
@@ -515,7 +942,18 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
+        text: "Two soldiers face each other under a flickering sky — uniforms the same, flags newly different.",
+      },
+      {
+        type: "narration",
         text: "A radio crackles: 'Orders changed. Engage immediately.'",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.RUIN_ASH,
+        },
       },
       {
         type: "narration",
@@ -524,8 +962,28 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.RUIN_ASH,
+          type: "pause",
+          payload: 900,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "heartbeat_echo",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "fade_to_black",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "flash_return",
         },
       },
       {
@@ -552,6 +1010,20 @@ const SCENES: Record<string, Scene> = {
         text: "Air thickens. Red light takes shape.",
       },
       {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "umbra_glitch_soft",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "hud_flicker_soft",
+        },
+      },
+      {
         type: "dialogue",
         character: "AURORA",
         text: "(glitching) Warning: emotional surge exceeding baseline.",
@@ -562,56 +1034,20 @@ const SCENES: Record<string, Scene> = {
         text: "(overlay) Let it drown you. Pain is honest.",
       },
       {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "vision_agnivesh_santi",
+          title: "Twin Echoes — Panther & Serpent",
+        },
+      },
+      {
         type: "narration",
         text: "Two forms appear: A panther of ember and shadow. A serpent of blue-green healing light.",
       },
       {
-        type: "dialogue",
-        character: "AGNIVESH",
-        text: "(manifesting as shadow panther)",
-      },
-      {
-        type: "dialogue",
-        character: "SANTI",
-        text: "(manifesting as healing serpent)",
-      },
-      {
         type: "narration",
         text: "MC (thoughts): I know them. I abandoned them. The guilt lives in my bones.",
-      },
-      {
-        type: "narration",
-        text: "A glint between cracked stones. Half-buried. Waiting.",
-      },
-      {
-        type: "narration",
-        text: "Agnivesh kneels. Brushes grit aside. Lifts cold metal to the light.",
-      },
-      {
-        type: "action",
-        action: {
-          type: "show_image",
-          payload: PROPS.BRACELET_MUD,
-        },
-      },
-      {
-        type: "dialogue",
-        character: "AGNIVESH",
-        text: "(quietly) ...Reyes.",
-      },
-      {
-        type: "dialogue",
-        character: "SANTI",
-        text: "(uneasy) What is it?",
-      },
-      {
-        type: "dialogue",
-        character: "AGNIVESH",
-        text: "(after a pause) Someone who shouldn't be here.",
-      },
-      {
-        type: "narration",
-        text: "He closes his hand around it.",
       },
       {
         type: "choice",
@@ -644,7 +1080,64 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
-        text: "MC (thoughts): Even in spirit form, the bonds between us remain. Some connections transcend physical form.",
+        text: "A glint between cracked stones. Half-buried. Waiting.",
+      },
+      {
+        type: "narration",
+        text: "Agnivesh kneels. Brushes grit aside. Lifts cold metal to the light.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: PROPS.DOGTAG_CLOSEUP,
+        },
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(voice breaking) ...Marcus... No. No, this can't be his.",
+      },
+      {
+        type: "narration",
+        text: "EPISODE 1: DENIAL - The first stage of grief. Old wounds reopen as new pain strikes.",
+      },
+      {
+        type: "dialogue",
+        character: "SANTI",
+        text: "(softly, with practiced devotion) Agnivesh... I'm here. I'll always be here. Like my father taught me - a good wife never abandons her husband.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(desperate, panther eyes flashing) This isn't real. Marcus is alive. He's stationed in Germany. Safe. Away from... away from all of this.",
+      },
+      {
+        type: "narration",
+        text: "MC feels a familiar pang - the same fear that made them flee when Agnivesh needed them most. Some betrayals echo across time.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(voice hardening) My brother... my twin brother, Marcus. This can't be his tag. Someone's playing a sick joke.",
+      },
+      {
+        type: "narration",
+        text: "He closes his hand around it.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "umbra_glitch_soft",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "hud_flicker_soft",
+        },
       },
       {
         type: "dialogue",
@@ -652,13 +1145,45 @@ const SCENES: Record<string, Scene> = {
         text: "(glitched whisper) Samsara — the cycle of return. Even stillness remembers.",
       },
       {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "umbra_glitch_soft",
+        },
+      },
+      {
         type: "dialogue",
         character: "UMBRA",
         text: "(overlay, faint) And the past waits exactly where you left it.",
       },
       {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "ep1_dogtag_seen", value: true },
+        },
+      },
+      {
+        type: "narration",
+        text: "MC (thoughts): Even in spirit form, the bonds between us remain. Some connections transcend physical form.",
+      },
+      {
         type: "narration",
         text: "Crack. Shear. Water knifes in from the dark.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "vfx",
+          payload: "screen_shake_long",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "flood_roar",
+        },
       },
       {
         type: "dialogue",
@@ -690,9 +1215,108 @@ const SCENES: Record<string, Scene> = {
     ],
   },
 
+  agnivesh_grief_denial: {
+    id: "agnivesh_grief_denial",
+    name: "Scene 5.5 - Episode 1: DENIAL - The Teacher's First Loss",
+    background: BACKGROUNDS.SAFE_PERIMETER,
+    dialogues: [
+      {
+        type: "narration",
+        text: "Later, in the safety of the alcove. Agnivesh sits apart, the dog tag trembling in his panther-clawed hands. Once, these hands taught spiritual wisdom. Now they clutch only grief.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(voice hollow) This can't be real. I taught Marcus meditation when we were children. I showed him how to center his chakras. He was... he was safe.",
+      },
+      {
+        type: "dialogue",
+        character: "SANTI",
+        text: "(moving closer, voice soft and pleasing) You taught us both that denial blocks the flow of healing energy. Remember? I memorized all your lessons, just like father said I should.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(panther eyes flashing) Don't... don't quote my own teachings to me. Not now. Not when everyone I trusted...",
+      },
+      {
+        type: "narration",
+        text: "He catches himself, old pain mixing with new. MC feels the weight of unspoken history.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(desperate) Marcus is alive. I would FEEL it if he was gone. Twin souls, twin chakras... we're connected beyond death.",
+      },
+      {
+        type: "dialogue",
+        character: "ELENA",
+        text: "(gently) Agnivesh, the blood type matches what you told us about your brother...",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(snapping) O-positive is common! Half the population has O-positive! This proves nothing!",
+      },
+      {
+        type: "narration",
+        text: "David shifts uncomfortably, something dark passing behind his eyes. A secret he cannot yet speak.",
+      },
+      {
+        type: "dialogue",
+        character: "DAVID",
+        text: "(quietly) Agnivesh... I...",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(not listening) He's alive. I can feel it. Twin intuition, you know? I'd know if he was... if he was...",
+      },
+      {
+        type: "narration",
+        text: "The word 'dead' hangs unspoken in the air, too terrible to voice.",
+      },
+      {
+        type: "dialogue",
+        character: "AGNIVESH",
+        text: "(voice breaking) He can't be dead. He just... he can't be.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "agnivesh_grief_stage", value: "denial" },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "open_codex",
+          payload: {
+            id: "marcus_reyes_mystery",
+            title: "Marcus Reyes - Agnivesh's Twin Brother",
+          },
+        },
+      },
+      {
+        type: "dialogue",
+        character: "SANTI",
+        text: "(to MC, protective but with underlying desperation) He needs someone who won't abandon him. Someone who stays, like... like a good wife should. Father always said loyalty is everything.",
+      },
+      {
+        type: "narration",
+        text: "Her words carry the weight of learned helplessness, echoing patterns deeper than love.",
+      },
+      {
+        type: "narration",
+        text: "The grief journey has begun. Six more stages await, and with them, the terrible truth about what happened between Marcus and David.",
+      },
+    ],
+  },
+
   shore_opening: {
     id: "shore_opening",
-    name: "Scene 6 - Shore Opening",
+    name: "Scene 6 - Shore Opening / Stranded Beach",
     background: BACKGROUNDS.SHORE_DAWN,
     dialogues: [
       {
@@ -703,8 +1327,16 @@ const SCENES: Record<string, Scene> = {
         },
       },
       {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "shore_opening",
+          title: "New Field — Arrival at the Sacral Shore",
+        },
+      },
+      {
         type: "narration",
-        text: "Blackness rolls to gray. Hiss. Gulls. New Field — Arrival at the Sacral Shore.",
+        text: "Blackness rolls to gray. Hiss. Gulls.",
       },
       {
         type: "dialogue",
@@ -722,6 +1354,13 @@ const SCENES: Record<string, Scene> = {
         text: "(distant) New field detected: Sacral. Emotional amplitude increasing. Continue observation.",
       },
       {
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "umbra_glitch_soft",
+        },
+      },
+      {
         type: "dialogue",
         character: "UMBRA",
         text: "(faint) Rise. Fall. Drown. All kinds of staying.",
@@ -732,7 +1371,7 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
-        text: "MANTRA UNLOCKED: 'The Earth does not ask you to be perfect. It only asks you to stay.'",
+        text: "On-screen Mantra: 'The Earth does not ask you to be perfect. It only asks you to stay.'",
       },
       {
         type: "dialogue",
@@ -743,13 +1382,6 @@ const SCENES: Record<string, Scene> = {
         type: "dialogue",
         character: "DAVID",
         text: "And we move when it's time.",
-      },
-      {
-        type: "action",
-        action: {
-          type: "show_image",
-          payload: TRANSITIONS.BEACH_FADE_IN,
-        },
       },
       {
         type: "narration",
@@ -770,56 +1402,113 @@ const SCENES: Record<string, Scene> = {
       {
         type: "action",
         action: {
-          type: "show_image",
-          payload: BACKGROUNDS.AURORA_LOTUS,
+          type: "goto_scene",
+          payload: "stinger_sequence",
+        },
+      },
+    ],
+  },
+
+  stinger_sequence: {
+    id: "stinger_sequence",
+    name: "Stinger - Rosetta Tag Found",
+    background: BACKGROUNDS.RUIN_ASH,
+    dialogues: [
+      {
+        type: "action",
+        action: {
+          type: "fade_to_black",
         },
       },
       {
-        type: "choice",
-        choices: [
-          {
-            text: "Think of Agnivesh's unwavering spirit",
-            action: () =>
-              console.log(
-                "Deepening connection with Agnivesh's spiritual strength"
-              ),
-            karma: 1,
-            romance: { character: "AGNIVESH", points: 1 },
-          },
-          {
-            text: "Honor Santi's fierce protection",
-            action: () => console.log("Appreciating Santi's loyal heart"),
-            karma: 1,
-            romance: { character: "SANTI", points: 1 },
-          },
-          {
-            text: "Cherish David's steady presence",
-            action: () => console.log("Valuing David's grounding influence"),
-            karma: 1,
-            romance: { character: "DAVID", points: 1 },
-          },
-          {
-            text: "Embrace Elena's awakening wisdom",
-            action: () =>
-              console.log("Connecting with Elena's spiritual growth"),
-            karma: 1,
-            romance: { character: "ELENA", points: 1 },
-          },
-          {
-            text: "Find peace in solitude",
-            action: () =>
-              console.log("Choosing independence and self-discovery"),
-            karma: 2,
-          },
-        ],
+        type: "action",
+        action: {
+          type: "sfx",
+          payload: "low_metal_clink_far",
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.RUIN_ASH,
+        },
       },
       {
         type: "narration",
-        text: "MC (thoughts): The bonds we forge in awakening become the foundation for what comes next. Love, in all its forms, is the true root chakra.",
+        text: "In the cooling ruin, embers dim. A hand brushes ash from a small, scuffed tag.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: PROLOGUE_BACKGROUNDS.AGNIVESH_FINDS_DOGTAG,
+        },
       },
       {
         type: "narration",
-        text: "EPISODE 1 COMPLETE - The Root Chakra awakens. To be continued in Episode 2: Sacral Waters...",
+        text: "Name etched in steel: 'CPL M. REYES' — O+. Marcus.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "show_image",
+          payload: BACKGROUNDS.DOGTAG_CLOSEUP_HAND,
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "unlock_art",
+          payload: "stinger_dogtag_pickup",
+          title: "Rosetta Tag — Found in the Ashes",
+        },
+      },
+      {
+        type: "narration",
+        text: "In half-light, a face hardens. Fingers close around the name.",
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "ep1_dogtag_found", value: true },
+        },
+      },
+      {
+        type: "action",
+        action: {
+          type: "set_flag",
+          payload: { id: "codex_dogtag_identified", value: true },
+        },
+      },
+      {
+        type: "narration",
+        text: "EPISODE 1 COMPLETE — Root Chakra: Grounding through vulnerability",
+      },
+      {
+        type: "narration",
+        text: "Karma Balance: [Variable based on choices]",
+      },
+      {
+        type: "narration",
+        text: "Romance Connections: [Variable based on choices]",
+      },
+      {
+        type: "narration",
+        text: "Mantra Unlocked: 'The Earth does not ask you to be perfect. It only asks you to stay.'",
+      },
+      {
+        type: "narration",
+        text: "Elena's Root Chakra: Unlocked ✅",
+      },
+      {
+        type: "narration",
+        text: "Aurora remains in LOTUS form; human avatar develops in Episode 3",
+      },
+      {
+        type: "narration",
+        text: "To be continued in Episode 2: Sacral Waters...",
       },
     ],
   },
