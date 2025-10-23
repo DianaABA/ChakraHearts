@@ -359,7 +359,16 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
       <h3>Spiritual Concepts</h3>
       {Object.entries(EDUCATIONAL_CONTENT.CONCEPTS).map(([key, concept]) => (
         <div key={key} className="concept">
-          <h4>{concept.title}</h4>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <h4 style={{ margin: 0 }}>{concept.title}</h4>
+            <button
+              className="guide-button"
+              onClick={() => unlock(`concept:${key}`, concept.title)}
+              title="Save to Codex"
+            >
+              📖 Save to Codex
+            </button>
+          </div>
           <p>{concept.description}</p>
           {"stages" in concept && (
             <div className="concept-list">

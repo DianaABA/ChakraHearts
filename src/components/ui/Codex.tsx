@@ -7,6 +7,7 @@ import {
   type KarmaType,
   type SpiritualConcept,
 } from "../../utils/educationalContent";
+import { GRIEF_STAGES } from "../../utils/griefStages";
 import "./Codex.css";
 
 interface CodexProps {
@@ -24,7 +25,10 @@ type CodexItem = {
 const resolveCodexItem = (id: string): CodexItem | null => {
   // id patterns: edu:chakra:ROOT, edu:romance:ELENA, edu:karma:POSITIVE, concept:grief:DENIAL, etc.
   try {
-    const [ns, group, key] = id.split(":");
+    const parts = id.split(":");
+    const ns = parts[0];
+    const group = parts[1];
+    const key = parts[2];
     if (ns === "edu") {
       if (group === "chakra") {
         const k = key as ChakraType;
@@ -50,6 +54,17 @@ const resolveCodexItem = (id: string): CodexItem | null => {
       const c = EDUCATIONAL_CONTENT.CONCEPTS[g];
       if (c)
         return { id, title: c.title, category: "Concepts", summary: c.description };
+    } else if (ns === "grief") {
+      const stageId = (key || group || "").toLowerCase();
+      const stage = GRIEF_STAGES.find((s) => s.id === stageId);
+      if (stage) {
+        return {
+          id,
+          title: `${stage.name} — Kübler-Ross`,
+          category: "Grief",
+          summary: stage.description,
+        };
+      }
     }
   } catch {
     // ignore
@@ -74,7 +89,7 @@ export const Codex: React.FC<CodexProps> = ({ isOpen, onClose }) => {
     return true;
   });
 
-  const categories = ["all", "chakras", "romance", "karma", "concepts"];
+  const categories = ["all", "chakras", "romance", "karma", "concepts", "grief"];
 
   if (!isOpen) return null;
 

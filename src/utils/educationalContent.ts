@@ -556,6 +556,84 @@ export const EDUCATIONAL_CONTENT = {
         "Catalyst for rapid spiritual evolution",
       ],
     },
+    SAMSARA: {
+      title: "Samsara",
+      description:
+        "The cyclical wheel of birth, death, and rebirth. Souls evolve through lessons learned across lifetimes.",
+      characteristics: [
+        "Karmic patterns carry across lives",
+        "Awakening can transcend the cycle",
+        "Compassion accelerates evolution",
+        "Relationships repeat to heal lessons",
+      ],
+    },
+    COW_SACRED: {
+      title: "Sacred Cow",
+      description:
+        "In many spiritual traditions, the cow symbolizes nourishment, motherhood, and the sacredness of life. Harming the cow creates heavy karmic debt.",
+      properties: [
+        "Embodiment of compassion and abundance",
+        "Guardian of earthly sustenance (Root Chakra)",
+        "Protected as a living symbol of non-violence",
+        "Respect for the cow strengthens grounding and humility",
+      ],
+    },
+    NAGA_ROOT_GUARDIAN: {
+      title: "Naga — Root Guardian",
+      description:
+        "Serpentine guardian of thresholds and sacred waters. At the Root Chakra, the Naga tests grounding, honesty, and survival instincts.",
+      properties: [
+        "Keeper of ancient earth wisdom",
+        "Tests fear, safety, and integrity",
+        "Protects entrances to deeper mysteries",
+        "Can bless or challenge based on karma",
+      ],
+    },
+    GRIEF_KUBLER_ROSS: {
+      title: "Kübler-Ross Grief Stages",
+      description:
+        "A framework describing emotional responses to profound loss. In our story, these stages unlock across episodes as insight grows.",
+      stages: [
+        "Shock",
+        "Denial",
+        "Anger",
+        "Bargaining",
+        "Depression",
+        "Testing",
+        "Acceptance",
+      ],
+    },
+    REALITY_SHOW: {
+      title: "Reality Show Metanarrative",
+      description:
+        "Echoes of Elena’s past fame appear as meta-clues. Some scenes distort like staged TV moments — reminders to question appearances.",
+      characteristics: [
+        "Fourth-wall winks and staged framing",
+        "Clues hidden in props and camera angles",
+        "Public image vs. authentic self",
+        "Healing from spectacle and judgment",
+      ],
+    },
+    DOG_TAG_CLUE: {
+      title: "Dog Tag — Lost Brother",
+      description:
+        "A worn military dog tag surfaces as a painful clue. It points to Marcus, Agnivesh’s twin — a thread that unravels hidden history.",
+      properties: [
+        "Symbol of duty, identity, and sacrifice",
+        "Catalyst for grief and eventual forgiveness",
+        "Appears near moments of karmic choice",
+      ],
+    },
+    EASTER_BUG_ELENA_DOG_TAG: {
+      title: "Easter Egg: Elena & the Dog Tag Bug",
+      description:
+        "A playful nod to an early sprite layering bug where Elena seemed to ‘eat’ a dog tag. Left as a meta wink hidden in certain layouts.",
+      characteristics: [
+        "Rare visual overlap in specific scenes",
+        "Harmless, kept as intentional easter egg",
+        "Reminds players the world is both sacred and playful",
+      ],
+    },
   },
 } as const;
 

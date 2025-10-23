@@ -506,6 +506,32 @@ export const GameEngine: React.FC = () => {
     }
   }, [uiHidden]);
 
+  // Episode-based automatic Codex unlocks (Kübler-Ross stages)
+  useEffect(() => {
+    const stageByEpisode: Record<number, string> = {
+      1: "denial",
+      2: "anger",
+      3: "bargaining",
+      4: "depression",
+      5: "testing",
+      6: "acceptance",
+    };
+    const ep = (currentEpisode ?? 1) as number;
+    const stage = stageByEpisode[ep];
+    if (!stage) return;
+    try {
+      const st = useGameStore.getState();
+      const id = `grief:${stage}`;
+      const already = (st.codexEntries || []).includes(id);
+      if (!already) {
+        st.unlockCodexEntry(id);
+        console.log(`📖 Auto-unlocked grief stage for episode ${ep}: ${id}`);
+      }
+    } catch {
+      // ignore
+    }
+  }, [currentEpisode]);
+
   if (!scene) {
     return (
       <div className="game-engine loading loading-fade">
