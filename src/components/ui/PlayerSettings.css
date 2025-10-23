@@ -262,6 +262,33 @@
   background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 
+/* === CONTENT WARNING CONTROLS === */
+.content-warning-controls {
+  margin-top: 16px;
+}
+
+.warning-status {
+  color: #bdc3c7;
+  margin: 0 0 10px 0;
+}
+
+.reset-warning-button {
+  background: linear-gradient(135deg, #e67e22, #e74c3c);
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.reset-warning-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   .player-settings-panel {

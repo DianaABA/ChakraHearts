@@ -11,7 +11,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { playerSettings, setPlayerSettings } = useGameStore();
+  const { playerSettings, setPlayerSettings, resetContentWarning } = useGameStore();
   const [tempName, setTempName] = useState(playerSettings.name);
   const [tempPronouns, setTempPronouns] = useState(playerSettings.pronouns);
   const [bgmVolume, setBgmVolume] = useState(playerSettings.bgmVolume ?? 0.3);
@@ -236,6 +236,23 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
           <button className="save-button" onClick={handleSave}>
             Save Changes
           </button>
+        </div>
+
+        <div className="setting-section content-warning-controls">
+          <h3>⚠️ Content Warning</h3>
+          <p className="warning-status">
+            Status: {playerSettings.hasSeenContentWarning ? "Seen" : "Not seen"}
+          </p>
+          <button
+            type="button"
+            className="reset-warning-button"
+            onClick={() => resetContentWarning()}
+          >
+            Reset Content Warning
+          </button>
+          <p className="setting-hint">
+            The Content Warning will appear again the next time you open the Main Menu or reload the app.
+          </p>
         </div>
       </div>
     </div>
