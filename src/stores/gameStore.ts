@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { GameState, SaveSlot } from "../types";
+import type { GameState, SaveSlot, EpisodeId } from "../types";
 
 interface PlayerSettings {
   name: string;
@@ -13,6 +13,7 @@ interface GameStore extends GameState {
   playerSettings: PlayerSettings;
 
   // Actions
+  setCurrentEpisode: (episode: EpisodeId) => void;
   setCurrentScene: (scene: string) => void;
   setCurrentDialogue: (index: number) => void;
   setFlag: (key: string, value: boolean) => void;
@@ -37,6 +38,7 @@ interface GameStore extends GameState {
 }
 
 const initialState: GameState = {
+  currentEpisode: 1,
   currentScene: "prologue",
   currentDialogue: 0,
   flags: {},
@@ -73,6 +75,8 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
       ...initialState,
       playerSettings: initialPlayerSettings,
+
+      setCurrentEpisode: (episode: EpisodeId) => set({ currentEpisode: episode }),
 
       setCurrentScene: (scene: string) => set({ currentScene: scene }),
 
@@ -167,6 +171,7 @@ export const useGameStore = create<GameStore>()(
           sceneName: currentState.currentScene,
           dialogueIndex: currentState.currentDialogue,
           gameState: {
+            currentEpisode: currentState.currentEpisode,
             flags: currentState.flags,
             karma: currentState.karma,
             romance: currentState.romance,

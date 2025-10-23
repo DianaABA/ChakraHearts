@@ -12,7 +12,8 @@
     "dev": "vite --host",
     "optimize-images": "node scripts/optimize-images.js",
     "optimize-quick": "node scripts/optimize-images.js --quick",
-    "optimize-webp": "node scripts/webp-converter.js"
+    "optimize-webp": "node scripts/webp-converter.js",
+    "audit:assets": "node scripts/audit-assets.js"
   },
   "dependencies": {
     "react": "^18.3.1",

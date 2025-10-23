@@ -100,7 +100,11 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
-  const { setSelectedAvatar: setGameStoreAvatar } = useGameStore();
+  const {
+    setSelectedAvatar: setGameStoreAvatar,
+    currentEpisode,
+    setCurrentEpisode,
+  } = useGameStore();
 
   // Gallery artworks for the main menu
   const galleryArtworks: GalleryArtwork[] = [
@@ -316,6 +320,15 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     }, 100); // 100ms delay to ensure audio cleanup
   };
 
+  const handleEpisodeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = parseInt(e.target.value, 10);
+    if (value >= 1 && value <= 9) {
+      setCurrentEpisode(value as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9);
+    }
+  };
+
   // Show payment options first
   if (showPaymentOptions) {
     return (
@@ -434,13 +447,36 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             </span>
           </h1>
           <div className="subtitle-container">
-            <p className="episode-text">EPISODE 1</p>
+            <p className="episode-text">EPISODE {currentEpisode ?? 1}</p>
             <div className="lotus-divider">
               <div className="lotus-symbol">🪷</div>
             </div>
             <p className="tagline">
               Where ancient wisdom meets digital consciousness
             </p>
+              {/* Quick Episode Picker (lightweight) */}
+              <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                <label htmlFor="episodeSelect" style={{ fontSize: 12, opacity: 0.85 }}>
+                  Episode:
+                </label>
+                <select
+                  id="episodeSelect"
+                  value={currentEpisode ?? 1}
+                  onChange={handleEpisodeChange}
+                  style={{
+                    background: "rgba(0,0,0,0.5)",
+                    color: "#e8e4df",
+                    border: "1px solid rgba(255,255,255,0.35)",
+                    borderRadius: 6,
+                    padding: "4px 8px",
+                  }}
+                  aria-label="Select Episode"
+                >
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{`Episode ${i + 1}`}</option>
+                  ))}
+                </select>
+              </div>
           </div>
         </div>
 

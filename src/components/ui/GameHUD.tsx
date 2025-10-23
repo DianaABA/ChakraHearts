@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { storage } from "../../platform/storage";
 import { useGameStore } from "../../stores/gameStore";
 import { UI } from "../../assets";
 import EducationalPanel from "../educational/EducationalPanel";
@@ -8,17 +9,17 @@ import PlayerSettings from "./PlayerSettings";
 import "./GameHUD.css";
 
 export const GameHUD: React.FC = () => {
-  const { karma, romance } = useGameStore();
+  const { karma, romance, currentEpisode } = useGameStore();
   const [showKarmaDialog, setShowKarmaDialog] = useState(false);
   const [showEducationalPanel, setShowEducationalPanel] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
   // Persist HUD collapsed preference across sessions
   const [hudCollapsed, setHudCollapsed] = useState<boolean>(() => {
+    const saved = storage.getItem("hudCollapsed");
     try {
-      const saved = localStorage.getItem("hudCollapsed");
       return saved ? JSON.parse(saved) === true : false;
-    } catch {
+    } catch (e) {
       return false;
     }
   });
@@ -192,11 +193,7 @@ export const GameHUD: React.FC = () => {
 
   // Save preference when it changes
   useEffect(() => {
-    try {
-      localStorage.setItem("hudCollapsed", JSON.stringify(hudCollapsed));
-    } catch {
-      // ignore storage errors
-    }
+    storage.setItem("hudCollapsed", JSON.stringify(hudCollapsed));
   }, [hudCollapsed]);
 
   // Close karma dialog with Escape for consistency with other menus
@@ -338,6 +335,10 @@ export const GameHUD: React.FC = () => {
 
   return (
     <div className={`game-hud ${hudCollapsed ? "collapsed" : ""}`}>
+      {/* Episode Indicator */}
+      <div className="episode-indicator" title="Current Episode">
+        🪷 EP {currentEpisode ?? 1}
+      </div>
       {/* HUD Collapse/Expand Toggle */}
       <button
         className={`hud-toggle ${hudCollapsed ? "collapsed" : "expanded"}`}

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useGameStore } from "../stores/gameStore";
 import { DialogueBox } from "./core/DialogueBox";
 import { SceneBackground } from "./core/SceneBackground";
 import { CharacterPortrait } from "./core/CharacterPortrait";
 import { GameMenu } from "./ui/GameMenu";
 import { GameHUD } from "./ui/GameHUD";
-import { getScene } from "../utils/sceneLoader";
+import { getSceneForEpisode } from "../utils/episodeSceneLoader";
 import { AUDIO, CHARACTERS, AVATARS } from "../assets";
+import { audio } from "../platform/audio";
 import type { Scene } from "../types";
 import "./GameEngine.css";
 
@@ -17,11 +18,10 @@ export const GameEngine: React.FC = () => {
     Record<string, string>
   >({});
 
-  // Audio reference for background music only
-  const bgmRef = useRef<HTMLAudioElement | null>(null);
   const [currentBGM, setCurrentBGM] = useState<string>("");
 
   const {
+    currentEpisode,
     currentScene,
     currentDialogue,
     setCurrentDialogue,
@@ -140,34 +140,16 @@ export const GameEngine: React.FC = () => {
       try {
         const audioPath = AUDIO.BGM[trackName as keyof typeof AUDIO.BGM];
         if (audioPath) {
-          // Stop current BGM if playing
-          if (bgmRef.current) {
-            bgmRef.current.pause();
-            bgmRef.current.currentTime = 0;
-          }
-
-          // Create new audio element
-          bgmRef.current = new Audio(audioPath);
-          bgmRef.current.loop = true;
-          bgmRef.current.volume = 0.3; // Reduced volume to prevent overlap issues
-
-          // Add error handling
-          bgmRef.current.onerror = () => {
-            console.log(`❌ Failed to load BGM: ${trackName}`);
-            setCurrentBGM("");
-          };
-
-          bgmRef.current.onended = () => {
-            setCurrentBGM("");
-          };
-
-          bgmRef.current.play().catch(() => {
-            console.log("🔇 BGM play blocked - user needs to interact first");
-            setCurrentBGM("");
-          });
-
-          setCurrentBGM(trackName);
-          console.log(`🎵 Playing BGM: ${trackName}`);
+          audio.stopLoop();
+          audio
+            .playLoop(audioPath, { volume: 0.3 })
+            .then(() => {
+              setCurrentBGM(trackName);
+              console.log(`🎵 Playing BGM: ${trackName}`);
+            })
+            .catch(() => {
+              setCurrentBGM("");
+            });
         } else {
           console.log(`❌ BGM track not found: ${trackName}`);
         }
@@ -227,11 +209,7 @@ export const GameEngine: React.FC = () => {
           }
           break;
         case "stop_bgm":
-          if (bgmRef.current) {
-            bgmRef.current.pause();
-            bgmRef.current.currentTime = 0;
-            bgmRef.current = null;
-          }
+          audio.stopLoop();
           setCurrentBGM("");
           console.log("🔇 BGM stopped");
           break;
@@ -326,7 +304,7 @@ export const GameEngine: React.FC = () => {
 
   useEffect(() => {
     const loadScene = async () => {
-      const sceneData = await getScene(currentScene);
+      const sceneData = await getSceneForEpisode(currentEpisode, currentScene);
       setScene(sceneData);
 
       // Clear portraits when changing scenes
@@ -368,14 +346,12 @@ export const GameEngine: React.FC = () => {
       console.log(`🎬 Scene changed to: ${currentScene}`);
     };
     loadScene();
-  }, [currentScene, getCharacterPortrait]);
+  }, [currentEpisode, currentScene, getCharacterPortrait]);
 
   // Cleanup audio on unmount
   useEffect(() => {
     return () => {
-      if (bgmRef.current) {
-        bgmRef.current.pause();
-      }
+      audio.stopLoop();
     };
   }, []);
 

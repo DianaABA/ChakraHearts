@@ -1,5 +1,9 @@
 // Game state types
 export interface GameState {
+  /**
+   * Currently active episode (1..9). Used to scope scenes, assets, and progression.
+   */
+  currentEpisode?: EpisodeId;
   currentScene: string;
   currentDialogue: number;
   flags: Record<string, boolean>;
@@ -116,4 +120,25 @@ export interface ImageProps {
   source: { uri: string } | string;
   style?: Record<string, unknown>;
   resizeMode?: "contain" | "cover" | "stretch" | "center";
+}
+
+// Episodes
+export type EpisodeId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export interface EpisodeSceneRef {
+  /** Scene identifier within the episode */
+  id: string;
+  /** Display name for menus/debug */
+  name: string;
+}
+
+export interface EpisodeConfig {
+  id: EpisodeId;
+  title: string;
+  /** Optional short slug used in paths, URLs, or asset names */
+  slug?: string;
+  /** Ordered list of scene identifiers in this episode */
+  scenes: EpisodeSceneRef[];
+  /** Optional summary and notes */
+  summary?: string;
 }
