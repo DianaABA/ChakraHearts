@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CHARACTERS, BACKGROUNDS } from "../assets";
+import { CHARACTERS } from "../assets";
 import "./PaymentOptions.css";
 
 interface PaymentOption {
@@ -66,7 +66,6 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       id: "cow",
       character: "Sacred Cow",
       avatar: "🐄",
-      avatarUrl: BACKGROUNDS.COW_CARVING,
       title: "Moo Choice",
       description: "Just here for the cow pictures",
       price: "FREE",
@@ -114,6 +113,9 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
         <div className="payment-header">
           <h2>🎮 Choose Your Spiritual Path</h2>
           <p>Select the character you resonate with for your payment option</p>
+          <p style={{ marginTop: 4, opacity: 0.85, fontSize: "0.95rem" }}>
+            Tap the circular avatar to choose
+          </p>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
