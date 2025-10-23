@@ -63,6 +63,19 @@
   border-bottom: 2px solid #74b9ff;
 }
 
+.edu-toast {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #f5f3f0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  z-index: 5;
+}
+
 .panel-header h2 {
   color: white;
   margin: 0;

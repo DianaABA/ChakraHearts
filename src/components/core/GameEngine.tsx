@@ -456,10 +456,16 @@ export const GameEngine: React.FC = () => {
     if (line.type === "choice" || line.type === "action") return;
 
     let t: number | undefined;
-    const { autoMode, skipMode } = useGameStore.getState();
+    const { autoMode, skipMode, isLineRead } = useGameStore.getState();
+    const key = `${currentEpisode ?? 1}:${currentScene}:${currentDialogue}`;
     if (skipMode) {
-      t = window.setTimeout(() => handleNext(), 10);
-      return () => clearTimeout(t);
+      // Skip only read lines; stop at first unread
+      if (isLineRead(key)) {
+        t = window.setTimeout(() => handleNext(), 10);
+      }
+      return () => {
+        if (t) clearTimeout(t);
+      };
     }
     if (autoMode) {
       const chars = (line.text || "").length;
@@ -469,7 +475,22 @@ export const GameEngine: React.FC = () => {
       t = window.setTimeout(() => handleNext(), delay);
       return () => clearTimeout(t);
     }
-  }, [scene, currentDialogue, playerSettings.textSpeed, playerSettings.autoDelay, handleNext]);
+  }, [scene, currentDialogue, currentEpisode, currentScene, playerSettings.textSpeed, playerSettings.autoDelay, handleNext]);
+
+  // Mark current line as read when displayed (dialogue/narration only)
+  useEffect(() => {
+    if (!scene) return;
+    const line = scene.dialogues[currentDialogue];
+    if (!line) return;
+    if (line.type === "dialogue" || line.type === "narration") {
+      const key = `${currentEpisode ?? 1}:${currentScene}:${currentDialogue}`;
+      try {
+        useGameStore.getState().markLineRead(key);
+      } catch {
+        // ignore
+      }
+    }
+  }, [scene, currentDialogue, currentEpisode, currentScene]);
 
   // Apply volume updates live
   useEffect(() => {

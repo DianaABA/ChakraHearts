@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { EDUCATIONAL_CONTENT } from "../utils/educationalContent";
 import { UI } from "../assets";
 import EducationalCard from "./EducationalCard";
+import { useGameStore } from "../stores/gameStore";
 import type {
   ChakraType,
   RomanceCharacter,
@@ -25,6 +26,19 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
   const [selectedCharacter, setSelectedCharacter] =
     useState<RomanceCharacter>("ELENA");
   const [selectedKarma, setSelectedKarma] = useState<KarmaType>("POSITIVE");
+  const [toast, setToast] = useState<string>("");
+  const showToast = (msg: string) => {
+    setToast(msg);
+    window.setTimeout(() => setToast(""), 1600);
+  };
+  const unlock = (id: string, title: string) => {
+    try {
+      useGameStore.getState().unlockCodexEntry(id);
+    } catch {
+      // ignore
+    }
+    showToast(`Unlocked info: ${title}`);
+  };
 
   if (!isOpen) return null;
 
@@ -58,7 +72,11 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
                   selectedChakra === chakraKey ? "active" : ""
                 }`}
                 style={{ backgroundColor: chakraData.color }}
-                onClick={() => setSelectedChakra(chakraKey as ChakraType)}
+                onClick={() => {
+                  setSelectedChakra(chakraKey as ChakraType);
+                  const c = EDUCATIONAL_CONTENT.CHAKRAS[chakraKey as ChakraType];
+                  unlock(`edu:chakra:${chakraKey}`, c.name);
+                }}
               >
                 {chakraData.name.split(" ")[0]}
               </button>
@@ -156,9 +174,13 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
                 className={`character-button ${
                   selectedCharacter === charKey ? "active" : ""
                 }`}
-                onClick={() =>
-                  setSelectedCharacter(charKey as RomanceCharacter)
-                }
+                onClick={() => {
+                  setSelectedCharacter(charKey as RomanceCharacter);
+                  const c = EDUCATIONAL_CONTENT.ROMANCE.COMPATIBILITY[
+                    charKey as RomanceCharacter
+                  ];
+                  unlock(`edu:romance:${charKey}`, c.character);
+                }}
               >
                 {charKey}
               </button>
@@ -274,7 +296,13 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
                   selectedKarma === karmaKey ? "active" : ""
                 }`}
                 style={{ backgroundColor: karmaData.color }}
-                onClick={() => setSelectedKarma(karmaKey as KarmaType)}
+                onClick={() => {
+                  setSelectedKarma(karmaKey as KarmaType);
+                  const k = EDUCATIONAL_CONTENT.KARMA.TYPES[
+                    karmaKey as KarmaType
+                  ];
+                  unlock(`edu:karma:${karmaKey}`, k.type);
+                }}
               >
                 {karmaData.type}
               </button>
@@ -377,6 +405,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
             ×
           </button>
         </div>
+        {toast && <div className="edu-toast">{toast}</div>}
 
         <div className="section-tabs">
           <button

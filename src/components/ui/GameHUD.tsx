@@ -258,9 +258,9 @@ export const GameHUD: React.FC = () => {
         <button
           className={`guide-button ${skipMode ? "active" : ""}`}
           onClick={() => toggleSkipMode()}
-          title="Skip mode"
+          title="Skip read lines"
         >
-          {skipMode ? "⏹ Skip" : "⏭ Skip"}
+          {skipMode ? "⏹ Skip Read" : "⏭ Skip Read"}
         </button>
         <button
           className="guide-button chakras"

@@ -13,6 +13,8 @@ export interface GameState {
   badges: string[];
   codexEntries: string[];
   saveSlots: SaveSlot[];
+  /** Tracks which lines have been read: key = `${episode}:${scene}:${index}` */
+  readLines?: Record<string, boolean>;
 }
 
 export interface SaveSlot {

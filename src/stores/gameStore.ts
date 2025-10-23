@@ -36,6 +36,9 @@ interface GameStore extends GameState {
   toggleAutoMode: () => void;
   setSkipMode: (on: boolean) => void;
   toggleSkipMode: () => void;
+  // Read tracking
+  markLineRead: (key: string) => void;
+  isLineRead: (key: string) => boolean;
   setFlag: (key: string, value: boolean) => void;
   getFlag: (key: string) => boolean;
   addKarma: (points: number) => void;
@@ -82,6 +85,7 @@ const initialState: GameState = {
       dialogueIndex: 0,
       gameState: {},
     })),
+  readLines: {},
 };
 
 const initialPlayerSettings: PlayerSettings = {
@@ -143,6 +147,16 @@ export const useGameStore = create<GameStore>()(
   toggleAutoMode: () => set((s) => ({ autoMode: !s.autoMode })),
   setSkipMode: (on: boolean) => set({ skipMode: on }),
   toggleSkipMode: () => set((s) => ({ skipMode: !s.skipMode })),
+
+      // Read tracking
+      markLineRead: (key: string) =>
+        set((state) => ({
+          readLines: { ...(state.readLines ?? {}), [key]: true },
+        })),
+      isLineRead: (key: string) => {
+        const rl = get().readLines ?? {};
+        return !!rl[key];
+      },
 
       setFlag: (key: string, value: boolean) =>
         set((state) => ({
