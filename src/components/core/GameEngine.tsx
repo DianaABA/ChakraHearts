@@ -12,6 +12,7 @@ import { audio } from "../../platform/audio";
 import { display } from "../../platform/screen";
 import type { Scene } from "../../types";
 import "./GameEngine.css";
+import { devLog } from "../../utils/logger";
 
 export const GameEngine: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -43,16 +44,16 @@ export const GameEngine: React.FC = () => {
   // Character portrait mapping - switches between human and animal forms
   const getCharacterPortrait = useCallback(
     (character: string, sceneId: string) => {
-      console.log(`🎭 Getting portrait for ${character} in scene ${sceneId}`);
+  devLog(`🎭 Getting portrait for ${character} in scene ${sceneId}`);
 
       // Use human forms in prologue, animal forms in visions/spiritual scenes
       if (sceneId === "prologue") {
         switch (character) {
           case "AGNIVESH":
-            console.log(`👤 Using human form for AGNIVESH in prologue`);
+            devLog(`👤 Using human form for AGNIVESH in prologue`);
             return CHARACTERS.AGNIVESH_HUMAN;
           case "SANTI":
-            console.log(`👤 Using human form for SANTI in prologue`);
+            devLog(`👤 Using human form for SANTI in prologue`);
             return CHARACTERS.SANTI_HUMAN;
           case "DAVID":
             return CHARACTERS.DAVID_BASE;
@@ -60,21 +61,21 @@ export const GameEngine: React.FC = () => {
             return CHARACTERS.ELENA_BASE;
           case "MC": {
             const selectedAvatar = getSelectedAvatar();
-            console.log(`🔍 DEBUG MC: selectedAvatar = "${selectedAvatar}"`);
-            console.log(`🔍 DEBUG MC: type = ${typeof selectedAvatar}`);
+            devLog(`🔍 DEBUG MC: selectedAvatar = "${selectedAvatar}"`);
+            devLog(`🔍 DEBUG MC: type = ${typeof selectedAvatar}`);
             if (selectedAvatar) {
               const avatarKey =
                 selectedAvatar.toUpperCase() as keyof typeof AVATARS;
-              console.log(`🔍 DEBUG MC: avatarKey = "${avatarKey}"`);
-              console.log(
+              devLog(`🔍 DEBUG MC: avatarKey = "${avatarKey}"`);
+              devLog(
                 `🔍 DEBUG MC: AVATARS[avatarKey] = "${AVATARS[avatarKey]}"`
               );
-              console.log(
+              devLog(
                 `🎯 MC character using selected avatar: ${selectedAvatar}`
               );
               return AVATARS[avatarKey];
             }
-            console.log(
+            devLog(
               `🎯 MC character using fallback: ${CHARACTERS.MC_BASE}`
             );
             return CHARACTERS.MC_BASE;
@@ -88,10 +89,10 @@ export const GameEngine: React.FC = () => {
       if (sceneId === "vision") {
         switch (character) {
           case "AGNIVESH":
-            console.log(`🐾 Using panther form for AGNIVESH in vision`);
+            devLog(`🐾 Using panther form for AGNIVESH in vision`);
             return CHARACTERS.AGNIVESH_BASE;
           case "SANTI":
-            console.log(`🐍 Using serpent form for SANTI in vision`);
+            devLog(`🐍 Using serpent form for SANTI in vision`);
             return CHARACTERS.SANTI_BASE;
           default:
             break;
@@ -101,17 +102,17 @@ export const GameEngine: React.FC = () => {
       // Default mapping for all other scenes
       if (character === "MC") {
         const selectedAvatar = getSelectedAvatar();
-        console.log(`🔍 Debug: selectedAvatar value: "${selectedAvatar}"`);
-        console.log(`🔍 Debug: selectedAvatar type: ${typeof selectedAvatar}`);
+  devLog(`🔍 Debug: selectedAvatar value: "${selectedAvatar}"`);
+  devLog(`🔍 Debug: selectedAvatar type: ${typeof selectedAvatar}`);
         if (selectedAvatar) {
           const avatarKey =
             selectedAvatar.toUpperCase() as keyof typeof AVATARS;
-          console.log(
+          devLog(
             `🎯 MC character using selected avatar: ${selectedAvatar}`
           );
           return AVATARS[avatarKey];
         }
-        console.log(`🎯 MC character using fallback: ${CHARACTERS.MC_BASE}`);
+  devLog(`🎯 MC character using fallback: ${CHARACTERS.MC_BASE}`);
         return CHARACTERS.MC_BASE;
       }
 
@@ -144,7 +145,7 @@ export const GameEngine: React.FC = () => {
     (trackName: string) => {
       // Prevent playing the same BGM twice
       if (currentBGM === trackName) {
-        console.log(`🎵 BGM ${trackName} already playing, skipping`);
+  devLog(`🎵 BGM ${trackName} already playing, skipping`);
         return;
       }
 
@@ -156,16 +157,16 @@ export const GameEngine: React.FC = () => {
             .playLoop(audioPath, { volume: playerSettings.bgmVolume ?? 0.3 })
             .then(() => {
               setCurrentBGM(trackName);
-              console.log(`🎵 Playing BGM: ${trackName}`);
+              devLog(`🎵 Playing BGM: ${trackName}`);
             })
             .catch(() => {
               setCurrentBGM("");
             });
         } else {
-          console.log(`❌ BGM track not found: ${trackName}`);
+          devLog(`❌ BGM track not found: ${trackName}`);
         }
       } catch (error) {
-        console.log("BGM error:", error);
+  devLog("BGM error:", error);
         setCurrentBGM("");
       }
     },
@@ -174,7 +175,7 @@ export const GameEngine: React.FC = () => {
 
   const playSFX = useCallback((effectName: string) => {
     // SFX completely removed - BGM only audio experience
-    console.log(`🔇 SFX removed: ${effectName}`);
+  devLog(`🔇 SFX removed: ${effectName}`);
   }, []);
 
   // Process current dialogue line for actions and character portraits
@@ -182,7 +183,7 @@ export const GameEngine: React.FC = () => {
     if (!scene || currentDialogue >= scene.dialogues.length) return;
 
     const currentLine = scene.dialogues[currentDialogue];
-    console.log(
+    devLog(
       `🎬 Processing line ${currentDialogue}:`,
       currentLine.type,
       currentLine
@@ -199,7 +200,7 @@ export const GameEngine: React.FC = () => {
           ...prev,
           [currentLine.character!]: characterPortrait,
         }));
-        console.log(
+        devLog(
           `👤 Showing portrait for ${currentLine.character}: ${characterPortrait}`
         );
       } else {
@@ -211,7 +212,7 @@ export const GameEngine: React.FC = () => {
 
     // Handle action commands
     if (currentLine.type === "action" && currentLine.action) {
-      console.log(`⚡ Executing action: ${currentLine.action.type}`);
+  devLog(`⚡ Executing action: ${currentLine.action.type}`);
 
       switch (currentLine.action.type) {
         case "play_bgm":
@@ -222,12 +223,12 @@ export const GameEngine: React.FC = () => {
         case "stop_bgm":
           audio.stopLoop();
           setCurrentBGM("");
-          console.log("🔇 BGM stopped");
+          devLog("🔇 BGM stopped");
           break;
         case "show_image":
           if (typeof currentLine.action.payload === "string") {
             setCurrentImage(currentLine.action.payload);
-            console.log(`🖼️ Showing image: ${currentLine.action.payload}`);
+            devLog(`🖼️ Showing image: ${currentLine.action.payload}`);
           }
           break;
         case "goto_scene":
@@ -238,63 +239,63 @@ export const GameEngine: React.FC = () => {
           }
           break;
         case "unlock_art":
-          console.log(`🎨 Art unlocked: ${currentLine.action.payload}`);
+          devLog(`🎨 Art unlocked: ${currentLine.action.payload}`);
           if (currentLine.action.title) {
-            console.log(`   Title: ${currentLine.action.title}`);
+            devLog(`   Title: ${currentLine.action.title}`);
           }
           break;
         case "award_badge":
-          console.log(
+          devLog(
             `🏆 Badge awarded: ${JSON.stringify(currentLine.action.payload)}`
           );
           break;
         case "set_flag":
-          console.log(
+          devLog(
             `🚩 Flag set: ${JSON.stringify(currentLine.action.payload)}`
           );
           break;
         case "unlock_codex_entry":
-          console.log(
+          devLog(
             `📚 Codex entry unlocked: ${JSON.stringify(
               currentLine.action.payload
             )}`
           );
           break;
         case "unlock_codex_entries":
-          console.log(
+          devLog(
             `📚 Multiple codex entries unlocked: ${JSON.stringify(
               currentLine.action.payload
             )}`
           );
           break;
         case "sfx":
-          console.log(`🔊 SFX: ${currentLine.action.payload}`);
+          devLog(`🔊 SFX: ${currentLine.action.payload}`);
           break;
         case "vfx":
-          console.log(`✨ VFX: ${currentLine.action.payload}`);
+          devLog(`✨ VFX: ${currentLine.action.payload}`);
           break;
         case "fade_to_black":
-          console.log("🌑 Fade to black");
+          devLog("🌑 Fade to black");
           break;
         case "pause":
-          console.log(`⏸️ Pause: ${currentLine.action.payload}ms`);
+          devLog(`⏸️ Pause: ${currentLine.action.payload}ms`);
           break;
         case "conditional_badge":
-          console.log(
+          devLog(
             `🏆? Conditional badge: ${JSON.stringify(
               currentLine.action.payload
             )}`
           );
           break;
         case "open_codex":
-          console.log(`📖 Opening codex: ${currentLine.action.payload}`);
+          devLog(`📖 Opening codex: ${currentLine.action.payload}`);
           break;
         default:
-          console.log(`❓ Unknown action type: ${currentLine.action.type}`);
+          devLog(`❓ Unknown action type: ${currentLine.action.type}`);
       }
 
       // Auto-advance through action lines (except scene changes)
-      console.log(
+      devLog(
         `⏭️ Auto-advancing from line ${currentDialogue} to ${
           currentDialogue + 1
         }`
@@ -337,24 +338,24 @@ export const GameEngine: React.FC = () => {
         const newPortraits: Record<string, string> = {};
         preloadCharacters[currentScene].forEach((character) => {
           const portrait = getCharacterPortrait(character, currentScene);
-          console.log(`🔍 Preloading ${character}: ${portrait}`);
+          devLog(`🔍 Preloading ${character}: ${portrait}`);
           if (portrait) {
             newPortraits[character] = portrait;
           } else {
-            console.log(
+            devLog(
               `⚠️ No portrait found for preload character: ${character}`
             );
           }
         });
         setCurrentPortraits(newPortraits);
-        console.log(
+        devLog(
           `🎬 Scene ${currentScene}: Preloaded characters:`,
           Object.keys(newPortraits),
           newPortraits
         );
       }
 
-      console.log(`🎬 Scene changed to: ${currentScene}`);
+  devLog(`🎬 Scene changed to: ${currentScene}`);
     };
     loadScene();
   }, [currentEpisode, currentScene, getCharacterPortrait]);
@@ -376,7 +377,7 @@ export const GameEngine: React.FC = () => {
       setCurrentDialogue(nextIndex);
     } else {
       // Scene complete - could advance to next scene
-      console.log("Scene complete");
+  devLog("Scene complete");
     }
   }, [scene, currentDialogue, addBacklogFromLine, setCurrentDialogue]);
 
@@ -541,7 +542,7 @@ export const GameEngine: React.FC = () => {
   }
 
   if (currentDialogue >= scene.dialogues.length) {
-    console.log("⚠️ Dialogue index out of bounds, resetting to 0");
+  devLog("⚠️ Dialogue index out of bounds, resetting to 0");
     setCurrentDialogue(0);
     return (
       <div className="game-engine loading loading-fade">
@@ -573,11 +574,11 @@ export const GameEngine: React.FC = () => {
   const currentSpeaker =
     currentLine?.type === "dialogue" ? currentLine.character : null;
 
-  console.log(
+  devLog(
     `📋 Rendering dialogue ${currentDialogue}/${scene.dialogues.length - 1}:`,
     currentLine
   );
-  console.log(
+  devLog(
     `👥 Active characters:`,
     activeCharacters.map(([char]) => char)
   );

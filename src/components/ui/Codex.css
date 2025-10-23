@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 8400; /* Modal layer above Quick Actions, below Gallery/Settings */
 }
 
 .codex-panel {

@@ -1,0 +1,112 @@
+/* Unified button styling to match main menu look across HUD, Quick Actions, and Educational tabs */
+
+/* Base style derived from .menu-button in GameMenu.css */
+.game-hud .guide-button,
+.qa-grid .qa-button,
+.educational-panel .section-tabs button {
+  color: #e6f7ff !important;
+  border: 1px solid rgba(0, 255, 255, 0.25) !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  background: rgba(20, 30, 60, 0.35) !important;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 30px rgba(0, 255, 255, 0.06) !important;
+  backdrop-filter: blur(10px);
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.25) !important;
+}
+
+.game-hud .guide-button:hover,
+.qa-grid .qa-button:hover,
+.educational-panel .section-tabs button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 28px rgba(0, 255, 255, 0.12),
+    0 6px 16px rgba(0, 0, 0, 0.45) !important;
+  border-color: rgba(0, 255, 255, 0.45) !important;
+  background: rgba(20, 30, 60, 0.45) !important;
+}
+
+/* Active/selected state alignment */
+.educational-panel .section-tabs button.active {
+  color: #74b9ff !important;
+  border-color: #74b9ff !important;
+  box-shadow: 0 0 24px rgba(116, 185, 255, 0.18) !important;
+}
+
+/* Ensure Quick Actions active state shows focus similar to menu */
+.qa-grid .qa-button.active {
+  border-color: #74b9ff !important;
+  box-shadow:
+    0 0 0 2px rgba(116, 185, 255, 0.35) inset,
+    0 6px 16px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Educational Panel: align in-panel action buttons to menu look */
+.educational-panel .chakra-button,
+.educational-panel .character-button,
+.educational-panel .karma-button {
+  color: #e6f7ff !important;
+  border: 1px solid rgba(0, 255, 255, 0.25) !important;
+  border-radius: 12px !important;
+  background: rgba(20, 30, 60, 0.35) !important;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 30px rgba(0, 255, 255, 0.06) !important;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.25) !important;
+  opacity: 1 !important; /* remove faded default */
+}
+
+.educational-panel .chakra-button:hover,
+.educational-panel .character-button:hover,
+.educational-panel .karma-button:hover {
+  transform: translateY(-1px) scale(1.02) !important;
+  border-color: rgba(0, 255, 255, 0.45) !important;
+  background: rgba(20, 30, 60, 0.45) !important;
+}
+
+.educational-panel .chakra-button.active,
+.educational-panel .character-button.active,
+.educational-panel .karma-button.active {
+  border-color: #74b9ff !important;
+  box-shadow:
+    0 0 24px rgba(116, 185, 255, 0.18) !important;
+}
+
+/* Educational Panel: align cards/sections to frosted menu aesthetic */
+.educational-panel .chakra-info,
+.educational-panel .balanced,
+.educational-panel .imbalanced,
+.educational-panel .game-relevance,
+.educational-panel .affirmations,
+.educational-panel .character-details,
+.educational-panel .high-compatibility,
+.educational-panel .challenges,
+.educational-panel .romance-overview,
+.educational-panel .karma-overview,
+.educational-panel .karma-details,
+.educational-panel .karma-effects,
+.educational-panel .karma-examples,
+.educational-panel .karma-redemption,
+.educational-panel .mechanic,
+.educational-panel .concept {
+  background: rgba(20, 30, 60, 0.35) !important;
+  border: 1px solid rgba(0, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* Keep existing left-accent borders visible for semantic meaning */
+.educational-panel .balanced,
+.educational-panel .imbalanced,
+.educational-panel .game-relevance,
+.educational-panel .affirmations,
+.educational-panel .high-compatibility,
+.educational-panel .challenges,
+.educational-panel .karma-redemption,
+.educational-panel .mechanic,
+.educational-panel .concept {
+  border-left-width: 4px !important;
+}

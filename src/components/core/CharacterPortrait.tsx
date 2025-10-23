@@ -1,4 +1,5 @@
 import React from "react";
+import { devLog } from "../../utils/logger";
 import "./CharacterPortrait.css";
 
 interface CharacterPortraitProps {
@@ -54,7 +55,7 @@ export const CharacterPortrait: React.FC<CharacterPortraitProps> = ({
             // Fallback to Aurora image once if the provided portrait fails
             if (errorCount === 0) {
               setErrorCount(1);
-              console.log(`❌ Portrait failed for ${character}. Falling back to Aurora.`);
+              devLog(`❌ Portrait failed for ${character}. Falling back to Aurora.`);
             }
           }}
           style={{

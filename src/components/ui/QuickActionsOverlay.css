@@ -1,0 +1,187 @@
+.qa-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8100; /* Modal layer, below Codex/Gallery/Settings */
+  backdrop-filter: blur(6px);
+}
+
+.qa-dialog {
+  width: min(920px, 94vw);
+  max-height: 90vh;
+  background: rgba(10, 12, 24, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.qa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(90deg, #4a69bd, #6c5ce7);
+  border-bottom: 2px solid rgba(116, 185, 255, 0.6);
+}
+
+.qa-title {
+  color: #fff;
+  font-size: 18px;
+  margin: 0;
+}
+
+.qa-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qa-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.qa-grid {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.qa-button {
+  padding: 10px 12px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  opacity: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
+  text-align: center;
+  white-space: nowrap;
+  color: #e8e4df;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+}
+
+.qa-button:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.qa-button:hover {
+  opacity: 1;
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.qa-button:hover:before {
+  width: 200px;
+  height: 200px;
+}
+
+.qa-button:active {
+  transform: scale(1.02);
+  transition: all 0.1s;
+}
+
+.qa-button.active {
+  border-color: #74b9ff;
+  box-shadow: 0 0 0 2px rgba(116, 185, 255, 0.35) inset;
+}
+
+/* Colored variants mirroring HUD styles */
+.qa-button.chakras {
+  background: linear-gradient(45deg, #9b59b6, #8e44ad);
+  border-color: #9b59b6;
+}
+.qa-button.romance {
+  background: linear-gradient(45deg, #e91e63, #ad1457);
+  border-color: #e91e63;
+}
+.qa-button.karma {
+  background: linear-gradient(45deg, #ff9800, #f57c00);
+  border-color: #ff9800;
+}
+.qa-button.gallery {
+  background: linear-gradient(45deg, #9c27b0, #7b1fa2);
+  border-color: #9c27b0;
+}
+.qa-button.settings {
+  background: linear-gradient(45deg, #607d8b, #455a64);
+  border-color: #607d8b;
+}
+.qa-button.backlog {
+  background: linear-gradient(45deg, #4a69bd, #3b5998);
+  border-color: #4a69bd;
+}
+.qa-button.fullscreen {
+  background: linear-gradient(45deg, #00bcd4, #00838f);
+  border-color: #00bcd4;
+}
+.qa-button.more {
+  background: linear-gradient(45deg, #5c6bc0, #3949ab);
+  border-color: #5c6bc0;
+}
+.qa-button.dock {
+  background: linear-gradient(45deg, #00acc1, #00897b);
+  border-color: #00acc1;
+}
+.qa-button.hide-ui {
+  background: linear-gradient(45deg, #fbc02d, #f57f17);
+  color: #2b2b2b;
+  border-color: #fbc02d;
+}
+.qa-button.codex {
+  background: linear-gradient(45deg, #8d6e63, #5d4037);
+  border-color: #8d6e63;
+}
+.qa-button.auto {
+  background: linear-gradient(45deg, #8bc34a, #558b2f);
+  border-color: #8bc34a;
+}
+.qa-button.skip {
+  background: linear-gradient(45deg, #ef5350, #c62828);
+  border-color: #ef5350;
+}
+
+@media (max-width: 560px) {
+  .qa-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+}

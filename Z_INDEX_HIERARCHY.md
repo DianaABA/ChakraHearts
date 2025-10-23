@@ -21,6 +21,14 @@
 - **Gallery**: `z-index: 8500` - Gallery overlay and content
 - **GameMenu**: `z-index: 8000-8100` - In-game pause menu
 - **PlayerSettings**: `z-index: 9000` - Settings modal (highest priority)
+- **QuickActionsOverlay**: `z-index: 8100` - HUD quick actions grid (below Codex)
+- **Codex**: `z-index: 8400` - Codex overlay (above QuickActions, below Gallery)
+- **Karma Dialog**: `z-index: 8300` - Karma status/details modal
+- **Destiny Details**: `z-index: 8300` - Destiny path explanation modal
+- **Educational Panel**: `z-index: 8200` - Learning/codex-like panel
+- **Payment Options**: `z-index: 8200` - Payment selection overlay
+- **Backlog**: `z-index: 8200` - Dialogue history overlay
+- **Content Warning**: `z-index: 8200` - Opening disclaimer modal
 
 ## Issues Fixed:
 

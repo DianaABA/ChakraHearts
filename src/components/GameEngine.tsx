@@ -29,6 +29,7 @@ export const GameEngine: React.FC = () => {
     addKarma,
     addRomance,
     getSelectedAvatar,
+    skipMode,
   } = useGameStore();
 
   // Character portrait mapping - switches between human and animal forms
@@ -355,7 +356,7 @@ export const GameEngine: React.FC = () => {
     };
   }, []);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!scene) return;
 
     const nextIndex = currentDialogue + 1;
@@ -365,7 +366,20 @@ export const GameEngine: React.FC = () => {
       // Scene complete - could advance to next scene
       console.log("Scene complete");
     }
-  };
+  }, [scene, currentDialogue, setCurrentDialogue]);
+
+  // Skip mode: auto-advance through non-choice lines quickly
+  useEffect(() => {
+    if (!scene || !skipMode) return;
+    if (currentDialogue >= scene.dialogues.length) return;
+    const line = scene.dialogues[currentDialogue];
+    // Do not skip choices; let the player decide
+    if (line.type === "choice") return;
+    const t = setTimeout(() => {
+      handleNext();
+    }, 120);
+    return () => clearTimeout(t);
+  }, [skipMode, scene, currentDialogue, handleNext]);
 
   const handleChoice = (choiceIndex: number) => {
     const currentLine = scene?.dialogues[currentDialogue];

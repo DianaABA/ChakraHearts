@@ -10,9 +10,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 8200; /* Modal layer above HUD, below Codex/Gallery */
   backdrop-filter: blur(5px);
   animation: overlayFadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: auto; /* Allow the overlay itself to scroll on very small screens */
+  padding: 16px;  /* Prevent content from touching screen edges when scrolling */
 }
 
 @keyframes overlayFadeIn {
@@ -40,6 +42,13 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   animation: panelSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.educational-panel.expanded {
+  width: 95vw;
+  height: 92vh;
+  max-width: 1200px;
+  max-height: 92vh;
 }
 
 @keyframes panelSlideIn {
@@ -92,29 +101,68 @@
   display: flex;
   background: rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  overflow-x: auto;                 /* Horizontal scroll if buttons overflow */
+  -webkit-overflow-scrolling: touch;/* Momentum scroll on iOS */
+  position: sticky;                 /* Keep tabs visible while reading */
+  top: 0;
+  z-index: 2;
+  padding: 8px;                     /* Space around pill buttons */
 }
 
 .section-tabs button {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #ddd;
-  padding: 15px;
-  font-size: 1rem;
+  flex: 0 0 auto;                   /* Avoid squishing; allow horizontal scroll */
+  color: #e8e4df;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+}
+
+.section-tabs button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 1;
 }
 
 .section-tabs button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.section-tabs button:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+.section-tabs button:hover {
+  background: linear-gradient(45deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  color: #fff;
 }
 
 .section-tabs button.active {
-  background: rgba(255, 255, 255, 0.15);
   color: #74b9ff;
-  border-bottom-color: #74b9ff;
+  border-color: #74b9ff;
+  box-shadow: 0 0 0 2px rgba(116, 185, 255, 0.35) inset, 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* === PANEL CONTENT === */
@@ -123,6 +171,10 @@
   padding: 20px;
   overflow-y: auto;
   color: #ddd;
+  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling on iOS */
+  overscroll-behavior: contain;      /* Prevent scroll chaining to background */
+  touch-action: pan-y;               /* Ensure vertical scrolling works on touch */
+  line-height: 1.6;                  /* More readable body text */
 }
 
 .education-content {

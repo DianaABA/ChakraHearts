@@ -6,6 +6,7 @@ import PlayerSettings from "./PlayerSettings";
 import Gallery from "../Gallery";
 import type { GalleryArtwork } from "../Gallery";
 import "./MainMenu.css";
+import { devLog } from "../../utils/logger";
 
 export interface AvatarOption {
   id: string;
@@ -179,20 +180,20 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
     const playAudio = async () => {
       try {
-        await audio.play();
-        console.log("🎵 Menu music started successfully");
+  await audio.play();
+  devLog("🎵 Menu music started successfully");
   } catch {
-        console.log("Audio autoplay prevented, will start on user interaction");
+  devLog("Audio autoplay prevented, will start on user interaction");
 
         // Single event listener that removes itself after first use
         const handleFirstInteraction = async () => {
           try {
             if (menuAudioRef.current && menuAudioRef.current.paused) {
               await menuAudioRef.current.play();
-              console.log("🎵 Menu music started on user interaction");
+              devLog("🎵 Menu music started on user interaction");
             }
           } catch (playError) {
-            console.log("Failed to start audio on interaction:", playError);
+            devLog("Failed to start audio on interaction:", playError);
           }
           // Remove listeners after first use (they should auto-remove with { once: true })
         };
@@ -216,7 +217,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     // Cleanup function to stop audio when component unmounts
     return () => {
       if (menuAudioRef.current) {
-        console.log("🛑 Cleaning up menu music");
+  devLog("🛑 Cleaning up menu music");
         menuAudioRef.current.pause();
         menuAudioRef.current.currentTime = 0;
         menuAudioRef.current = null;
@@ -249,7 +250,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
   const handlePaymentSelect = (paymentOption: PaymentOption) => {
     // Store payment choice in game store if needed
-    console.log("💰 Payment option selected:", paymentOption);
+  devLog("💰 Payment option selected:", paymentOption);
     setShowPaymentOptions(false);
     setShowAvatarSelect(true);
   };
@@ -303,7 +304,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   }, [showAvatarSelect]);
 
   const handleAvatarSelect = (avatarId: string) => {
-    console.log("🎮 Avatar selected, stopping menu music");
+  devLog("🎮 Avatar selected, stopping menu music");
 
     // Stop menu music immediately and ensure it's fully stopped
     if (menuAudioRef.current) {
@@ -311,7 +312,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       menuAudioRef.current.currentTime = 0;
       // Force cleanup
       menuAudioRef.current = null;
-      console.log("🛑 Menu music forcefully stopped");
+  devLog("🛑 Menu music forcefully stopped");
     }
 
     // Add a small delay to ensure music is fully stopped before game starts

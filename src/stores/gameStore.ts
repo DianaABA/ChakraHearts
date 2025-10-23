@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { GameState, SaveSlot, EpisodeId, DialogueLine, BacklogEntry } from "../types";
+import { devLog } from "../utils/logger";
 
 interface PlayerSettings {
   name: string;
@@ -180,30 +181,30 @@ export const useGameStore = create<GameStore>()(
 
       getSelectedAvatar: () => {
         const state = get();
-        console.log(`🔍 STORE DEBUG: All flags:`, state.flags);
+        devLog(`🔍 STORE DEBUG: All flags:`, state.flags);
         // Check which avatar flag is set
         const avatarFlags = Object.keys(state.flags).filter((flag) =>
           flag.startsWith("avatar_")
         );
-        console.log(`🔍 STORE DEBUG: Avatar flags:`, avatarFlags);
+        devLog(`🔍 STORE DEBUG: Avatar flags:`, avatarFlags);
         if (avatarFlags.length > 0) {
           const selectedAvatar = avatarFlags[0].replace("avatar_", "");
-          console.log(
+          devLog(
             `🔍 STORE DEBUG: Returning selected avatar:`,
             selectedAvatar
           );
           return selectedAvatar;
         }
-        console.log(
+        devLog(
           `🔍 STORE DEBUG: No avatar flags found, returning default: LOTUS`
         );
         return "LOTUS"; // Default avatar
       },
 
       setSelectedAvatar: (avatarId: string) => {
-        console.log(`🔍 SETTING AVATAR: ${avatarId}`);
+        devLog(`🔍 SETTING AVATAR: ${avatarId}`);
         const state = get();
-        console.log(`🔍 CURRENT FLAGS BEFORE:`, state.flags);
+        devLog(`🔍 CURRENT FLAGS BEFORE:`, state.flags);
         // Clear all avatar flags first
         const clearedFlags = { ...state.flags };
         Object.keys(clearedFlags).forEach((key) => {
@@ -217,11 +218,11 @@ export const useGameStore = create<GameStore>()(
           [`avatar_${avatarId}`]: true,
           selectedAvatar: true,
         };
-        console.log(`🔍 NEW FLAGS:`, newFlags);
+        devLog(`🔍 NEW FLAGS:`, newFlags);
         set({
           flags: newFlags,
         });
-        console.log(`🔍 AVATAR SET COMPLETE`);
+        devLog(`🔍 AVATAR SET COMPLETE`);
       },
 
       unlockArt: (artId: string) =>
@@ -284,7 +285,7 @@ export const useGameStore = create<GameStore>()(
             avatarFlags[key] = state.flags[key];
           }
         });
-        console.log(`🔄 Resetting game, preserving avatar flags:`, avatarFlags);
+        devLog(`🔄 Resetting game, preserving avatar flags:`, avatarFlags);
         set({
           ...initialState,
           flags: avatarFlags,

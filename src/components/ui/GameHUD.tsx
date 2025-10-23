@@ -6,8 +6,10 @@ import EducationalPanel from "../educational/EducationalPanel";
 import Gallery from "../Gallery";
 import type { GalleryArtwork } from "../Gallery";
 import PlayerSettings from "./PlayerSettings";
+import QuickActionsOverlay from "./QuickActionsOverlay";
 import Codex from "./Codex";
 import "./GameHUD.css";
+import { devLog } from "../../utils/logger";
 
 export const GameHUD: React.FC = () => {
   const { karma, romance, currentEpisode } = useGameStore();
@@ -16,6 +18,7 @@ export const GameHUD: React.FC = () => {
   const [showGallery, setShowGallery] = useState(false);
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
   const [showCodex, setShowCodex] = useState(false);
+  const [showQuickActions, setShowQuickActions] = useState(false);
   // Persist HUD collapsed preference across sessions
   const [hudCollapsed, setHudCollapsed] = useState<boolean>(() => {
     const saved = storage.getItem("hudCollapsed");
@@ -30,6 +33,15 @@ export const GameHUD: React.FC = () => {
   >("chakras");
   const { backlogOpen, setBacklogOpen, uiHidden, toggleUiHidden, autoMode, skipMode, toggleAutoMode, toggleSkipMode } = useGameStore();
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [dockRight, setDockRight] = useState<boolean>(() => {
+    const saved = storage.getItem("hudDockRight");
+    try {
+      return saved ? JSON.parse(saved) === true : false;
+    } catch {
+      return false;
+    }
+  });
+  const [showDestinyDialog, setShowDestinyDialog] = useState(false);
   
   // Track fullscreen state for icon update
   useEffect(() => {
@@ -200,23 +212,29 @@ export const GameHUD: React.FC = () => {
     },
   ];
 
-  console.log("🎮 GameHUD is rendering");
+  devLog("🎮 GameHUD is rendering");
 
   // Save preference when it changes
   useEffect(() => {
     storage.setItem("hudCollapsed", JSON.stringify(hudCollapsed));
   }, [hudCollapsed]);
 
+  // Persist dock side preference
+  useEffect(() => {
+    storage.setItem("hudDockRight", JSON.stringify(dockRight));
+  }, [dockRight]);
+
   // Close karma dialog with Escape for consistency with other menus
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && showKarmaDialog) {
-        setShowKarmaDialog(false);
+      if (e.key === "Escape") {
+        if (showKarmaDialog) setShowKarmaDialog(false);
+        if (showDestinyDialog) setShowDestinyDialog(false);
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [showKarmaDialog]);
+  }, [showKarmaDialog, showDestinyDialog]);
   
   const HudBody: React.FC = () => (
     <>
@@ -237,6 +255,20 @@ export const GameHUD: React.FC = () => {
           {isFullscreen ? "🧭 Windowed" : "🖥 Fullscreen"}
         </button>
         <button
+          className="guide-button more"
+          onClick={() => setShowQuickActions(true)}
+          title="More Actions"
+        >
+          ⋯ More
+        </button>
+        <button
+          className="guide-button dock"
+          onClick={() => setDockRight((v) => !v)}
+          title="Dock left/right"
+        >
+          ↔ Dock
+        </button>
+        <button
           className="guide-button hide-ui"
           onClick={() => toggleUiHidden()}
           title="Hide UI (H)"
@@ -251,21 +283,21 @@ export const GameHUD: React.FC = () => {
           ⚙️ Settings
         </button>
         <button
-          className="guide-button"
+          className="guide-button codex"
           onClick={() => setShowCodex(true)}
           title="Open Codex"
         >
           📖 Codex
         </button>
         <button
-          className={`guide-button ${autoMode ? "active" : ""}`}
+          className={`guide-button auto ${autoMode ? "active" : ""}`}
           onClick={() => toggleAutoMode()}
           title="Auto mode"
         >
           {autoMode ? "⏸ Auto" : "▶ Auto"}
         </button>
         <button
-          className={`guide-button ${skipMode ? "active" : ""}`}
+          className={`guide-button skip ${skipMode ? "active" : ""}`}
           onClick={() => toggleSkipMode()}
           title="Skip read lines"
         >
@@ -274,7 +306,7 @@ export const GameHUD: React.FC = () => {
         <button
           className="guide-button chakras"
           onClick={() => {
-            console.log("🌈 Chakras button clicked");
+            devLog("🌈 Chakras button clicked");
             setEducationalSection("chakras");
             setShowEducationalPanel(true);
           }}
@@ -305,7 +337,7 @@ export const GameHUD: React.FC = () => {
         <button
           className="guide-button gallery"
           onClick={() => {
-            console.log("🎨 Gallery button clicked");
+            devLog("🎨 Gallery button clicked");
             setShowGallery(true);
           }}
           title="View Art Gallery"
@@ -339,7 +371,15 @@ export const GameHUD: React.FC = () => {
       </div>
 
       {/* Ending Path Indicator */}
-      <div className="ending-indicator">
+      <div
+        className="ending-indicator clickable"
+        style={{
+          borderColor: getEndingPath(karma).color,
+          boxShadow: `0 0 0 2px ${getEndingPath(karma).color} inset, 0 0 16px ${getEndingPath(karma).color}`,
+        }}
+        title={`${getEndingPath(karma).name} — ${getEndingPath(karma).description}`}
+        onClick={() => setShowDestinyDialog(true)}
+      >
         <div className="meter-label">
           {getEndingPath(karma).icon} Destiny Path
         </div>
@@ -387,7 +427,7 @@ export const GameHUD: React.FC = () => {
   );
 
   return (
-    <div className={`game-hud ${hudCollapsed ? "collapsed" : ""}`}>
+    <div className={`game-hud ${hudCollapsed ? "collapsed" : ""} ${dockRight ? "dock-right" : ""}`}>
       {/* Episode Indicator */}
       <div className="episode-indicator" title="Current Episode">
         🪷 EP {currentEpisode ?? 1}
@@ -497,6 +537,73 @@ export const GameHUD: React.FC = () => {
         </div>
       )}
 
+      {/* Destiny Details Overlay */}
+      {showDestinyDialog && (
+        <div
+          className="destiny-overlay"
+          onClick={() => setShowDestinyDialog(false)}
+        >
+          <div className="destiny-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="destiny-dialog-bg" style={{ backgroundImage: `url(${UI.DIALOGUE_FRAME})` }}>
+              <div className="destiny-dialog-content">
+                <div className="destiny-dialog-header">
+                  <div className="destiny-dialog-icon" aria-hidden>
+                    {getEndingPath(karma).icon}
+                  </div>
+                  <h3 className="destiny-dialog-title">Destiny Details</h3>
+                  <button
+                    className="destiny-dialog-close"
+                    onClick={() => setShowDestinyDialog(false)}
+                    aria-label="Close Destiny Details"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="destiny-dialog-body">
+                  <div className="destiny-current">
+                    <span className="destiny-label">Current Path:</span>
+                    <span
+                      className="destiny-value"
+                      style={{ color: getEndingPath(karma).color }}
+                    >
+                      {getEndingPath(karma).icon} {getEndingPath(karma).name}
+                    </span>
+                    <div className="destiny-sub">{getEndingPath(karma).description}</div>
+                  </div>
+
+                  <div className="destiny-explanation">
+                    <p>
+                      Your destiny shifts with your karma. Make choices to influence the path you walk.
+                    </p>
+                    <ul className="destiny-thresholds">
+                      <li>
+                        <strong style={{ color: COLORS.harmony }}>Harmony</strong> (karma ≥ 3): Unity and healing
+                      </li>
+                      <li>
+                        <strong style={{ color: COLORS.neutral }}>Neutral</strong> (-2 ≤ karma ≤ 2): Individual choice
+                      </li>
+                      <li>
+                        <strong style={{ color: COLORS.control }}>Control</strong> (karma ≤ -3): Power and dominance
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="destiny-tips">
+                    <h4 className="destiny-tips-title">Tips</h4>
+                    <ul>
+                      <li>Viewing Codex entries may reveal how choices affect destiny.</li>
+                      <li>Romance paths can subtly influence your moral arc.</li>
+                      <li>You can always rebalance your karma with mindful actions.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Player Settings */}
       <PlayerSettings
         isOpen={showPlayerSettings}
@@ -518,6 +625,28 @@ export const GameHUD: React.FC = () => {
         isOpen={showGallery}
         onClose={() => setShowGallery(false)}
         artworks={galleryArtworks}
+      />
+
+      {/* Quick Actions Overlay */}
+      <QuickActionsOverlay
+        isOpen={showQuickActions}
+        onClose={() => setShowQuickActions(false)}
+        title="Quick Actions"
+        actions={[
+          { id: "backlog", label: "📝 Backlog", variant: "backlog", onClick: () => setBacklogOpen(!backlogOpen) },
+          { id: "fullscreen", label: isFullscreen ? "🧭 Windowed" : "🖥 Fullscreen", variant: "fullscreen", onClick: () => import("../../platform/screen").then(m=>m.display.toggleFullscreen()) },
+          { id: "more", label: "⋯ More", variant: "more", onClick: () => {} },
+          { id: "dock", label: "↔ Dock", variant: "dock", onClick: () => setDockRight((v)=>!v) },
+          { id: "hide-ui", label: uiHidden ? "👁 Show UI" : "🙈 Hide UI", variant: "hide-ui", onClick: () => toggleUiHidden() },
+          { id: "settings", label: "⚙️ Settings", variant: "settings", onClick: () => setShowPlayerSettings(true) },
+          { id: "codex", label: "📖 Codex", variant: "codex", onClick: () => setShowCodex(true) },
+          { id: "auto", label: autoMode ? "⏸ Auto" : "▶ Auto", variant: "auto", onClick: () => toggleAutoMode(), active: autoMode },
+          { id: "skip", label: skipMode ? "⏹ Skip Read" : "⏭ Skip Read", variant: "skip", onClick: () => toggleSkipMode(), active: skipMode },
+          { id: "chakras", label: "🌈 Chakras", variant: "chakras", onClick: () => { setEducationalSection("chakras"); setShowEducationalPanel(true); } },
+          { id: "romance", label: "💕 Romance", variant: "romance", onClick: () => { setEducationalSection("romance"); setShowEducationalPanel(true); } },
+          { id: "karma", label: "⚖️ Karma", variant: "karma", onClick: () => { setEducationalSection("karma"); setShowEducationalPanel(true); } },
+          { id: "gallery", label: "🎨 Gallery", variant: "gallery", onClick: () => setShowGallery(true) },
+        ]}
       />
     </div>
   );

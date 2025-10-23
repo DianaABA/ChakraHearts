@@ -20,7 +20,7 @@ const SCENES: Record<string, Scene> = {
         type: "action",
         action: {
           type: "play_bgm",
-          payload: "TEMPLE_AMBIENT",
+          payload: "TENSION_THEME",
         },
       },
       {
@@ -1488,11 +1488,11 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
-        text: "Karma Balance: [Variable based on choices]",
+        text: "Your karma shifts with the choices you've made.",
       },
       {
         type: "narration",
-        text: "Romance Connections: [Variable based on choices]",
+        text: "Hearts you've touched will remember.",
       },
       {
         type: "narration",
@@ -1504,7 +1504,7 @@ const SCENES: Record<string, Scene> = {
       },
       {
         type: "narration",
-        text: "Aurora remains in LOTUS form; human avatar develops in Episode 3",
+        text: "Aurora remains in her Lotus form—for now.",
       },
       {
         type: "narration",

@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 8200; /* Modal layer above HUD */
   backdrop-filter: blur(5px);
 }
 
@@ -109,6 +109,7 @@
   );
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none; /* allow clicks to pass through to children */
 }
 
 .payment-option:hover::before {
@@ -128,6 +129,10 @@
   margin: 0 auto 12px auto;
   cursor: pointer;
   transition: transform .15s ease, box-shadow .2s ease;
+  position: relative;
+  z-index: 1; /* ensure above decorative overlays */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .avatar-circle-button:hover {
@@ -141,6 +146,7 @@
   border-radius: 50%;
   object-fit: cover;
   display: block;
+  pointer-events: none; /* image shouldn't intercept taps */
 }
 
 .avatar-circle-emoji {
@@ -336,8 +342,8 @@
   }
 
   .avatar-circle-button {
-    width: 88px;
-    height: 88px;
+    width: 104px;
+    height: 104px;
   }
 }
 

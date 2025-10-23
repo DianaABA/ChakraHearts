@@ -14,16 +14,16 @@ export const getSceneForEpisode = async (
     return getEP1Scene(sceneId);
   }
 
-  // Placeholder scene for episodes not yet implemented
+  // Friendly scene for episodes not yet implemented
   const placeholder: Scene = {
     id: sceneId,
-    name: `Episode ${ep} — Work in Progress`,
+    name: `Episode ${ep} — Coming Soon`,
     background: undefined,
     dialogues: [
       {
         type: "narration",
         text:
-          "This episode is being integrated. You'll be returned to the prologue for now.",
+          "This path isn't available yet. You'll be returned to the prologue for now.",
       },
       { type: "action", action: { type: "goto_scene", payload: "prologue" } },
     ],

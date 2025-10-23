@@ -25,6 +25,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
   const [selectedCharacter, setSelectedCharacter] =
     useState<RomanceCharacter>("ELENA");
   const [selectedKarma, setSelectedKarma] = useState<KarmaType>("POSITIVE");
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -370,12 +371,22 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
 
   return (
     <div className="educational-panel-overlay">
-      <div className="educational-panel">
+      <div className={`educational-panel ${isExpanded ? "expanded" : ""}`}>
         <div className="panel-header">
           <h2>📚 Spiritual Guide</h2>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              className="close-button"
+              onClick={() => setIsExpanded((v) => !v)}
+              title={isExpanded ? "Shrink panel" : "Expand panel"}
+              aria-label={isExpanded ? "Shrink panel" : "Expand panel"}
+            >
+              {isExpanded ? "⤡" : "⤢"}
+            </button>
+            <button className="close-button" onClick={onClose} title="Close" aria-label="Close">
+              ×
+            </button>
+          </div>
         </div>
 
         <div className="section-tabs">
@@ -383,25 +394,42 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
             className={activeSection === "chakras" ? "active" : ""}
             onClick={() => setActiveSection("chakras")}
           >
-            🌈 Chakras
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" stroke="#74b9ff" strokeWidth="2" />
+              <path d="M12 2L14 6L12 10L10 6L12 2Z" fill="#9b59b6" opacity="0.8" />
+              <path d="M22 12L18 14L14 12L18 10L22 12Z" fill="#e84393" opacity="0.8" />
+              <path d="M12 22L10 18L12 14L14 18L12 22Z" fill="#00cec9" opacity="0.8" />
+              <path d="M2 12L6 10L10 12L6 14L2 12Z" fill="#fdcb6e" opacity="0.8" />
+            </svg>
+            <span style={{ marginLeft: 6 }}>Chakras</span>
           </button>
           <button
             className={activeSection === "romance" ? "active" : ""}
             onClick={() => setActiveSection("romance")}
           >
-            💕 Romance
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#ff6b81" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21s-6-4.35-9-7.5C1 12 1 8 4.5 6.5S10 8 12 10c2-2 5.5-4 7.5-3.5S23 12 21 13.5 12 21 12 21z" />
+            </svg>
+            <span style={{ marginLeft: 6 }}>Romance</span>
           </button>
           <button
             className={activeSection === "karma" ? "active" : ""}
             onClick={() => setActiveSection("karma")}
           >
-            ⚖️ Karma
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd166" strokeWidth="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3v18M4 7h16" />
+              <path d="M7 7l-3 6h6l-3-6zM20 13h-6l3-6 3 6z" fill="#ffd166" opacity="0.4" />
+            </svg>
+            <span style={{ marginLeft: 6 }}>Karma</span>
           </button>
           <button
             className={activeSection === "concepts" ? "active" : ""}
             onClick={() => setActiveSection("concepts")}
           >
-            ✨ Concepts
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#a29bfe" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z" />
+            </svg>
+            <span style={{ marginLeft: 6 }}>Concepts</span>
           </button>
         </div>
 

@@ -15,17 +15,26 @@ export const DialogueBox: React.FC<DialogueBoxProps> = ({
 }) => {
   if (!line) return null;
 
+  // Remove leading parenthetical stage directions from dialogue text
+  const sanitizeDialogueText = (text: string | undefined): string => {
+    if (!text) return "";
+    // Strip a leading parenthetical like "(softly, ... ) "
+    return text.replace(/^\s*\([^)]*\)\s*/u, "");
+  };
+
   const renderContent = () => {
     switch (line.type) {
-      case "dialogue":
+      case "dialogue": {
+        const cleaned = sanitizeDialogueText(line.text);
         return (
           <div className="dialogue-content" onClick={onNext}>
             {line.character && (
               <div className="character-name">{line.character}</div>
             )}
-            <div className="dialogue-text">{line.text}</div>
+            <div className="dialogue-text">{cleaned}</div>
           </div>
         );
+      }
 
       case "narration":
         return (
