@@ -500,8 +500,11 @@ export const GameEngine: React.FC = () => {
       />
 
       <button
-        className="menu-button btn-smooth"
+        className="engine-menu-button btn-smooth"
         onClick={() => setShowMenu(!showMenu)}
+        aria-label={showMenu ? "Close menu" : "Open menu"}
+        title={showMenu ? "Close menu" : "Open menu"}
+        type="button"
       >
         ☰
       </button>

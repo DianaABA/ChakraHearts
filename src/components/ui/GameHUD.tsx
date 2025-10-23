@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGameStore } from "../../stores/gameStore";
 import { UI } from "../../assets";
 import EducationalPanel from "../educational/EducationalPanel";
-import Gallery, { type GalleryArtwork } from "../Gallery";
+import Gallery from "../Gallery";
+import type { GalleryArtwork } from "../Gallery";
 import PlayerSettings from "./PlayerSettings";
 import "./GameHUD.css";
 
@@ -12,6 +13,15 @@ export const GameHUD: React.FC = () => {
   const [showEducationalPanel, setShowEducationalPanel] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
+  // Persist HUD collapsed preference across sessions
+  const [hudCollapsed, setHudCollapsed] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem("hudCollapsed");
+      return saved ? JSON.parse(saved) === true : false;
+    } catch {
+      return false;
+    }
+  });
   const [educationalSection, setEducationalSection] = useState<
     "chakras" | "romance" | "karma" | "concepts"
   >("chakras");
@@ -126,7 +136,7 @@ export const GameHUD: React.FC = () => {
     return iconMap[character.toUpperCase()] || UI.ROMANCE_ELENA; // Default fallback
   };
 
-  // Sample gallery artworks (will be replaced with user's special arts)
+  // Sample gallery artworks (using existing game assets)
   const galleryArtworks: GalleryArtwork[] = [
     {
       id: "elena_awakening",
@@ -137,25 +147,71 @@ export const GameHUD: React.FC = () => {
       unlocked: true,
     },
     {
-      id: "temple_ruins",
-      title: "Ancient Temple Ruins",
-      description: "The mysterious underground chambers",
-      imageSrc: "/backgrounds/prologue_agnivesh_happy_before.png",
+      id: "temple_burning",
+      title: "Temple Destruction",
+      description: "The ancient temple burning in spiritual fire",
+      imageSrc: "/backgrounds/pro_ep1_temple_burning_destruction.png",
       category: "scenes",
       unlocked: true,
     },
     {
-      id: "special_art_1",
-      title: "Special Artwork 1",
-      description: "User's special artwork - coming soon",
-      imageSrc: "/backgrounds/edu/edu_root_chakra.png",
+      id: "lotus_birth",
+      title: "Lotus Birth",
+      description: "Aurora's consciousness emerging from the void",
+      imageSrc: "/backgrounds/sc0_lotus_birth_void.png",
+      category: "concepts",
+      unlocked: true,
+    },
+    {
+      id: "naga_fight",
+      title: "Naga Battle",
+      description: "Epic confrontation with the shadow serpent",
+      imageSrc: "/backgrounds/sc1a_naga_fight_epic.png",
+      category: "scenes",
+      unlocked: true,
+    },
+    {
+      id: "shore_dawn",
+      title: "Dawn at the Shore",
+      description: "The peaceful ending shore where healing begins",
+      imageSrc: "/backgrounds/sc6_shore_dawn_wide.png",
+      category: "scenes",
+      unlocked: true,
+    },
+    {
+      id: "sacred_cow",
+      title: "Sacred Cow Carving",
+      description: "Ancient wall carving of the sacred cow spirit",
+      imageSrc: "/backgrounds/sc2_cow_carving_wall.jpg",
       category: "special",
-      unlocked: false, // Will be unlocked when user provides arts
+      unlocked: true,
     },
   ];
 
-  return (
-    <div className="game-hud">
+  console.log("🎮 GameHUD is rendering");
+
+  // Save preference when it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem("hudCollapsed", JSON.stringify(hudCollapsed));
+    } catch {
+      // ignore storage errors
+    }
+  }, [hudCollapsed]);
+
+  // Close karma dialog with Escape for consistency with other menus
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showKarmaDialog) {
+        setShowKarmaDialog(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showKarmaDialog]);
+  
+  const HudBody: React.FC = () => (
+    <>
       {/* Educational Guide Button */}
       <div className="educational-guide-button">
         <button
@@ -168,6 +224,7 @@ export const GameHUD: React.FC = () => {
         <button
           className="guide-button chakras"
           onClick={() => {
+            console.log("🌈 Chakras button clicked");
             setEducationalSection("chakras");
             setShowEducationalPanel(true);
           }}
@@ -197,7 +254,10 @@ export const GameHUD: React.FC = () => {
         </button>
         <button
           className="guide-button gallery"
-          onClick={() => setShowGallery(true)}
+          onClick={() => {
+            console.log("🎨 Gallery button clicked");
+            setShowGallery(true);
+          }}
           title="View Art Gallery"
         >
           🎨 Gallery
@@ -273,6 +333,23 @@ export const GameHUD: React.FC = () => {
           ))}
         </div>
       )}
+    </>
+  );
+
+  return (
+    <div className={`game-hud ${hudCollapsed ? "collapsed" : ""}`}>
+      {/* HUD Collapse/Expand Toggle */}
+      <button
+        className={`hud-toggle ${hudCollapsed ? "collapsed" : "expanded"}`}
+        onClick={() => setHudCollapsed((v) => !v)}
+        title={hudCollapsed ? "Show HUD" : "Hide HUD"}
+        aria-label={hudCollapsed ? "Show HUD" : "Hide HUD"}
+        type="button"
+      >
+        {hudCollapsed ? "📊" : "✖"}
+      </button>
+
+      {!hudCollapsed && <HudBody />}
 
       {/* Karma Dialog Overlay */}
       {showKarmaDialog && (

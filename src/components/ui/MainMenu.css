@@ -8,11 +8,11 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   font-family: "Inter", sans-serif;
   scroll-behavior: smooth;
   animation: menuFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 100;
 }
 
 @keyframes menuFadeIn {
@@ -382,26 +382,27 @@
 /* Avatar Selection Styles */
 .avatar-selection {
   background: rgba(0, 0, 0, 0.95);
+  overflow: hidden;
 }
 
 .avatar-selection-container {
   position: relative;
   z-index: 10;
-  padding: 2rem;
+  padding: 1rem 2rem 2rem 2rem;
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 2rem;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .selection-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+  flex-shrink: 0;
 }
 
 .selection-header .cyber-title {
@@ -421,11 +422,64 @@
   line-height: 1.5;
 }
 
+.avatar-grid-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  margin-bottom: 1rem;
+  min-height: 0;
+  position: relative;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  border-radius: 14px;
+  box-shadow: inset 0 0 40px rgba(0, 255, 255, 0.06), inset 0 1px 0 rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(20, 30, 60, 0.25), rgba(10, 15, 30, 0.25));
+}
+
+/* Subtle gradient fade at top/bottom of scroll area */
+.avatar-grid-wrapper::before,
+.avatar-grid-wrapper::after {
+  content: "";
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 20px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.avatar-grid-wrapper::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+}
+
+.avatar-grid-wrapper::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+
+/* Neon-thin scrollbars */
+.avatar-grid-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+.avatar-grid-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+.avatar-grid-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0,255,255,0.6), rgba(255,105,180,0.6));
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.avatar-grid-wrapper { 
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(0,255,255,0.6) rgba(255,255,255,0.05);
+}
+
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
 }
 
 .avatar-card {
@@ -569,6 +623,20 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  flex-shrink: 0;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 60px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+/* Make bottom controls fit on narrow screens */
+.selection-controls .cyber-button {
+  min-width: unset; /* override main menu min width */
+  flex: 1 1 220px;
+  max-width: 320px;
 }
 
 /* Responsive Design */
@@ -576,7 +644,44 @@
   .game-title {
     font-size: 2.5rem;
   }
+  
+  .avatar-selection-container {
+    padding: 0.5rem 1rem 1rem 1rem;
+  }
+  
+  .selection-header {
+    margin-bottom: 1rem;
+  }
+  
+  .selection-header .cyber-title {
+    font-size: 2rem;
+  }
+  
+  .avatar-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .avatar-card {
+    padding: 1rem;
+  }
+  
+  .selection-controls {
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+  }
+  .selection-controls .cyber-button {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  
+  .cyber-button {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
 
+@media (max-width: 480px) {
   .avatar-grid {
     grid-template-columns: 1fr;
     gap: 1rem;

@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 8500;
   backdrop-filter: blur(5px);
   animation: galleryFadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -401,4 +401,136 @@
     max-width: 95%;
     max-height: 95%;
   }
+}
+
+/* === THEME ENHANCEMENTS: CYBERPUNK-SPIRITUAL NEON GLASS === */
+/* Overrides appended to harmonize Gallery with the app's neon/glass aesthetic */
+
+.gallery-panel {
+  background: linear-gradient(135deg, #0d1222 0%, #111a2f 50%, #0b1020 100%);
+  border: 2px solid rgba(0, 255, 255, 0.35);
+  border-radius: 16px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(0, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+.gallery-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 85% 5%, rgba(0,255,255,0.12), transparent 50%),
+    radial-gradient(circle at 10% 95%, rgba(255,105,180,0.12), transparent 50%);
+  z-index: 0;
+}
+
+.gallery-header {
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.08), rgba(255, 105, 180, 0.08));
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.35);
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.08);
+}
+
+.gallery-header h2 {
+  color: #e6f7ff;
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+.gallery-stats .unlocked-count {
+  background: rgba(0, 255, 255, 0.12);
+  border: 1px solid rgba(0, 255, 255, 0.35);
+  color: #aefaff;
+}
+
+.gallery-close {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #e6f7ff;
+  font-size: 22px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  transition: all 0.25s ease;
+}
+
+.gallery-close:hover {
+  background: rgba(255, 0, 0, 0.22);
+  border-color: rgba(255, 0, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.gallery-categories {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.25);
+}
+
+.category-tab {
+  color: #a8c6ff;
+  padding: 14px 18px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.category-tab:hover {
+  background: rgba(0, 255, 255, 0.08);
+  color: #e6f7ff;
+}
+
+.category-tab.active {
+  background: rgba(0, 255, 255, 0.08);
+  color: #00ffff;
+  border-bottom-color: rgba(0, 255, 255, 0.6);
+  text-shadow: 0 0 8px rgba(0,255,255,0.35);
+}
+
+.gallery-item.unlocked {
+  background: linear-gradient(135deg, rgba(20, 30, 60, 0.6) 0%, rgba(10, 15, 30, 0.6) 100%);
+  border-color: rgba(0, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.gallery-item.unlocked:hover {
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow:
+    0 15px 30px rgba(0, 255, 255, 0.18),
+    0 8px 22px rgba(0, 0, 0, 0.6),
+    inset 0 0 24px rgba(0, 255, 255, 0.12);
+}
+
+.gallery-item-overlay {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  color: #e6f7ff;
+  padding: 18px 14px 14px;
+}
+
+.artwork-title {
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+}
+
+.artwork-viewer-content {
+  background: linear-gradient(135deg, #0d1222 0%, #111a2f 100%);
+  border: 2px solid rgba(0, 255, 255, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.6), 0 0 32px rgba(0,255,255,0.08);
+}
+
+.artwork-viewer-header {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.35);
+}
+
+.artwork-viewer-header h3 {
+  color: #e6f7ff;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
 }

@@ -33,6 +33,7 @@ interface GameStore extends GameState {
   getPlayerName: () => string;
   getPlayerPronouns: () => PlayerSettings["pronouns"];
   markContentWarningSeen: () => void;
+  resetContentWarning: () => void;
 }
 
 const initialState: GameState = {
@@ -231,6 +232,14 @@ export const useGameStore = create<GameStore>()(
           playerSettings: {
             ...state.playerSettings,
             hasSeenContentWarning: true,
+          },
+        })),
+
+      resetContentWarning: () =>
+        set((state) => ({
+          playerSettings: {
+            ...state.playerSettings,
+            hasSeenContentWarning: false,
           },
         })),
     }),

@@ -19,44 +19,106 @@
   position: fixed;
   top: 20px;
   left: 20px;
-  z-index: 1000;
+  z-index: 2500;
   display: flex;
   flex-direction: column;
   gap: 15px;
   pointer-events: auto;
-  background: rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 10px;
-  backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 15px;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+  max-width: 250px;
+}
+
+/* Collapse toggle button */
+.hud-toggle {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(10, 15, 30, 0.7);
+  color: #e6f7ff;
+  border: 1px solid rgba(0, 255, 255, 0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 0 16px rgba(0,255,255,0.08);
+  backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+  z-index: 2600;
+}
+
+.hud-toggle:hover {
+  background: rgba(20, 30, 60, 0.75);
+  border-color: rgba(0, 255, 255, 0.55);
+  transform: translateY(-1px);
+}
+
+.game-hud.collapsed {
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  max-width: unset;
+}
+
+.game-hud.collapsed .hud-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: auto;
+}
+
+/* Container when expanded */
+.hud-body {
+  display: contents;
 }
 
 /* === EDUCATIONAL GUIDE BUTTONS === */
 .educational-guide-button {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 15px;
   pointer-events: auto;
-  z-index: 1001;
+  z-index: 2600;
   position: relative;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
 }
 
 .guide-button {
-  padding: 10px 15px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 25px;
-  font-size: 0.9rem;
+  padding: 6px 10px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  font-size: 0.75rem;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-  opacity: 0.95;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  opacity: 1;
   position: relative;
   overflow: hidden;
-  min-width: 100px;
+  min-width: 75px;
   text-align: center;
   pointer-events: auto;
-  z-index: 1002;
+  z-index: 2700;
+  white-space: nowrap;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
 }
 
 .guide-button:before {
@@ -96,26 +158,31 @@
 .guide-button.chakras {
   background: linear-gradient(45deg, #9b59b6, #8e44ad);
   color: white;
+  border-color: #9b59b6;
 }
 
 .guide-button.romance {
   background: linear-gradient(45deg, #e91e63, #ad1457);
   color: white;
+  border-color: #e91e63;
 }
 
 .guide-button.karma {
   background: linear-gradient(45deg, #ff9800, #f57c00);
   color: white;
+  border-color: #ff9800;
 }
 
 .guide-button.gallery {
   background: linear-gradient(45deg, #9c27b0, #7b1fa2);
   color: white;
+  border-color: #9c27b0;
 }
 
 .guide-button.settings {
   background: linear-gradient(45deg, #607d8b, #455a64);
   color: white;
+  border-color: #607d8b;
 }
 /* Karma Meter */
 .karma-meter {
@@ -253,8 +320,9 @@
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid rgba(212, 165, 165, 0.4);
   border-radius: 12px;
-  padding: 12px;
-  min-width: 200px;
+  padding: 8px;
+  min-width: 160px;
+  max-width: 180px;
   backdrop-filter: blur(10px);
 }
 

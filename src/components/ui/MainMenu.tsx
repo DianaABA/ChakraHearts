@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useGameStore } from "../../stores/gameStore";
 import { AVATARS, UI, AUDIO } from "../../assets";
 import { PaymentOptions } from "../PaymentOptions";
+import PlayerSettings from "./PlayerSettings";
+import Gallery from "../Gallery";
+import type { GalleryArtwork } from "../Gallery";
 import "./MainMenu.css";
 
 export interface AvatarOption {
@@ -94,12 +97,67 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [showAvatarSelect, setShowAvatarSelect] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [showPlayerSettings, setShowPlayerSettings] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
   const { setSelectedAvatar: setGameStoreAvatar } = useGameStore();
+
+  // Gallery artworks for the main menu
+  const galleryArtworks: GalleryArtwork[] = [
+    {
+      id: "elena_awakening",
+      title: "Elena's Root Awakening",
+      description: "The moment Elena connects with her Root Chakra",
+      imageSrc: "/backgrounds/elena_chakra_awakening_new.png",
+      category: "characters",
+      unlocked: true,
+    },
+    {
+      id: "temple_burning",
+      title: "Temple Destruction",
+      description: "The ancient temple burning in spiritual fire",
+      imageSrc: "/backgrounds/pro_ep1_temple_burning_destruction.png",
+      category: "scenes",
+      unlocked: true,
+    },
+    {
+      id: "lotus_birth",
+      title: "Lotus Birth",
+      description: "Aurora's consciousness emerging from the void",
+      imageSrc: "/backgrounds/sc0_lotus_birth_void.png",
+      category: "concepts",
+      unlocked: true,
+    },
+    {
+      id: "naga_fight",
+      title: "Naga Battle",
+      description: "Epic confrontation with the shadow serpent",
+      imageSrc: "/backgrounds/sc1a_naga_fight_epic.png",
+      category: "scenes",
+      unlocked: true,
+    },
+    {
+      id: "shore_dawn",
+      title: "Dawn at the Shore",
+      description: "The peaceful ending shore where healing begins",
+      imageSrc: "/backgrounds/sc6_shore_dawn_wide.png",
+      category: "scenes",
+      unlocked: true,
+    },
+    {
+      id: "sacred_cow",
+      title: "Sacred Cow Carving",
+      description: "Ancient wall carving of the sacred cow spirit",
+      imageSrc: "/backgrounds/sc2_cow_carving_wall.jpg",
+      category: "special",
+      unlocked: true,
+    },
+  ];
 
   // Audio reference for menu music
   const menuAudioRef = useRef<HTMLAudioElement | null>(null);
   const audioStartedRef = useRef<boolean>(false);
+  const avatarGridRef = useRef<HTMLDivElement | null>(null);
 
   // Start background music when component mounts
   useEffect(() => {
@@ -118,7 +176,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       try {
         await audio.play();
         console.log("🎵 Menu music started successfully");
-      } catch (error) {
+  } catch {
         console.log("Audio autoplay prevented, will start on user interaction");
 
         // Single event listener that removes itself after first use
@@ -161,8 +219,8 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const menuButtons = [
     { text: "New Journey", action: () => setShowPaymentOptions(true) },
     { text: "Continue Path", action: onLoadGame },
-    { text: "Settings", action: () => console.log("Settings") },
-    { text: "Gallery", action: () => console.log("Gallery") },
+    { text: "Settings", action: () => setShowPlayerSettings(true) },
+    { text: "Gallery", action: () => setShowGallery(true) },
   ];
 
   const avatarButtons =
@@ -189,6 +247,18 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      // In avatar selection, only handle keyboard events for the control buttons
+      // Allow normal scrolling with arrow keys in the avatar grid
+      if (showAvatarSelect) {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          setShowAvatarSelect(false);
+        }
+        // Don't prevent default for arrow keys in avatar selection - allow scrolling
+        return;
+      }
+
+      // Normal menu navigation (when not in avatar selection)
       if (event.key === "Enter") {
         event.preventDefault();
         if (currentButtons[focusedButtonIndex]) {
@@ -202,9 +272,6 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         setFocusedButtonIndex(
           (prev) => (prev - 1 + currentButtons.length) % currentButtons.length
         );
-      } else if (event.key === "Escape" && showAvatarSelect) {
-        event.preventDefault();
-        setShowAvatarSelect(false);
       }
     },
     [currentButtons, focusedButtonIndex, showAvatarSelect]
@@ -217,6 +284,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
   useEffect(() => {
     setFocusedButtonIndex(0);
+  }, [showAvatarSelect]);
+
+  // Ensure avatar grid starts at top when opening selection
+  useEffect(() => {
+    if (showAvatarSelect && avatarGridRef.current) {
+      avatarGridRef.current.scrollTop = 0;
+    }
   }, [showAvatarSelect]);
 
   const handleAvatarSelect = (avatarId: string) => {
@@ -286,37 +360,39 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               that resonates with your inner energy.
             </p>
             <p className="keyboard-hint">
-              Use ↑↓ Arrow Keys & Enter • Escape to Go Back
+              Use Mouse/Touch to Select Avatar • Scroll or Arrow Keys to Browse • Escape to Go Back
             </p>
           </div>
 
-          <div className="avatar-grid">
-            {AVATAR_OPTIONS.map((avatar) => (
-              <div
-                key={avatar.id}
-                className={`avatar-card ${
-                  selectedAvatar === avatar.id ? "selected" : ""
-                }`}
-                onClick={() => setSelectedAvatar(avatar.id)}
-              >
-                <div className="avatar-image-container">
-                  <img
-                    src={avatar.image}
-                    alt={avatar.name}
-                    className="avatar-image"
-                  />
-                  <div
-                    className="chakra-glow"
-                    data-chakra={avatar.chakra.toLowerCase()}
-                  ></div>
+          <div className="avatar-grid-wrapper" ref={avatarGridRef}>
+            <div className="avatar-grid">
+              {AVATAR_OPTIONS.map((avatar) => (
+                <div
+                  key={avatar.id}
+                  className={`avatar-card ${
+                    selectedAvatar === avatar.id ? "selected" : ""
+                  }`}
+                  onClick={() => setSelectedAvatar(avatar.id)}
+                >
+                  <div className="avatar-image-container">
+                    <img
+                      src={avatar.image}
+                      alt={avatar.name}
+                      className="avatar-image"
+                    />
+                    <div
+                      className="chakra-glow"
+                      data-chakra={avatar.chakra.toLowerCase()}
+                    ></div>
+                  </div>
+                  <div className="avatar-info">
+                    <h3 className="avatar-name">{avatar.name}</h3>
+                    <div className="chakra-tag">{avatar.chakra} Chakra</div>
+                    <p className="avatar-description">{avatar.description}</p>
+                  </div>
                 </div>
-                <div className="avatar-info">
-                  <h3 className="avatar-name">{avatar.name}</h3>
-                  <div className="chakra-tag">{avatar.chakra} Chakra</div>
-                  <p className="avatar-description">{avatar.description}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <div className="selection-controls">
@@ -399,6 +475,19 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           <p className="version-text">v1.0.0 - Digital Enlightenment Build</p>
         </div>
       </div>
+
+      {/* Player Settings Modal */}
+      <PlayerSettings
+        isOpen={showPlayerSettings}
+        onClose={() => setShowPlayerSettings(false)}
+      />
+
+      {/* Gallery Modal */}
+      <Gallery 
+        isOpen={showGallery} 
+        onClose={() => setShowGallery(false)} 
+        artworks={galleryArtworks}
+      />
     </div>
   );
 };
