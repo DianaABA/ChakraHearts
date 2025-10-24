@@ -29,9 +29,10 @@
 }
 
 .educational-panel {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  border: 2px solid #4a69bd;
-  border-radius: 15px;
+  background: rgba(10, 14, 20, 0.85);
+  backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(0, 255, 255, 0.25);
+  border-radius: 16px;
   width: 90%;
   max-width: 900px;
   height: 80%;
@@ -39,7 +40,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px rgba(0, 255, 255, 0.08) inset, 0 20px 50px rgba(0, 0, 0, 0.6);
   animation: panelSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -67,16 +68,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: linear-gradient(90deg, #4a69bd, #6c5ce7);
-  border-bottom: 2px solid #74b9ff;
+  padding: 16px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  border-bottom: 1px solid rgba(0, 255, 255, 0.25);
 }
 
 .panel-header h2 {
-  color: white;
+  color: #e8f9ff;
   margin: 0;
-  font-size: 1.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
 }
 
 .close-button {
@@ -99,35 +100,34 @@
 /* === SECTION TABS === */
 .section-tabs {
   display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  overflow-x: auto;                 /* Horizontal scroll if buttons overflow */
-  -webkit-overflow-scrolling: touch;/* Momentum scroll on iOS */
-  position: sticky;                 /* Keep tabs visible while reading */
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
   top: 0;
   z-index: 2;
-  padding: 8px;                     /* Space around pill buttons */
+  padding: 10px;
 }
 
 .section-tabs button {
-  flex: 0 0 auto;                   /* Avoid squishing; allow horizontal scroll */
-  color: #e8e4df;
+  flex: 0 0 auto;
+  color: #e8f9ff;
   padding: 10px 12px;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  background: linear-gradient(45deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
 }
 
 .section-tabs button::before {
@@ -145,8 +145,8 @@
 }
 
 .section-tabs button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
 
 .section-tabs button:hover::before {
@@ -160,9 +160,9 @@
 }
 
 .section-tabs button.active {
-  color: #74b9ff;
-  border-color: #74b9ff;
-  box-shadow: 0 0 0 2px rgba(116, 185, 255, 0.35) inset, 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: #7ee8f7;
+  border-color: rgba(0, 255, 255, 0.85);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.25) inset, 0 0 18px rgba(0, 255, 255, 0.25);
 }
 
 /* === PANEL CONTENT === */
@@ -170,11 +170,11 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  color: #ddd;
-  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling on iOS */
-  overscroll-behavior: contain;      /* Prevent scroll chaining to background */
-  touch-action: pan-y;               /* Ensure vertical scrolling works on touch */
-  line-height: 1.6;                  /* More readable body text */
+  color: #d9eef3;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  line-height: 1.6;
 }
 
 .education-content {
@@ -189,22 +189,24 @@
   flex-wrap: wrap;
 }
 
-.chakra-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
+.close-button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e8f9ff;
+  font-size: 1.2rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  border-color: rgba(0, 255, 255, 0.35);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
 }
 
-.chakra-button:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
 
 .chakra-button.active {
   opacity: 1;
@@ -219,11 +221,11 @@
 }
 
 .chakra-info {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid currentColor;
+  border-left: 3px solid rgba(0, 255, 255, 0.35);
 }
 
 .chakra-properties {
@@ -235,35 +237,33 @@
 
 .balanced,
 .imbalanced {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
 }
-
 .balanced {
-  border-left: 4px solid #00aa00;
+  border-left: 3px solid rgba(0, 255, 170, 0.5);
 }
-
 .imbalanced {
-  border-left: 4px solid #cc0000;
+  border-left: 3px solid rgba(255, 80, 80, 0.6);
 }
 
 .game-relevance,
 .affirmations {
-  background: rgba(116, 185, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  border-left: 4px solid #74b9ff;
+  border-left: 3px solid rgba(0, 255, 255, 0.35);
 }
 
 /* === ROMANCE SECTION === */
 .romance-overview {
-  background: rgba(255, 192, 203, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #ff69b4;
+  border-left: 3px solid rgba(0, 255, 255, 0.35);
 }
 
 .character-selector {
@@ -275,14 +275,14 @@
 
 .character-button {
   padding: 10px 20px;
-  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-  border: none;
+  background: linear-gradient(45deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
-  color: white;
-  font-weight: bold;
+  color: #e8f9ff;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0.7;
+  transition: all 0.25s ease;
+  opacity: 0.8;
 }
 
 .character-button:hover {
@@ -292,12 +292,13 @@
 
 .character-button.active {
   opacity: 1;
-  transform: scale(1.1);
-  box-shadow: 0 0 15px #ff69b4;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.25) inset, 0 0 16px rgba(0, 255, 255, 0.18);
+  border-color: rgba(0, 255, 255, 0.75);
 }
 
 .character-details {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -311,17 +312,17 @@
 }
 
 .high-compatibility {
-  background: rgba(0, 170, 0, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #00aa00;
+  border-left: 3px solid rgba(0, 255, 170, 0.5);
 }
 
 .challenges {
-  background: rgba(255, 165, 0, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #ffa500;
+  border-left: 3px solid rgba(255, 170, 0, 0.6);
 }
 
 .development-stages {
@@ -329,20 +330,20 @@
 }
 
 .stage {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  border-left: 4px solid #9b59b6;
+  border-left: 3px solid rgba(162, 155, 254, 0.6);
 }
 
 /* === KARMA SECTION === */
 .karma-overview {
-  background: rgba(255, 215, 0, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #ffd700;
+  border-left: 3px solid rgba(0, 255, 255, 0.35);
 }
 
 .karma-selector {
@@ -376,7 +377,7 @@
 }
 
 .karma-details {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -389,10 +390,10 @@
 }
 
 .karma-redemption {
-  background: rgba(0, 170, 0, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #00aa00;
+  border-left: 3px solid rgba(0, 255, 170, 0.5);
 }
 
 .karma-mechanics {
@@ -400,20 +401,20 @@
 }
 
 .mechanic {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  border-left: 4px solid #e67e22;
+  border-left: 3px solid rgba(230, 126, 34, 0.6);
 }
 
 /* === CONCEPTS SECTION === */
 .concept {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #8e44ad;
+  border-left: 3px solid rgba(142, 68, 173, 0.6);
 }
 
 .concept-list {
@@ -422,7 +423,7 @@
 
 /* === GENERAL STYLES === */
 h3 {
-  color: #74b9ff;
+  color: #7ee8f7;
   margin-bottom: 15px;
 }
 
@@ -442,31 +443,20 @@ ul {
 }
 
 li {
-  padding: 5px 0;
-  padding-left: 20px;
+  padding: 6px 0 6px 18px;
   position: relative;
 }
-
 li::before {
-  content: "✨";
+  content: "";
   position: absolute;
   left: 0;
-}
-
-.balanced li::before {
-  content: "✅";
-}
-
-.imbalanced li::before {
-  content: "⚠️";
-}
-
-.high-compatibility li::before {
-  content: "💚";
-}
-
-.challenges li::before {
-  content: "🔶";
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 255, 255, 0.8);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
 }
 
 /* === RESPONSIVE DESIGN === */
@@ -508,10 +498,10 @@ li::before {
 }
 
 .panel-content::-webkit-scrollbar-thumb {
-  background: #74b9ff;
+  background: rgba(0, 255, 255, 0.6);
   border-radius: 4px;
 }
 
 .panel-content::-webkit-scrollbar-thumb:hover {
-  background: #5a9bd4;
+  background: rgba(0, 255, 255, 0.8);
 }

@@ -373,7 +373,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     <div className="educational-panel-overlay">
       <div className={`educational-panel ${isExpanded ? "expanded" : ""}`}>
         <div className="panel-header">
-          <h2>📚 Spiritual Guide</h2>
+          <h2 className="neon-subtle">Spiritual Guide</h2>
           <div style={{ display: "flex", gap: 8 }}>
             <button
               className="close-button"
