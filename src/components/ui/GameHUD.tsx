@@ -87,7 +87,8 @@ export const GameHUD: React.FC = () => {
   const getKarmaIcon = (karmaValue: number) => {
     if (karmaValue > 0) return UI.CHOICE_KARMA_GOOD;
     if (karmaValue < 0) return UI.CHOICE_KARMA_BAD;
-    return UI.CHAKRA_UNLOCK_ROOT; // Neutral/balanced karma
+    // Use a compact neutral icon to avoid large unlock images
+    return UI.CHOICE_NORMAL; // Neutral/balanced karma
   };
 
   // Get karma description
@@ -353,7 +354,15 @@ export const GameHUD: React.FC = () => {
         title="Click to view karma details"
       >
         <div className="meter-label">
-          <img src={getKarmaIcon(karma)} alt="Karma" className="karma-icon" />
+          <img
+            src={getKarmaIcon(karma)}
+            alt="Karma"
+            className="karma-icon"
+            onError={(e) => {
+              const t = e.currentTarget as HTMLImageElement;
+              if (t.src !== UI.CHOICE_NORMAL) t.src = UI.CHOICE_NORMAL;
+            }}
+          />
           Karma
         </div>
         <div className="meter-bar">
