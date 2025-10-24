@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-env node */
+/* eslint-disable no-undef */
 // Asset audit utility — see documentation block below for usage.
   /*
     Asset audit: Lists assets in public/ that are not referenced by the code.
@@ -113,8 +115,12 @@ function toFileSet(maps, keySet) {
   const usedFiles = new Set();
   for (const mk of keySet) {
     const [mapName, key] = mk.split(".");
-    const p = maps[mapName]?.[key];
-    if (p) usedFiles.add(p);
+    let p = maps[mapName]?.[key];
+    if (p) {
+      // Normalize by stripping any query/hash (e.g., cache-busting like ?v=3)
+      const normalized = p.split("?")[0].split("#")[0];
+      usedFiles.add(normalized);
+    }
   }
   return usedFiles;
 }
@@ -127,7 +133,11 @@ function listPublicAssets() {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const e of entries) {
       const p = path.join(dir, e.name);
-      if (e.isDirectory()) walk(p);
+      // Skip trash directory to avoid reporting already-moved files
+      if (e.isDirectory()) {
+        if (e.name === "_trash") continue;
+        walk(p);
+      }
       else if (allowed.has(path.extname(p).toLowerCase())) {
         const rel = "/" + path.relative(PUBLIC_DIR, p).split(path.sep).join("/");
         files.push({ abs: p, rel });
@@ -164,7 +174,7 @@ function main() {
       console.log(`\nMoving ${unreferenced.length} files to ${path.relative(PUBLIC_DIR, trashDir)} ...`);
       for (const f of unreferenced) {
         try {
-          const dest = path.join(trashDir, f.rel.replace(/^[\/\\]/, "").split("/").join(path.sep));
+          const dest = path.join(trashDir, f.rel.replace(/^[/\\]/, "").split("/").join(path.sep));
           const destDir = path.dirname(dest);
           fs.mkdirSync(destDir, { recursive: true });
           fs.renameSync(f.abs, dest);

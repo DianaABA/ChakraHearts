@@ -13,6 +13,9 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
     "main" | "settings" | "save" | "load"
   >("main");
   const [showPlayerSettings, setShowPlayerSettings] = useState(false);
+  const [settingsTarget, setSettingsTarget] = useState<
+    "personal" | "audio" | "display" | "reading" | "content"
+  >("personal");
 
   // Close menu on Escape key
   useEffect(() => {
@@ -159,29 +162,56 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
       <h3>Settings</h3>
       <div className="settings-buttons">
         <button
-          onClick={() => setShowPlayerSettings(true)}
+          onClick={() => {
+            setSettingsTarget("personal");
+            setShowPlayerSettings(true);
+          }}
           className="settings-button"
         >
           <div className="setting-title">Player Settings</div>
           <div className="setting-desc">Change name and pronouns</div>
         </button>
 
-        <button className="settings-button">
+        <button
+          className="settings-button"
+          onClick={() => {
+            setSettingsTarget("audio");
+            setShowPlayerSettings(true);
+          }}
+        >
           <div className="setting-title">Audio Settings</div>
           <div className="setting-desc">Volume and music controls</div>
         </button>
 
-        <button className="settings-button">
+        <button
+          className="settings-button"
+          onClick={() => {
+            setSettingsTarget("display");
+            setShowPlayerSettings(true);
+          }}
+        >
           <div className="setting-title">Display Settings</div>
           <div className="setting-desc">Visual preferences and themes</div>
         </button>
 
-        <button className="settings-button">
+        <button
+          className="settings-button"
+          onClick={() => {
+            setSettingsTarget("reading");
+            setShowPlayerSettings(true);
+          }}
+        >
           <div className="setting-title">Gameplay Settings</div>
           <div className="setting-desc">Auto-advance and preferences</div>
         </button>
 
-        <button className="settings-button">
+        <button
+          className="settings-button"
+          onClick={() => {
+            setSettingsTarget("content");
+            setShowPlayerSettings(true);
+          }}
+        >
           <div className="setting-title">Accessibility</div>
           <div className="setting-desc">Screen reader and contrast options</div>
         </button>
@@ -218,6 +248,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
       {/* Player Settings Modal */}
       <PlayerSettings
         isOpen={showPlayerSettings}
+        initialSection={settingsTarget}
         onClose={() => setShowPlayerSettings(false)}
       />
     </div>

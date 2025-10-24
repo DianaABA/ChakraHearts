@@ -1,4 +1,5 @@
 import { getScene as getEP1Scene } from "./sceneLoader";
+import { getScene as getEP2Scene } from "../episodes/ep2/loader";
 import type { EpisodeId, Scene } from "../types";
 import { getEpisodeLabel } from "../constants/episodeLabels";
 
@@ -13,6 +14,9 @@ export const getSceneForEpisode = async (
   const ep = episode ?? 1;
   if (ep === 1) {
     return getEP1Scene(sceneId);
+  }
+  if (ep === 2) {
+    return getEP2Scene(sceneId);
   }
 
   // Friendly scene for episodes not yet implemented

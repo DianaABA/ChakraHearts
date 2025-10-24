@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGameStore } from "../../stores/gameStore";
+import { display } from "../../platform/screen";
 import "./PlayerSettings.css";
 
 interface PlayerSettingsProps {
   isOpen: boolean;
   onClose: () => void;
+  initialSection?: "personal" | "audio" | "display" | "reading" | "content";
 }
 
 export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
   isOpen,
   onClose,
+  initialSection,
 }) => {
   const { playerSettings, setPlayerSettings, resetContentWarning } = useGameStore();
   const [tempName, setTempName] = useState(playerSettings.name);
   const [tempPronouns, setTempPronouns] = useState(playerSettings.pronouns);
   const [bgmVolume, setBgmVolume] = useState(playerSettings.bgmVolume ?? 0.3);
-  const [sfxVolume, setSfxVolume] = useState(playerSettings.sfxVolume ?? 0.5);
   const [textSpeed, setTextSpeed] = useState(playerSettings.textSpeed ?? 25);
   const [autoDelay, setAutoDelay] = useState(playerSettings.autoDelay ?? 500);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  // Refs to scroll to sections
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const personalRef = useRef<HTMLDivElement | null>(null);
+  const audioRef = useRef<HTMLDivElement | null>(null);
+  const displayRef = useRef<HTMLDivElement | null>(null);
+  const readingRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   // Close on ESC
   useEffect(() => {
@@ -28,6 +39,36 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  // Sync fullscreen state and listen to changes
+  useEffect(() => {
+    if (!isOpen) return;
+    const updateFs = () => setIsFullscreen(display.isFullscreen());
+    updateFs();
+    document.addEventListener("fullscreenchange", updateFs);
+    return () => document.removeEventListener("fullscreenchange", updateFs);
+  }, [isOpen]);
+
+  // Scroll to initial section when opened
+  useEffect(() => {
+    if (!isOpen) return;
+    const target =
+      initialSection === "audio"
+        ? audioRef.current
+        : initialSection === "display"
+        ? displayRef.current
+        : initialSection === "reading"
+        ? readingRef.current
+        : initialSection === "content"
+        ? contentRef.current
+        : personalRef.current;
+    if (target) {
+      // Use setTimeout to ensure layout is ready
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  }, [isOpen, initialSection]);
+
   if (!isOpen) return null;
 
   const handleSave = () => {
@@ -35,7 +76,6 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
       name: tempName.trim() || "Player",
       pronouns: tempPronouns,
       bgmVolume,
-      sfxVolume,
       textSpeed,
       autoDelay,
     });
@@ -46,7 +86,6 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
     setTempName(playerSettings.name);
     setTempPronouns(playerSettings.pronouns);
     setBgmVolume(playerSettings.bgmVolume ?? 0.3);
-    setSfxVolume(playerSettings.sfxVolume ?? 0.5);
     setTextSpeed(playerSettings.textSpeed ?? 25);
     setAutoDelay(playerSettings.autoDelay ?? 500);
   };
@@ -61,7 +100,11 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
       aria-modal="true"
       aria-label="Player Settings"
     >
-      <div className="player-settings-panel" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="player-settings-panel"
+        onClick={(e) => e.stopPropagation()}
+        ref={panelRef}
+      >
         <div className="settings-header">
           <h2 className="neon-subtle">Player Settings</h2>
           <button className="settings-close" onClick={onClose}>
@@ -70,7 +113,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
         </div>
 
         <div className="settings-content">
-          <div className="setting-section">
+          <div className="setting-section" ref={personalRef}>
             <h3>Personal Information</h3>
 
             <div className="setting-group">
@@ -155,7 +198,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
             </p>
           </div>
 
-          <div className="setting-section">
+          <div className="setting-section" ref={audioRef}>
             <h3>Audio</h3>
             <div className="setting-group">
               <label htmlFor="bgm-volume">BGM Volume: {Math.round(bgmVolume * 100)}%</label>
@@ -174,25 +217,37 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
                 }}
               />
             </div>
+            {/* SFX currently disabled for a cleaner audio experience */}
+          </div>
+
+          <div className="setting-section" ref={displayRef}>
+            <h3>Display</h3>
             <div className="setting-group">
-              <label htmlFor="sfx-volume">SFX Volume: {Math.round(sfxVolume * 100)}%</label>
-              <input
-                id="sfx-volume"
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={sfxVolume}
-                onChange={(e) => {
-                  const v = parseFloat(e.target.value);
-                  setSfxVolume(v);
-                  setPlayerSettings({ sfxVolume: v });
-                }}
-              />
+              <label htmlFor="fullscreen-toggle">Fullscreen</label>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <input
+                  id="fullscreen-toggle"
+                  type="checkbox"
+                  checked={isFullscreen}
+                  onChange={async (e) => {
+                    const next = e.target.checked;
+                    setIsFullscreen(next);
+                    if (next) {
+                      await display.enterFullscreen();
+                    } else {
+                      await display.exitFullscreen();
+                    }
+                  }}
+                />
+                <span style={{ color: "#bdc3c7", fontSize: 14 }}>
+                  {isFullscreen ? "Fullscreen enabled" : "Windowed mode"}
+                </span>
+              </div>
+              <p className="setting-hint">Press F to toggle anytime.</p>
             </div>
           </div>
 
-          <div className="setting-section">
+          <div className="setting-section" ref={readingRef}>
             <h3>Reading</h3>
             <div className="setting-group">
               <label htmlFor="text-speed">Text Speed (ms/char): {textSpeed}</label>
@@ -238,7 +293,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
           </button>
         </div>
 
-        <div className="setting-section content-warning-controls">
+        <div className="setting-section content-warning-controls" ref={contentRef}>
           <h3>Content Warning</h3>
           <p className="warning-status">
             Status: {playerSettings.hasSeenContentWarning ? "Seen" : "Not seen"}

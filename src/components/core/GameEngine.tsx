@@ -131,7 +131,7 @@ export const GameEngine: React.FC = () => {
 
       const result = CHARACTER_PORTRAITS[character];
       if (character === "MC") {
-        console.log(
+        devLog(
           `🎯 Default MC mapping: ${result} (from ${CHARACTERS.MC_BASE})`
         );
       }
@@ -208,7 +208,7 @@ export const GameEngine: React.FC = () => {
           `👤 Showing portrait for ${currentLine.character}: ${characterPortrait}`
         );
       } else {
-        console.warn(
+        devLog(
           `⚠️ No portrait found for character: ${currentLine.character}`
         );
       }
@@ -446,6 +446,72 @@ export const GameEngine: React.FC = () => {
       // Execute the choice action
       choice.action();
 
+      // Apply any side effects declared on the choice (e.g., show_image, open_codex)
+      if (Array.isArray(choice.effects)) {
+        choice.effects.forEach((effect: { type: string; payload?: string | number | Record<string, unknown> }) => {
+          if (!effect || typeof effect !== "object") return;
+          const { type, payload } = effect;
+          switch (type) {
+            case "show_image":
+              if (typeof payload === "string") {
+                setCurrentImage(payload);
+                devLog(`🖼️ (choice) Showing image: ${payload}`);
+              }
+              break;
+            case "open_codex": {
+              // Treat as an unlock + toast for now (UI codex panel can open separately)
+              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
+              if (id) {
+                try { unlockCodexEntry(id); } catch { /* ignore */ }
+                addNotification(`Codex: ${id}`, { variant: "codex" });
+                devLog(`📖 (choice) Open/Unlock codex: ${id}`);
+              }
+              break; }
+            case "unlock_codex_entry": {
+              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
+              if (id) {
+                try { unlockCodexEntry(id); } catch { /* ignore */ }
+                addNotification(`Codex: ${id}`, { variant: "codex" });
+                devLog(`📚 (choice) Codex entry unlocked: ${id}`);
+              }
+              break; }
+            case "award_badge": {
+              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
+              const title = (payload && typeof payload === "object" && "title" in payload ? String((payload as Record<string, unknown>).title) : undefined) || id || "Badge";
+              if (id) {
+                try { awardBadge(id); } catch { /* ignore */ }
+              }
+              if (title) addNotification(`Badge: ${title}`, { variant: "badge" });
+              devLog(`🏆 (choice) Badge awarded: ${title}`);
+              break; }
+            case "play_bgm":
+              if (typeof payload === "string") {
+                playBGM(payload);
+                devLog(`🎵 (choice) Playing BGM: ${payload}`);
+              }
+              break;
+            case "sfx":
+              devLog(`🔊 (choice) SFX: ${payload}`);
+              break;
+            case "vfx":
+              devLog(`✨ (choice) VFX: ${payload}`);
+              break;
+            case "goto_scene":
+              if (typeof payload === "string") {
+                setCurrentScene(payload);
+                setCurrentDialogue(0);
+                devLog(`🎬 (choice) Jumping to scene: ${payload}`);
+              }
+              break;
+            case "set_flag":
+              devLog(`🚩 (choice) Flag set: ${JSON.stringify(payload)}`);
+              break;
+            default:
+              devLog(`❓ (choice) Unknown effect type: ${type}`);
+          }
+        });
+      }
+
       // Handle karma changes
       if (choice.karma) {
         addKarma(choice.karma);
@@ -472,7 +538,8 @@ export const GameEngine: React.FC = () => {
         });
       }
 
-      handleNext();
+  // Advance to the next line unless a goto_scene effect already changed the scene
+  handleNext();
 
       // Record choice in backlog
       addBacklogEntry({ type: "choice", text: choice.text });
@@ -592,7 +659,7 @@ export const GameEngine: React.FC = () => {
       const already = (st.codexEntries || []).includes(id);
       if (!already) {
         st.unlockCodexEntry(id);
-        console.log(`📖 Auto-unlocked grief stage for episode ${ep}: ${id}`);
+        devLog(`📖 Auto-unlocked grief stage for episode ${ep}: ${id}`);
       }
     } catch {
       // ignore

@@ -9,6 +9,8 @@ import {
   TRANSITIONS,
 } from "../assets";
 import type { Scene } from "../types";
+import { devLog } from "./logger";
+import { useGameStore } from "../stores/gameStore";
 
 const SCENES: Record<string, Scene> = {
   prologue: {
@@ -421,7 +423,7 @@ const SCENES: Record<string, Scene> = {
           {
             text: "Roll aside",
             action: () =>
-              console.log("Rolling aside - dynamic survival instinct"),
+              devLog("Rolling aside - dynamic survival instinct"),
             karma: 1,
             flags: { guardian_reflex: "roll" },
             responseText: "You dive. Tail smashes. Sparks bloom.",
@@ -433,7 +435,7 @@ const SCENES: Record<string, Scene> = {
           },
           {
             text: "Shield Elena",
-            action: () => console.log("Shielding Elena - heroic protection"),
+            action: () => devLog("Shielding Elena - heroic protection"),
             karma: 1,
             romance: { character: "ELENA", points: 1 },
             flags: { guardian_reflex: "shield" },
@@ -447,7 +449,7 @@ const SCENES: Record<string, Scene> = {
           },
           {
             text: "Attack with debris",
-            action: () => console.log("Attacking - aggressive but futile"),
+            action: () => devLog("Attacking - aggressive but futile"),
             karma: -1,
             flags: { guardian_reflex: "attack" },
             responseText:
@@ -463,7 +465,7 @@ const SCENES: Record<string, Scene> = {
           {
             text: "Freeze",
             action: () =>
-              console.log("Freezing - David rescues, trauma bonding"),
+              devLog("Freezing - David rescues, trauma bonding"),
             karma: -1,
             romance: { character: "DAVID", points: 1 },
             flags: { guardian_reflex: "freeze", froze_in_guardian: true },
@@ -691,7 +693,7 @@ const SCENES: Record<string, Scene> = {
         choices: [
           {
             text: "Inspect the dog tag",
-            action: () => console.log("Inspecting dog tag - gaining insight"),
+            action: () => devLog("Inspecting dog tag - gaining insight"),
             flags: { codex_dogtag_hint_shown: true },
             effects: [
               { type: "show_image", payload: BACKGROUNDS.DOGTAG_CLOSEUP_MUD },
@@ -704,7 +706,7 @@ const SCENES: Record<string, Scene> = {
           },
           {
             text: "Look away",
-            action: () => console.log("Ignoring dog tag - mystery remains"),
+            action: () => devLog("Ignoring dog tag - mystery remains"),
             responseText:
               "Something about the metal gleam makes you uncomfortable. Best not to pry.",
           },
@@ -714,7 +716,7 @@ const SCENES: Record<string, Scene> = {
         type: "action",
         action: {
           type: "play_bgm",
-          payload: "TEMPLE_AMBIENT",
+          payload: "TENSION_THEME",
         },
       },
       {
@@ -785,6 +787,13 @@ const SCENES: Record<string, Scene> = {
         text: "You develop... instincts on reality TV. You learn to feel when you're being watched. When things are too scripted, too convenient...",
       },
       {
+        type: "action",
+        action: {
+          type: "unlock_codex_entry",
+          payload: { id: "concept:REALITY_SHOW", title: "Reality Show Metanarrative" },
+        },
+      },
+      {
         type: "dialogue",
         character: "ELENA",
         text: "(quietly) Sometimes I still get that feeling. Like right now.",
@@ -814,25 +823,25 @@ const SCENES: Record<string, Scene> = {
         choices: [
           {
             text: "That doesn't sound crazy at all",
-            action: () => console.log("Validating Elena's spiritual awakening"),
+            action: () => devLog("Validating Elena's spiritual awakening"),
             karma: 1,
             romance: { character: "ELENA", points: 2 },
           },
           {
             text: "Dreams can be powerful teachers",
-            action: () => console.log("Acknowledging spiritual wisdom"),
+            action: () => devLog("Acknowledging spiritual wisdom"),
             karma: 1,
             romance: { character: "ELENA", points: 1 },
           },
           {
             text: "Maybe it was just guilt",
-            action: () => console.log("Dismissing the spiritual significance"),
+            action: () => devLog("Dismissing the spiritual significance"),
             karma: -1,
           },
           {
             text: "Tell me more about the dream",
             action: () =>
-              console.log("Showing genuine interest in Elena's experience"),
+              devLog("Showing genuine interest in Elena's experience"),
             karma: 1,
             romance: { character: "ELENA", points: 1 },
           },
@@ -1055,25 +1064,25 @@ const SCENES: Record<string, Scene> = {
           {
             text: "Reach out to Agnivesh's spirit",
             action: () =>
-              console.log("Connecting with Agnivesh - spiritual bond"),
+              devLog("Connecting with Agnivesh - spiritual bond"),
             karma: 1,
             romance: { character: "AGNIVESH", points: 2 },
           },
           {
             text: "Send comfort to Santi",
-            action: () => console.log("Comforting Santi - healing connection"),
+            action: () => devLog("Comforting Santi - healing connection"),
             karma: 1,
             romance: { character: "SANTI", points: 2 },
           },
           {
             text: "Embrace the guilt and pain",
             action: () =>
-              console.log("Accepting responsibility - emotional growth"),
+              devLog("Accepting responsibility - emotional growth"),
             karma: 2,
           },
           {
             text: "Turn away from the vision",
-            action: () => console.log("Avoiding the past - staying distant"),
+            action: () => devLog("Avoiding the past - staying distant"),
             karma: -1,
           },
         ],
@@ -1509,6 +1518,38 @@ const SCENES: Record<string, Scene> = {
       {
         type: "narration",
         text: "To be continued in Episode 2: Sacral Waters...",
+      },
+      {
+        type: "choice",
+        choices: [
+          {
+            text: "Begin Episode 2",
+            action: () => {
+              try {
+                const st = useGameStore.getState();
+                st.setCurrentEpisode(2);
+                st.setCurrentDialogue(0);
+              } catch {/* ignore */}
+            },
+            effects: [
+              { type: "goto_scene", payload: "ep2_shore_awake" },
+            ],
+          },
+          {
+            text: "Return to Main Menu",
+            action: () => {
+              try {
+                const st = useGameStore.getState();
+                st.setCurrentEpisode(1);
+                st.setCurrentScene("prologue");
+                st.setCurrentDialogue(0);
+              } catch {/* ignore */}
+            },
+            effects: [
+              { type: "goto_scene", payload: "prologue" },
+            ],
+          },
+        ],
       },
     ],
   },

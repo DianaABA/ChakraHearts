@@ -15,7 +15,8 @@ export const EPISODE_BACKGROUNDS = {
   // Scene 1A - Naga Encounter & Aftermath
   GROUP_EXHAUSTED: "/backgrounds/scenes/sc1a_group_exhausted_aftermath.png",
   NAGA_EMERGENCE: "/backgrounds/scenes/sc1a_naga_emergence_wide.png",
-  NAGA_FIGHT_EPIC: "/backgrounds/sc1a_naga_fight_epic.png",
+  // Note: sc1a_naga_fight_epic.png duplicated the emergence image; consolidate to scenes path
+  NAGA_FIGHT_EPIC: "/backgrounds/scenes/sc1a_naga_emergence_wide.png",
   TEMPLE_AFTERMATH_REST: "/backgrounds/temple_aftermath_rest.png", // Post-naga defeat rest scene
 
   // Scene 1B - Chocolate Moment & Discoveries
@@ -76,6 +77,16 @@ export const EPILOGUE_BACKGROUNDS = {
   // (Add future epilogue backgrounds here)
 } as const;
 
+// === EPISODE 2 BACKGROUNDS ===
+// Note: Some Episode 2 images were delivered under characters/ep2/episode2.
+// We reference the actual paths for now to avoid blocking content integration.
+export const EP2_BACKGROUNDS = {
+  SHORE_AWAKE_WAVES: "/characters/ep2/episode2/shore_awake_waves.png",
+  SHORE_GROUP_GATHER: "/characters/ep2/episode2/shore_group_gather.png",
+  SHORE_GLOW_UMBRA: "/characters/ep2/episode2/shore_glow_umbra.png",
+  PRO_CLINIC_NIGHT: "/characters/ep2/episode2/pro_ep2_clinic_night.png",
+} as const;
+
 // === TRANSITION BACKGROUNDS ===
 export const TRANSITION_BACKGROUNDS = {
   BEACH_FADE: "/transitions/trans_beach_fade_in.png",
@@ -122,4 +133,7 @@ export const BACKGROUNDS = {
   // Epilogue scenes
   RUIN_ASH: EPILOGUE_BACKGROUNDS.RUIN_ASH,
   TWO_SOLDIERS: EPILOGUE_BACKGROUNDS.TWO_SOLDIERS,
+
+  // Episode 2 scenes
+  ...EP2_BACKGROUNDS,
 } as const;
