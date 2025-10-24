@@ -176,7 +176,7 @@
 .icon-button:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
-  box-shadow: 0 0 12px rgba(116, 185, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.35);
 }
 
 .close-button {
@@ -337,11 +337,11 @@
 
 /* === ROMANCE SECTION === */
 .romance-overview {
-  background: rgba(255, 192, 203, 0.1);
+  background: rgba(0, 0, 0, 0.25);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #ff69b4;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .character-selector {
@@ -353,10 +353,10 @@
 
 .character-button {
   padding: 10px 20px;
-  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-  border: none;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 255, 255, 0.35);
   border-radius: 20px;
-  color: white;
+  color: #d9ffff;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -371,7 +371,7 @@
 .character-button.active {
   opacity: 1;
   transform: scale(1.1);
-  box-shadow: 0 0 15px #ff69b4;
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.35);
 }
 
 .character-details {
@@ -389,17 +389,17 @@
 }
 
 .high-compatibility {
-  background: rgba(0, 170, 0, 0.1);
+  background: rgba(0, 0, 0, 0.25);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #00aa00;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .challenges {
-  background: rgba(255, 165, 0, 0.1);
+  background: rgba(0, 0, 0, 0.25);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #ffa500;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .development-stages {
@@ -407,20 +407,20 @@
 }
 
 .stage {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.25);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  border-left: 4px solid #9b59b6;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 /* === KARMA SECTION === */
 .karma-overview {
-  background: rgba(255, 215, 0, 0.1);
+  background: rgba(0, 0, 0, 0.25);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #ffd700;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .karma-selector {
@@ -432,9 +432,10 @@
 
 .karma-button {
   padding: 10px 20px;
-  border: none;
+  border: 1px solid rgba(0, 255, 255, 0.35);
   border-radius: 20px;
-  color: white;
+  color: #d9ffff;
+  background: rgba(0, 0, 0, 0.25);
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -467,10 +468,10 @@
 }
 
 .karma-redemption {
-  background: rgba(0, 170, 0, 0.1);
+  background: rgba(0, 0, 0, 0.25);
   padding: 15px;
   border-radius: 10px;
-  border-left: 4px solid #00aa00;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .karma-mechanics {
@@ -478,20 +479,20 @@
 }
 
 .mechanic {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.25);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 15px;
-  border-left: 4px solid #e67e22;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 /* === CONCEPTS SECTION === */
 .concept {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.25);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #8e44ad;
+  border-left: 4px solid rgba(0, 255, 255, 0.6);
 }
 
 .concept-list {
