@@ -32,13 +32,13 @@ export const ContentWarning: React.FC<ContentWarningProps> = ({
     <div className="content-warning-overlay">
       <div className="content-warning-panel">
         <div className="warning-header">
-          <h2>🙏 Important Notice - Chakra Hearts</h2>
+          <h2 className="neon-subtle">Important Notice — Chakra Hearts</h2>
         </div>
 
         <div className="warning-content">
           {/* Religious Respect Disclaimer */}
           <div className="disclaimer-section">
-            <h3>🕉️ Religious and Spiritual Respect</h3>
+            <h3>Religious and Spiritual Respect</h3>
             <p>
               <strong>Chakra Hearts</strong> draws inspiration from various
               spiritual and religious traditions, including Hinduism, Buddhism,
@@ -56,7 +56,7 @@ export const ContentWarning: React.FC<ContentWarningProps> = ({
 
           {/* Content Warnings */}
           <div className="disclaimer-section">
-            <h3>⚠️ Content Warnings</h3>
+            <h3>Content Warnings</h3>
             <p>
               This visual novel contains mature themes that some players may
               find sensitive:
@@ -98,7 +98,7 @@ export const ContentWarning: React.FC<ContentWarningProps> = ({
 
           {/* Player Customization */}
           <div className="disclaimer-section">
-            <h3>✨ Your Journey Begins</h3>
+            <h3>Your Journey Begins</h3>
             <p>Before we start, let's personalize your experience:</p>
 
             <div className="player-settings">

@@ -1,4 +1,4 @@
-/* 🙏 CONTENT WARNING & PLAYER SETTINGS STYLES */
+/* CONTENT WARNING & PLAYER SETTINGS STYLES */
 
 .content-warning-overlay {
   position: fixed;
@@ -64,6 +64,16 @@
   font-size: 28px;
   font-weight: 700;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Subtle neon text style for minimal emphasis */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
 }
 
 /* === CONTENT === */

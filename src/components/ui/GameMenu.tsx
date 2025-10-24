@@ -39,7 +39,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
   const renderMainMenu = () => (
     <>
       <div className="menu-header">
-        <h3>🎮 Game Menu</h3>
+        <h3>Game Menu</h3>
         <button className="close-button" onClick={onClose}>
           ×
         </button>
@@ -49,25 +49,25 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
           onClick={() => setCurrentSection("save")}
           className="menu-button primary"
         >
-          💾 Save Game
+          Save Game
         </button>
         <button
           onClick={() => setCurrentSection("load")}
           className="menu-button"
         >
-          📁 Load Game
+          Load Game
         </button>
         <button
           onClick={() => setCurrentSection("settings")}
           className="menu-button"
         >
-          ⚙️ Settings
+          Settings
         </button>
         <button onClick={resetGame} className="menu-button warning">
-          🔄 New Game
+          New Game
         </button>
         <button onClick={onClose} className="menu-button resume">
-          ▶️ Resume
+          Resume
         </button>
       </div>
     </>
@@ -87,7 +87,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
 
   const renderSaveMenu = () => (
     <>
-      <h3>💾 Save Game</h3>
+      <h3>Save Game</h3>
       <div className="save-slots">
         {saveSlots.map((slot) => (
           <button
@@ -114,14 +114,14 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
         onClick={() => setCurrentSection("main")}
         className="menu-button back"
       >
-        ← Back
+        Back
       </button>
     </>
   );
 
   const renderLoadMenu = () => (
     <>
-      <h3>📁 Load Game</h3>
+      <h3>Load Game</h3>
       <div className="save-slots">
         {saveSlots.map((slot) => (
           <button
@@ -149,40 +149,40 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
         onClick={() => setCurrentSection("main")}
         className="menu-button back"
       >
-        ← Back
+        Back
       </button>
     </>
   );
 
   const renderSettingsMenu = () => (
     <>
-      <h3>⚙️ Settings</h3>
+      <h3>Settings</h3>
       <div className="settings-buttons">
         <button
           onClick={() => setShowPlayerSettings(true)}
           className="settings-button"
         >
-          <div className="setting-title">👤 Player Settings</div>
+          <div className="setting-title">Player Settings</div>
           <div className="setting-desc">Change name and pronouns</div>
         </button>
 
         <button className="settings-button">
-          <div className="setting-title">🔊 Audio Settings</div>
+          <div className="setting-title">Audio Settings</div>
           <div className="setting-desc">Volume and music controls</div>
         </button>
 
         <button className="settings-button">
-          <div className="setting-title">🎨 Display Settings</div>
+          <div className="setting-title">Display Settings</div>
           <div className="setting-desc">Visual preferences and themes</div>
         </button>
 
         <button className="settings-button">
-          <div className="setting-title">🎮 Gameplay Settings</div>
+          <div className="setting-title">Gameplay Settings</div>
           <div className="setting-desc">Auto-advance and preferences</div>
         </button>
 
         <button className="settings-button">
-          <div className="setting-title">♿ Accessibility</div>
+          <div className="setting-title">Accessibility</div>
           <div className="setting-desc">Screen reader and contrast options</div>
         </button>
 
@@ -193,7 +193,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
           }}
           className="settings-button"
         >
-          <div className="setting-title">🔄 Reset Content Warning</div>
+          <div className="setting-title">Reset Content Warning</div>
           <div className="setting-desc">Show content warning on next visit</div>
         </button>
       </div>
@@ -201,7 +201,7 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
         onClick={() => setCurrentSection("main")}
         className="menu-button back"
       >
-        ← Back
+        Back
       </button>
     </>
   );

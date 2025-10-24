@@ -93,18 +93,18 @@ export const GameHUD: React.FC = () => {
   // Get karma description
   const getKarmaDescription = (karmaValue: number) => {
     if (karmaValue >= 8)
-      return "🌟 Enlightened - Your actions radiate pure compassion and wisdom";
+      return "Enlightened — Your actions radiate compassion and wisdom";
     if (karmaValue >= 5)
-      return "✨ Noble - You consistently choose the path of righteousness";
+      return "Noble — You consistently choose the path of righteousness";
     if (karmaValue >= 2)
-      return "🌱 Good-hearted - Your intentions lean toward kindness";
+      return "Good-hearted — Your intentions lean toward kindness";
     if (karmaValue >= -1)
-      return "⚖️ Balanced - You walk the middle path between light and shadow";
+      return "Balanced — You walk the middle path between light and shadow";
     if (karmaValue >= -4)
-      return "🌪️ Conflicted - Your choices show inner turmoil";
+      return "Conflicted — Your choices show inner turmoil";
     if (karmaValue >= -7)
-      return "⚡ Dark-hearted - You often choose the harsh path";
-    return "🔥 Corrupted - Your soul burns with malice and cruelty";
+      return "Dark-hearted — You often choose the harsh path";
+    return "Corrupted — Your soul burns with malice and cruelty";
   };
 
   // Get ending path based on karma
@@ -141,11 +141,11 @@ export const GameHUD: React.FC = () => {
 
   // Get romance level description
   const getRomanceLevel = (points: number) => {
-    if (points >= 10) return "💖 Devoted";
-    if (points >= 7) return "💕 Close";
-    if (points >= 4) return "💘 Interested";
-    if (points >= 1) return "💗 Noticed";
-    return "💙 Neutral";
+    if (points >= 10) return "Devoted";
+    if (points >= 7) return "Close";
+    if (points >= 4) return "Interested";
+    if (points >= 1) return "Noticed";
+    return "Neutral";
   };
 
   // Get romance icon for character
@@ -245,74 +245,74 @@ export const GameHUD: React.FC = () => {
           onClick={() => setBacklogOpen(!backlogOpen)}
           title="Backlog (B)"
         >
-          📝 Backlog
+          Backlog
         </button>
         <button
           className="guide-button fullscreen"
           onClick={() => import("../../platform/screen").then(m=>m.display.toggleFullscreen())}
           title="Fullscreen (F)"
         >
-          {isFullscreen ? "🧭 Windowed" : "🖥 Fullscreen"}
+          {isFullscreen ? "Windowed" : "Fullscreen"}
         </button>
         <button
           className="guide-button more"
           onClick={() => setShowQuickActions(true)}
           title="More Actions"
         >
-          ⋯ More
+          More
         </button>
         <button
           className="guide-button dock"
           onClick={() => setDockRight((v) => !v)}
           title="Dock left/right"
         >
-          ↔ Dock
+          Dock
         </button>
         <button
           className="guide-button hide-ui"
           onClick={() => toggleUiHidden()}
           title="Hide UI (H)"
         >
-          {uiHidden ? "👁 Show UI" : "🙈 Hide UI"}
+          {uiHidden ? "Show UI" : "Hide UI"}
         </button>
         <button
           className="guide-button settings"
           onClick={() => setShowPlayerSettings(true)}
           title="Player Settings"
         >
-          ⚙️ Settings
+          Settings
         </button>
         <button
           className="guide-button codex"
           onClick={() => setShowCodex(true)}
           title="Open Codex"
         >
-          📖 Codex
+          Codex
         </button>
         <button
           className={`guide-button auto ${autoMode ? "active" : ""}`}
           onClick={() => toggleAutoMode()}
           title="Auto mode"
         >
-          {autoMode ? "⏸ Auto" : "▶ Auto"}
+          {autoMode ? "Auto (On)" : "Auto (Off)"}
         </button>
         <button
           className={`guide-button skip ${skipMode ? "active" : ""}`}
           onClick={() => toggleSkipMode()}
           title="Skip read lines"
         >
-          {skipMode ? "⏹ Skip Read" : "⏭ Skip Read"}
+          {skipMode ? "Skip Read (On)" : "Skip Read (Off)"}
         </button>
         <button
           className="guide-button chakras"
           onClick={() => {
-            devLog("🌈 Chakras button clicked");
+            devLog("Chakras button clicked");
             setEducationalSection("chakras");
             setShowEducationalPanel(true);
           }}
           title="Learn about Chakras"
         >
-          🌈 Chakras
+          Chakras
         </button>
         <button
           className="guide-button romance"
@@ -322,7 +322,7 @@ export const GameHUD: React.FC = () => {
           }}
           title="Learn about Romance"
         >
-          💕 Romance
+          Romance
         </button>
         <button
           className="guide-button karma"
@@ -332,17 +332,17 @@ export const GameHUD: React.FC = () => {
           }}
           title="Learn about Karma"
         >
-          ⚖️ Karma
+          Karma
         </button>
         <button
           className="guide-button gallery"
           onClick={() => {
-            devLog("🎨 Gallery button clicked");
+            devLog("Gallery button clicked");
             setShowGallery(true);
           }}
           title="View Art Gallery"
         >
-          🎨 Gallery
+          Gallery
         </button>
       </div>
 
@@ -354,7 +354,7 @@ export const GameHUD: React.FC = () => {
       >
         <div className="meter-label">
           <img src={getKarmaIcon(karma)} alt="Karma" className="karma-icon" />
-          ⚖️ Karma
+          Karma
         </div>
         <div className="meter-bar">
           <div
@@ -380,9 +380,7 @@ export const GameHUD: React.FC = () => {
         title={`${getEndingPath(karma).name} — ${getEndingPath(karma).description}`}
         onClick={() => setShowDestinyDialog(true)}
       >
-        <div className="meter-label">
-          {getEndingPath(karma).icon} Destiny Path
-        </div>
+        <div className="meter-label">Destiny Path</div>
         <div className="ending-info">
           <div
             className="ending-name"
@@ -430,7 +428,7 @@ export const GameHUD: React.FC = () => {
     <div className={`game-hud ${hudCollapsed ? "collapsed" : ""} ${dockRight ? "dock-right" : ""}`}>
       {/* Episode Indicator */}
       <div className="episode-indicator" title="Current Episode">
-        🪷 EP {currentEpisode ?? 1}
+  EP {currentEpisode ?? 1}
       </div>
       {/* HUD Collapse/Expand Toggle */}
       <button
@@ -440,7 +438,7 @@ export const GameHUD: React.FC = () => {
         aria-label={hudCollapsed ? "Show HUD" : "Hide HUD"}
         type="button"
       >
-        {hudCollapsed ? "📊" : "✖"}
+        {hudCollapsed ? "Show" : "Hide"}
       </button>
 
       {!hudCollapsed && <HudBody />}
@@ -633,19 +631,19 @@ export const GameHUD: React.FC = () => {
         onClose={() => setShowQuickActions(false)}
         title="Quick Actions"
         actions={[
-          { id: "backlog", label: "📝 Backlog", variant: "backlog", onClick: () => setBacklogOpen(!backlogOpen) },
-          { id: "fullscreen", label: isFullscreen ? "🧭 Windowed" : "🖥 Fullscreen", variant: "fullscreen", onClick: () => import("../../platform/screen").then(m=>m.display.toggleFullscreen()) },
-          { id: "more", label: "⋯ More", variant: "more", onClick: () => {} },
-          { id: "dock", label: "↔ Dock", variant: "dock", onClick: () => setDockRight((v)=>!v) },
-          { id: "hide-ui", label: uiHidden ? "👁 Show UI" : "🙈 Hide UI", variant: "hide-ui", onClick: () => toggleUiHidden() },
-          { id: "settings", label: "⚙️ Settings", variant: "settings", onClick: () => setShowPlayerSettings(true) },
-          { id: "codex", label: "📖 Codex", variant: "codex", onClick: () => setShowCodex(true) },
-          { id: "auto", label: autoMode ? "⏸ Auto" : "▶ Auto", variant: "auto", onClick: () => toggleAutoMode(), active: autoMode },
-          { id: "skip", label: skipMode ? "⏹ Skip Read" : "⏭ Skip Read", variant: "skip", onClick: () => toggleSkipMode(), active: skipMode },
-          { id: "chakras", label: "🌈 Chakras", variant: "chakras", onClick: () => { setEducationalSection("chakras"); setShowEducationalPanel(true); } },
-          { id: "romance", label: "💕 Romance", variant: "romance", onClick: () => { setEducationalSection("romance"); setShowEducationalPanel(true); } },
-          { id: "karma", label: "⚖️ Karma", variant: "karma", onClick: () => { setEducationalSection("karma"); setShowEducationalPanel(true); } },
-          { id: "gallery", label: "🎨 Gallery", variant: "gallery", onClick: () => setShowGallery(true) },
+          { id: "backlog", label: "Backlog", variant: "backlog", onClick: () => setBacklogOpen(!backlogOpen) },
+          { id: "fullscreen", label: isFullscreen ? "Windowed" : "Fullscreen", variant: "fullscreen", onClick: () => import("../../platform/screen").then(m=>m.display.toggleFullscreen()) },
+          { id: "more", label: "More", variant: "more", onClick: () => {} },
+          { id: "dock", label: "Dock", variant: "dock", onClick: () => setDockRight((v)=>!v) },
+          { id: "hide-ui", label: uiHidden ? "Show UI" : "Hide UI", variant: "hide-ui", onClick: () => toggleUiHidden() },
+          { id: "settings", label: "Settings", variant: "settings", onClick: () => setShowPlayerSettings(true) },
+          { id: "codex", label: "Codex", variant: "codex", onClick: () => setShowCodex(true) },
+          { id: "auto", label: autoMode ? "Auto (On)" : "Auto (Off)", variant: "auto", onClick: () => toggleAutoMode(), active: autoMode },
+          { id: "skip", label: skipMode ? "Skip Read (On)" : "Skip Read (Off)", variant: "skip", onClick: () => toggleSkipMode(), active: skipMode },
+          { id: "chakras", label: "Chakras", variant: "chakras", onClick: () => { setEducationalSection("chakras"); setShowEducationalPanel(true); } },
+          { id: "romance", label: "Romance", variant: "romance", onClick: () => { setEducationalSection("romance"); setShowEducationalPanel(true); } },
+          { id: "karma", label: "Karma", variant: "karma", onClick: () => { setEducationalSection("karma"); setShowEducationalPanel(true); } },
+          { id: "gallery", label: "Gallery", variant: "gallery", onClick: () => setShowGallery(true) },
         ]}
       />
     </div>

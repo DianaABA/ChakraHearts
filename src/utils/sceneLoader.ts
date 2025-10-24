@@ -1110,7 +1110,7 @@ const SCENES: Record<string, Scene> = {
       {
         type: "dialogue",
         character: "AGNIVESH",
-        text: "(desperate, panther eyes flashing) This isn't real. Marcus is alive. He's stationed in Germany. Safe. Away from... away from all of this.",
+        text: "(desperate, panther eyes flashing) This isn't real. Marcus is alive. He's stationed far away. Safe. Away from... away from all of this.",
       },
       {
         type: "narration",

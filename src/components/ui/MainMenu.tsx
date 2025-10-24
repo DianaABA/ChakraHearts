@@ -455,9 +455,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           </h1>
           <div className="subtitle-container">
             <p className="episode-text">{getEpisodeLabel(currentEpisode ?? 1)}</p>
-            <div className="lotus-divider">
-              <div className="lotus-symbol">🪷</div>
-            </div>
+            <div className="neon-divider" />
             <p className="tagline">
               Where ancient wisdom meets digital consciousness
             </p>

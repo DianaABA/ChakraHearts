@@ -4,6 +4,7 @@ import { DialogueBox } from "./DialogueBox";
 import { SceneBackground } from "./SceneBackground";
 import { CharacterPortrait } from "./CharacterPortrait";
 import { GameMenu } from "../ui/GameMenu";
+import Notifications from "../ui/Notifications";
 import { GameHUD } from "../ui/GameHUD";
 import Backlog from "../ui/Backlog";
 import { getSceneForEpisode } from "../../utils/episodeSceneLoader";
@@ -32,6 +33,7 @@ export const GameEngine: React.FC = () => {
     setCurrentScene,
     addKarma,
     addRomance,
+    addNotification,
     getSelectedAvatar,
     addBacklogFromLine,
     addBacklogEntry,
@@ -392,17 +394,26 @@ export const GameEngine: React.FC = () => {
       // Handle karma changes
       if (choice.karma) {
         addKarma(choice.karma);
+        const sign = choice.karma > 0 ? "+" : "";
+        addNotification(`Karma ${sign}${choice.karma}`, { variant: "karma" });
       }
 
       // Handle single romance change
       if (choice.romance) {
         addRomance(choice.romance.character, choice.romance.points);
+        const sign = choice.romance.points > 0 ? "+" : "";
+        addNotification(
+          `${choice.romance.character} ${sign}${choice.romance.points} Affection`,
+          { variant: "romance" }
+        );
       }
 
       // Handle multiple romance changes
       if (choice.romanceOptions) {
         choice.romanceOptions.forEach((romance) => {
           addRomance(romance.character, romance.points);
+          const sign = romance.points > 0 ? "+" : "";
+          addNotification(`${romance.character} ${sign}${romance.points} Affection`, { variant: "romance" });
         });
       }
 
@@ -642,6 +653,8 @@ export const GameEngine: React.FC = () => {
           )}
         </>
       )}
+      {/* Lightweight toasts for choice outcomes */}
+      <Notifications />
       <Backlog />
     </div>
   );

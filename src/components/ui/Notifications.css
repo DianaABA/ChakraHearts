@@ -1,0 +1,61 @@
+.notifications-container {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 3200; /* Above DialogueBox (3000), below menu button (4000) */
+  pointer-events: none; /* let clicks pass through */
+}
+
+.toast {
+  min-width: 200px;
+  max-width: 70vw;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(0, 255, 255, 0.12);
+  border: 1px solid rgba(0, 255, 255, 0.35);
+  color: #d9ffff;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+  box-shadow: 0 4px 18px rgba(0, 255, 255, 0.25), inset 0 0 18px rgba(0, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+  pointer-events: auto;
+  animation: toastIn 220ms ease-out;
+}
+
+.toast + .toast {
+  margin-top: 2px;
+}
+
+.toast-text {
+  white-space: nowrap;
+}
+
+/* Variants (subtle hue shifts) */
+.toast-karma {
+  border-color: rgba(0, 200, 255, 0.5);
+  color: #e6fbff;
+}
+
+.toast-romance {
+  border-color: rgba(255, 120, 200, 0.45);
+  color: #ffe6f5;
+  text-shadow: 0 0 6px rgba(255, 120, 200, 0.45);
+}
+
+.toast-badge {
+  border-color: rgba(255, 230, 150, 0.45);
+  color: #fff9e6;
+  text-shadow: 0 0 6px rgba(255, 230, 150, 0.45);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}

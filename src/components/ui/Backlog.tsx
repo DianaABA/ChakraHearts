@@ -19,7 +19,7 @@ export const Backlog: React.FC = () => {
     <div className="backlog-overlay" onClick={() => setBacklogOpen(false)}>
       <div className="backlog-panel" onClick={(ev) => ev.stopPropagation()}>
         <div className="backlog-header">
-          <h3>📝 Backlog</h3>
+          <h3 className="neon-subtle">Backlog</h3>
           <button className="backlog-close" onClick={() => setBacklogOpen(false)}>
             ×
           </button>

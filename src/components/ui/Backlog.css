@@ -35,6 +35,16 @@
   font-weight: 600;
 }
 
+/* Subtle neon text style to align with minimal menu aesthetic */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
+}
+
 .backlog-close {
   background: transparent;
   border: none;

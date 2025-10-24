@@ -37,7 +37,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       title: "Struggling Together",
       description: "If you're in a hard spot financially",
       price: "FREE",
-      message: "Don't worry, we will get out of it together 🙏",
+  message: "Don't worry, we will get out of it together.",
       className: "payment-agnivesh",
     },
     {
@@ -48,7 +48,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       title: "Rich & Fabulous",
       description: "If you feel abundant and generous",
       price: "Pay What You Want",
-      message: "Your generosity supports our spiritual journey! ✨💖",
+  message: "Your generosity supports our spiritual journey!",
       className: "payment-elena",
     },
     {
@@ -59,7 +59,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       title: "Tactical Choice",
       description: "Strategic and practical approach",
       price: "€2.00",
-      message: "A wise tactical investment in your spiritual growth ⚔️",
+  message: "A wise tactical investment in your spiritual growth.",
       className: "payment-david",
     },
     {
@@ -69,7 +69,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
       title: "Moo Choice",
       description: "Just here for the cow pictures",
       price: "FREE",
-      message: "Moo! 🐄💝",
+  message: "Moo!",
       className: "payment-cow",
     },
   ];
@@ -100,7 +100,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
             )}
             <h3>{selectedOption.character} says:</h3>
             <p className="character-quote">"{selectedOption.message}"</p>
-            <div className="loading-spinner">✨</div>
+            <div className="loading-spinner" aria-hidden></div>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
     <div className="payment-overlay">
       <div className="payment-panel">
         <div className="payment-header">
-          <h2>🎮 Choose Your Spiritual Path</h2>
+          <h2 className="neon-subtle">Choose Your Spiritual Path</h2>
           <p>Select the character you resonate with for your payment option</p>
           <p style={{ marginTop: 4, opacity: 0.85, fontSize: "0.95rem" }}>
             Tap the circular avatar to choose
@@ -151,11 +151,8 @@ export const PaymentOptions: React.FC<PaymentOptionsProps> = ({
         </div>
 
         <div className="payment-footer">
-          <p>
-            💖 All proceeds support the development of inclusive spiritual
-            gaming
-          </p>
-          <p>🔒 Secure payment processing • 🌍 Available worldwide</p>
+          <p>All proceeds support the development of inclusive spiritual gaming</p>
+          <p>Secure payment processing • Available worldwide</p>
         </div>
       </div>
     </div>

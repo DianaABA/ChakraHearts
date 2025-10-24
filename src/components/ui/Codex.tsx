@@ -97,14 +97,14 @@ export const Codex: React.FC<CodexProps> = ({ isOpen, onClose }) => {
     <div className="codex-overlay" onClick={onClose}>
       <div className="codex-panel" onClick={(e) => e.stopPropagation()}>
         <div className="codex-header">
-          <h2>📖 Codex</h2>
+          <h2 className="neon-subtle">Codex</h2>
           <button className="codex-close" onClick={onClose}>×</button>
         </div>
 
         {/* Badges */}
         <div className="codex-badges">
           <div className="badges-header">
-            <h3>🏆 Badges</h3>
+            <h3>Badges</h3>
             <span className="badge-count">{badges?.length || 0}</span>
           </div>
           {(!badges || badges.length === 0) ? (

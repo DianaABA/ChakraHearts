@@ -1,4 +1,4 @@
-/* 🎨 GALLERY COMPONENT STYLES */
+/* GALLERY COMPONENT STYLES */
 
 .gallery-overlay {
   position: fixed;
@@ -70,6 +70,16 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Subtle neon text utility */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
+}
+
 .gallery-stats {
   color: #bdc3c7;
   font-size: 14px;
@@ -130,10 +140,6 @@
   background: rgba(74, 105, 189, 0.2);
   color: #3498db;
   border-bottom-color: #3498db;
-}
-
-.category-icon {
-  font-size: 18px;
 }
 
 .category-label {
@@ -229,12 +235,6 @@
   align-items: center;
   height: 100%;
   color: #666;
-}
-
-.lock-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
-  opacity: 0.5;
 }
 
 .locked-text {

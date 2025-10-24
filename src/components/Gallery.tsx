@@ -32,11 +32,11 @@ export const Gallery: React.FC<GalleryProps> = ({
   if (!isOpen) return null;
 
   const categories = [
-    { key: "all" as const, label: "🎨 All", icon: "🎨" },
-    { key: "characters" as const, label: "👥 Characters", icon: "👥" },
-    { key: "scenes" as const, label: "🌄 Scenes", icon: "🌄" },
-    { key: "concepts" as const, label: "✨ Concepts", icon: "✨" },
-    { key: "special" as const, label: "🌟 Special", icon: "🌟" },
+    { key: "all" as const, label: "All" },
+    { key: "characters" as const, label: "Characters" },
+    { key: "scenes" as const, label: "Scenes" },
+    { key: "concepts" as const, label: "Concepts" },
+    { key: "special" as const, label: "Special" },
   ];
 
   const filteredArtworks = artworks.filter(
@@ -53,7 +53,7 @@ export const Gallery: React.FC<GalleryProps> = ({
       <div className="gallery-panel">
         {/* Header */}
         <div className="gallery-header">
-          <h2>🎨 Art Gallery</h2>
+          <h2 className="neon-subtle">Art Gallery</h2>
           <div className="gallery-stats">
             <span className="unlocked-count">
               {unlockedArtworks.length} / {filteredArtworks.length} Unlocked
@@ -74,7 +74,6 @@ export const Gallery: React.FC<GalleryProps> = ({
               }`}
               onClick={() => setSelectedCategory(category.key)}
             >
-              <span className="category-icon">{category.icon}</span>
               <span className="category-label">{category.label}</span>
             </button>
           ))}
@@ -110,7 +109,6 @@ export const Gallery: React.FC<GalleryProps> = ({
                   </>
                 ) : (
                   <div className="locked-artwork">
-                    <div className="lock-icon">🔒</div>
                     <p className="locked-text">Locked</p>
                   </div>
                 )}

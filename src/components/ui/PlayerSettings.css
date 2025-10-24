@@ -1,4 +1,4 @@
-/* ⚙️ PLAYER SETTINGS PANEL STYLES */
+/* PLAYER SETTINGS PANEL STYLES */
 
 .player-settings-overlay {
   position: fixed;
@@ -66,6 +66,16 @@
   font-size: 22px;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtle neon text utility */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
 }
 
 .settings-close {

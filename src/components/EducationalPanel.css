@@ -144,6 +144,16 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* Subtle neon text style to mirror main menu aesthetic */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
+}
+
 .header-actions {
   display: flex;
   align-items: center;
@@ -214,6 +224,7 @@
   background: rgba(255, 255, 255, 0.15);
   color: #74b9ff;
   border-bottom-color: #74b9ff;
+  text-shadow: 0 0 8px rgba(116, 185, 255, 0.35);
 }
 
 /* === PANEL CONTENT === */
@@ -503,37 +514,12 @@ h5 {
 }
 
 ul {
-  list-style-type: none;
-  padding-left: 0;
+  list-style-type: disc;
+  padding-left: 1.25em;
 }
 
 li {
   padding: 5px 0;
-  padding-left: 20px;
-  position: relative;
-}
-
-li::before {
-  content: "✨";
-  position: absolute;
-  left: 0;
-  filter: drop-shadow(0 0 3px rgba(255,255,255,0.35));
-}
-
-.balanced li::before {
-  content: "✅";
-}
-
-.imbalanced li::before {
-  content: "⚠️";
-}
-
-.high-compatibility li::before {
-  content: "💚";
-}
-
-.challenges li::before {
-  content: "🔶";
 }
 
 /* === RESPONSIVE DESIGN === */

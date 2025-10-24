@@ -37,7 +37,7 @@ const QuickActionsOverlay: React.FC<QuickActionsOverlayProps> = ({
     <div className="qa-overlay" onClick={onClose}>
       <div className="qa-dialog" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
         <div className="qa-header">
-          <h3 className="qa-title">⚙️ {title}</h3>
+          <h3 className="qa-title neon-subtle">{title}</h3>
           <button className="qa-close" onClick={onClose} aria-label="Close">×</button>
         </div>
         <div className="qa-grid">

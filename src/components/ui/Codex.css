@@ -32,6 +32,16 @@
   background: linear-gradient(180deg, rgba(57, 43, 84, 0.6), rgba(24, 22, 32, 0.6));
 }
 
+/* Subtle neon text utility for headings */
+.neon-subtle {
+  background: linear-gradient(90deg, #00ffff 0%, #ff69b4 60%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.25), 0 0 14px rgba(255, 105, 180, 0.18),
+    0 0 18px rgba(255, 215, 0, 0.15);
+}
+
 .codex-close {
   border: none;
   background: transparent;

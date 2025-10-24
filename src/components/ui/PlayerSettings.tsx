@@ -63,7 +63,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
     >
       <div className="player-settings-panel" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
-          <h2>⚙️ Player Settings</h2>
+          <h2 className="neon-subtle">Player Settings</h2>
           <button className="settings-close" onClick={onClose}>
             ×
           </button>
@@ -71,7 +71,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
 
         <div className="settings-content">
           <div className="setting-section">
-            <h3>👤 Personal Information</h3>
+            <h3>Personal Information</h3>
 
             <div className="setting-group">
               <label htmlFor="settings-name">Your Name:</label>
@@ -142,7 +142,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
           </div>
 
           <div className="setting-section">
-            <h3>🛡️ Content & Accessibility</h3>
+            <h3>Content & Accessibility</h3>
             <p className="accessibility-note">
               Chakra Hearts explores mature themes including grief, trauma, and
               spiritual journey. If you need to step away at any time, your
@@ -156,7 +156,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
           </div>
 
           <div className="setting-section">
-            <h3>🔊 Audio</h3>
+            <h3>Audio</h3>
             <div className="setting-group">
               <label htmlFor="bgm-volume">BGM Volume: {Math.round(bgmVolume * 100)}%</label>
               <input
@@ -193,7 +193,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
           </div>
 
           <div className="setting-section">
-            <h3>📖 Reading</h3>
+            <h3>Reading</h3>
             <div className="setting-group">
               <label htmlFor="text-speed">Text Speed (ms/char): {textSpeed}</label>
               <input
@@ -239,7 +239,7 @@ export const PlayerSettings: React.FC<PlayerSettingsProps> = ({
         </div>
 
         <div className="setting-section content-warning-controls">
-          <h3>⚠️ Content Warning</h3>
+          <h3>Content Warning</h3>
           <p className="warning-status">
             Status: {playerSettings.hasSeenContentWarning ? "Seen" : "Not seen"}
           </p>

@@ -152,3 +152,11 @@ export interface BacklogEntry {
   text: string;
   timestamp?: number;
 }
+
+// Lightweight toast/notification shown for quick feedback (e.g., karma/romance changes)
+export interface UiNotification {
+  id: string;
+  message: string;
+  variant?: "karma" | "romance" | "badge" | "codex" | "system";
+  timeout?: number; // ms before auto-dismiss
+}

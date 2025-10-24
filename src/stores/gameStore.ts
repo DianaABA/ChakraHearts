@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { GameState, SaveSlot, EpisodeId, DialogueLine, BacklogEntry } from "../types";
+import type { GameState, SaveSlot, EpisodeId, DialogueLine, BacklogEntry, UiNotification } from "../types";
 import { devLog } from "../utils/logger";
 
 interface PlayerSettings {
@@ -17,6 +17,8 @@ interface PlayerSettings {
 interface GameStore extends GameState {
   // Player Settings
   playerSettings: PlayerSettings;
+  // Ephemeral UI notifications (toasts)
+  notifications: UiNotification[];
   // VN Backlog & UI state
   backlog: BacklogEntry[];
   backlogOpen: boolean;
@@ -59,6 +61,10 @@ interface GameStore extends GameState {
   getPlayerPronouns: () => PlayerSettings["pronouns"];
   markContentWarningSeen: () => void;
   resetContentWarning: () => void;
+
+  // Notification Actions
+  addNotification: (message: string, opts?: { variant?: UiNotification["variant"]; timeout?: number }) => string;
+  removeNotification: (id: string) => void;
 }
 
 const initialState: GameState = {
@@ -104,6 +110,7 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
       ...initialState,
       playerSettings: initialPlayerSettings,
+      notifications: [],
       backlog: [],
       backlogOpen: false,
       uiHidden: false,
@@ -324,9 +331,31 @@ export const useGameStore = create<GameStore>()(
             hasSeenContentWarning: false,
           },
         })),
+
+      // Notification Actions
+      addNotification: (message: string, opts?: { variant?: UiNotification["variant"]; timeout?: number }): string => {
+        const id = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const note: UiNotification = {
+          id,
+          message,
+          variant: opts?.variant,
+          timeout: opts?.timeout ?? 1800,
+        };
+        set((state) => ({ notifications: [...state.notifications, note].slice(-5) }));
+        return id;
+      },
+      removeNotification: (id: string): void =>
+        set((state) => ({ notifications: state.notifications.filter((n) => n.id !== id) })),
     }),
     {
       name: "chakra-hearts-save",
+      partialize: (state: GameStore) => {
+        // Do not persist ephemeral notifications
+        const rest = { ...(state as unknown as Record<string, unknown>) };
+        delete (rest as Record<string, unknown>).notifications;
+        type Persisted = Omit<GameStore, "notifications">;
+        return rest as unknown as Persisted;
+      },
     }
   )
 );

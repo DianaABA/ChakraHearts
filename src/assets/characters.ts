@@ -5,7 +5,8 @@
 // === MAIN CHARACTERS ===
 export const MAIN_CHARACTERS = {
   // David - The Soldier
-  DAVID_BASE: "/characters/finaldavid.png",
+  // Append a version to bust browser cache when the image is updated
+  DAVID_BASE: "/characters/finaldavid.png?v=3",
 
   // Elena - The Former Reality Star Turned Mystic
   ELENA_BASE: "/characters/elena_base_portrait.png",

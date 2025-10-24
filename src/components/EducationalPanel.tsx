@@ -55,50 +55,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     return () => window.removeEventListener("keydown", onKey);
   }, [isFullscreen]);
 
-  // Simple inline SVG icons (cyberpunk spiritual)
-  const Icon = {
-    Chakra: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <circle cx="12" cy="12" r="4" stroke="#74b9ff" strokeWidth="2" />
-        <path d="M12 2L14 6L12 10L10 6L12 2Z" fill="#9b59b6" opacity="0.8"/>
-        <path d="M22 12L18 14L14 12L18 10L22 12Z" fill="#e84393" opacity="0.8"/>
-        <path d="M12 22L10 18L12 14L14 18L12 22Z" fill="#00cec9" opacity="0.8"/>
-        <path d="M2 12L6 10L10 12L6 14L2 12Z" fill="#fdcb6e" opacity="0.8"/>
-      </svg>
-    ),
-    Heart: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="#ff6b81" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M12 21s-6-4.35-9-7.5C1 12 1 8 4.5 6.5S10 8 12 10c2-2 5.5-4 7.5-3.5S23 12 21 13.5 12 21 12 21z"/>
-      </svg>
-    ),
-    Scales: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd166" strokeWidth="2" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M12 3v18M4 7h16"/>
-        <path d="M7 7l-3 6h6l-3-6zM20 13h-6l3-6 3 6z" fill="#ffd166" opacity="0.4"/>
-      </svg>
-    ),
-    Spark: (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="#a29bfe" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6z"/>
-      </svg>
-    ),
-    Fullscreen: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
-      </svg>
-    ),
-    Exit: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M9 4H4v5M15 4h5v5M4 15v5h5M20 15v5h-5"/>
-      </svg>
-    ),
-    Reading: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <path d="M3 5h8a4 4 0 014 4v10H7a4 4 0 00-4 4V5z"/>
-        <path d="M21 5h-8a4 4 0 00-4 4v10h8a4 4 0 014 4V5z"/>
-      </svg>
-    ),
-  } as const;
+  // Icons removed for minimal aesthetic
 
   // Track scroll to show/hide FAB
   useEffect(() => {
@@ -132,10 +89,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     return (
       <div className="education-content">
         <div className="sticky-subheader">
-          {Icon.Chakra}
-          <span style={{ marginLeft: 8 }}>
-            Chakras — {chakra.name}
-          </span>
+          <span className="neon-subtle">Chakras — {chakra.name}</span>
         </div>
         <div className="chakra-selector">
           {Object.keys(EDUCATIONAL_CONTENT.CHAKRAS).map((chakraKey) => {
@@ -220,10 +174,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     return (
       <div className="education-content">
         <div className="sticky-subheader">
-          {Icon.Heart}
-          <span style={{ marginLeft: 8 }}>
-            Romance — {selectedCharacter}
-          </span>
+          <span className="neon-subtle">Romance — {selectedCharacter}</span>
         </div>
         {/* Visual Educational Card for Romance System */}
         <EducationalCard
@@ -345,10 +296,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     return (
       <div className="education-content">
         <div className="sticky-subheader">
-          {Icon.Scales}
-          <span style={{ marginLeft: 8 }}>
-            Karma — {karma.type}
-          </span>
+          <span className="neon-subtle">Karma — {karma.type}</span>
         </div>
         {/* Visual Educational Card for Karma System */}
         <EducationalCard
@@ -445,10 +393,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
   const renderConceptsSection = () => (
     <div className="education-content">
       <div className="sticky-subheader">
-        {Icon.Spark}
-        <span style={{ marginLeft: 8 }}>
-          Concepts
-        </span>
+        <span className="neon-subtle">Concepts</span>
       </div>
       <h3>Spiritual Concepts</h3>
       {Object.entries(EDUCATIONAL_CONTENT.CONCEPTS).map(([key, concept]) => (
@@ -460,7 +405,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
               onClick={() => unlock(`concept:${key}`, concept.title)}
               title="Save to Codex"
             >
-              📖 Save to Codex
+              Save to Codex
             </button>
           </div>
           <p>{concept.description}</p>
@@ -503,9 +448,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
     <div className="educational-panel-overlay">
       <div className={`educational-panel ${isFullscreen ? "fullscreen" : ""} ${readingMode ? "reading" : ""}`}>
         <div className="panel-header">
-          <h2>
-            {Icon.Spark} <span style={{ marginLeft: 8 }}>Spiritual Guide</span>
-          </h2>
+          <h2 className="neon-subtle">Spiritual Guide</h2>
           <div className="header-actions">
             <button
               className="icon-button"
@@ -514,7 +457,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
               aria-label={readingMode ? "Exit Reading Mode" : "Reading Mode"}
               type="button"
             >
-              {Icon.Reading}
+              {readingMode ? "Reading" : "Reading"}
             </button>
             <button
               className="icon-button"
@@ -523,7 +466,7 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
               aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
               type="button"
             >
-              {isFullscreen ? Icon.Exit : Icon.Fullscreen}
+              {isFullscreen ? "Full" : "Full"}
             </button>
             <button className="close-button" onClick={onClose} type="button">
               ×
@@ -537,25 +480,25 @@ const EducationalPanel: React.FC<EducationalPanelProps> = ({
             className={activeSection === "chakras" ? "active" : ""}
             onClick={() => setActiveSection("chakras")}
           >
-            {Icon.Chakra} <span style={{ marginLeft: 6 }}>Chakras</span>
+            Chakras
           </button>
           <button
             className={activeSection === "romance" ? "active" : ""}
             onClick={() => setActiveSection("romance")}
           >
-            {Icon.Heart} <span style={{ marginLeft: 6 }}>Romance</span>
+            Romance
           </button>
           <button
             className={activeSection === "karma" ? "active" : ""}
             onClick={() => setActiveSection("karma")}
           >
-            {Icon.Scales} <span style={{ marginLeft: 6 }}>Karma</span>
+            Karma
           </button>
           <button
             className={activeSection === "concepts" ? "active" : ""}
             onClick={() => setActiveSection("concepts")}
           >
-            {Icon.Spark} <span style={{ marginLeft: 6 }}>Concepts</span>
+            Concepts
           </button>
         </div>
 
