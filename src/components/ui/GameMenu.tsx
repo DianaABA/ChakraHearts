@@ -71,11 +71,9 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
         </button>
         <button
           onClick={() => {
-            // Reset to main menu (episode 1, prologue, dialogue 0)
-            const store = useGameStore.getState();
-            store.setCurrentEpisode(1);
-            store.setCurrentScene("prologue");
-            store.setCurrentDialogue(0);
+            // Show main menu UI without resetting game state
+            // This assumes App.tsx uses a state like setGameState('menu')
+            window.dispatchEvent(new CustomEvent('show-main-menu'));
             onClose();
           }}
           className="menu-button"

@@ -42,6 +42,14 @@ export const AVATARS = {
   STONE: "/avatars/av_stone.png",
 } as const;
 
+// === EPISODE 2 CHARACTERS ===
+export const EP2_CHARACTERS = {
+  CAMILLA: "/characters/ep2/episode2/camilla.png",
+  CAMILLA_SACRAL_GLOW: "/characters/ep2/episode2/camilla_sacral_glow.png",
+  MERT: "/characters/ep2/episode2/mert.png",
+  DIEGO: "/characters/ep2/episode2/diego.png",
+};
+
 // === COMBINED CHARACTERS EXPORT ===
 export const CHARACTERS = {
   // Main characters
@@ -49,6 +57,9 @@ export const CHARACTERS = {
 
   // Spiritual characters
   ...SPIRITUAL_CHARACTERS,
+
+  // Episode 2
+  ...EP2_CHARACTERS,
 
   // Legacy compatibility
   DAVID_BASE: MAIN_CHARACTERS.DAVID_BASE,

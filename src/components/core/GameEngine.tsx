@@ -43,6 +43,7 @@ export const GameEngine: React.FC = () => {
     setBacklogOpen,
     uiHidden,
     toggleUiHidden,
+    autosaveGame,
   } = useGameStore();
 
   // Character portrait mapping - switches between human and animal forms
@@ -431,12 +432,15 @@ export const GameEngine: React.FC = () => {
     addBacklogFromLine(currentLine);
     const nextIndex = currentDialogue + 1;
     if (nextIndex < scene.dialogues.length) {
-      setCurrentDialogue(nextIndex);
+  setCurrentDialogue(nextIndex);
+  // Autosave after dialogue advance
+  autosaveGame();
     } else {
       // Scene complete - could advance to next scene
   devLog("Scene complete");
+  autosaveGame();
     }
-  }, [scene, currentDialogue, addBacklogFromLine, setCurrentDialogue]);
+  }, [scene, currentDialogue, addBacklogFromLine, setCurrentDialogue, autosaveGame]);
 
   const handleChoice = (choiceIndex: number) => {
     const currentLine = scene?.dialogues[currentDialogue];
@@ -458,51 +462,53 @@ export const GameEngine: React.FC = () => {
                 devLog(`🖼️ (choice) Showing image: ${payload}`);
               }
               break;
-            case "open_codex": {
-              // Treat as an unlock + toast for now (UI codex panel can open separately)
-              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
-              if (id) {
-                try { unlockCodexEntry(id); } catch { /* ignore */ }
-                addNotification(`Codex: ${id}`, { variant: "codex" });
-                devLog(`📖 (choice) Open/Unlock codex: ${id}`);
-              }
-              break; }
-            case "unlock_codex_entry": {
-              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
-              if (id) {
-                try { unlockCodexEntry(id); } catch { /* ignore */ }
-                addNotification(`Codex: ${id}`, { variant: "codex" });
-                devLog(`📚 (choice) Codex entry unlocked: ${id}`);
-              }
-              break; }
-            case "award_badge": {
-              const id = typeof payload === "string" ? payload : (payload && typeof payload === "object" && "id" in payload ? String((payload as Record<string, unknown>).id) : undefined);
-              const title = (payload && typeof payload === "object" && "title" in payload ? String((payload as Record<string, unknown>).title) : undefined) || id || "Badge";
-              if (id) {
-                try { awardBadge(id); } catch { /* ignore */ }
-              }
-              if (title) addNotification(`Badge: ${title}`, { variant: "badge" });
-              devLog(`🏆 (choice) Badge awarded: ${title}`);
-              break; }
-            case "play_bgm":
-              if (typeof payload === "string") {
-                playBGM(payload);
-                devLog(`🎵 (choice) Playing BGM: ${payload}`);
-              }
-              break;
-            case "sfx":
-              devLog(`🔊 (choice) SFX: ${payload}`);
-              break;
-            case "vfx":
-              devLog(`✨ (choice) VFX: ${payload}`);
-              break;
-            case "goto_scene":
-              if (typeof payload === "string") {
-                setCurrentScene(payload);
-                setCurrentDialogue(0);
-                devLog(`🎬 (choice) Jumping to scene: ${payload}`);
-              }
-              break;
+            useEffect(() => {
+              const loadScene = async () => {
+                const sceneData = await getSceneForEpisode(currentEpisode, currentScene);
+                setScene(sceneData);
+
+                // Clear portraits when changing scenes
+                setCurrentPortraits({});
+
+                // Clear current image to allow scene background to show
+                setCurrentImage("");
+
+                // Pre-load key characters for specific scenes
+                const preloadCharacters: Record<string, string[]> = {
+                  rescue: ["DAVID", "ELENA"],
+                  chocolate_moment: ["DAVID", "ELENA"],
+                  safe_perimeter: ["DAVID", "ELENA"],
+                  vision: [], // Characters will be added dynamically
+                  shore_opening: ["DAVID", "ELENA"],
+                };
+
+                if (preloadCharacters[currentScene]) {
+                  const newPortraits: Record<string, string> = {};
+                  preloadCharacters[currentScene].forEach((character) => {
+                    const portrait = getCharacterPortrait(character, currentScene);
+                    devLog(`🔍 Preloading ${character}: ${portrait}`);
+                    if (portrait) {
+                      newPortraits[character] = portrait;
+                    } else {
+                      devLog(
+                        `⚠️ No portrait found for preload character: ${character}`
+                      );
+                    }
+                  });
+                  setCurrentPortraits(newPortraits);
+                  devLog(
+                    `🎬 Scene ${currentScene}: Preloaded characters:`,
+                    Object.keys(newPortraits),
+                    newPortraits
+                  );
+                }
+
+            devLog(`🎬 Scene changed to: ${currentScene}`);
+            // Autosave after scene change
+            autosaveGame();
+              };
+              loadScene();
+            }, [currentEpisode, currentScene, getCharacterPortrait, autosaveGame]);
             case "set_flag":
               devLog(`🚩 (choice) Flag set: ${JSON.stringify(payload)}`);
               break;

@@ -105,9 +105,21 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const [focusedButtonIndex, setFocusedButtonIndex] = useState(0);
   const {
     setSelectedAvatar: setGameStoreAvatar,
+    getSelectedAvatar,
     currentEpisode,
     setCurrentEpisode,
   } = useGameStore();
+
+  // Check if avatar is already selected (i.e., payment/selection done)
+  const hasSelectedAvatar = !!getSelectedAvatar();
+
+  // If avatar is selected, skip payment/avatar selection on menu load
+  useEffect(() => {
+    if (hasSelectedAvatar) {
+      setShowPaymentOptions(false);
+      setShowAvatarSelect(false);
+    }
+  }, [hasSelectedAvatar]);
 
   // Gallery artworks for the main menu
   const galleryArtworks: GalleryArtwork[] = [
@@ -227,12 +239,25 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     };
   }, []); // Keep empty dependency array but add check inside
 
-  const menuButtons = [
-    { text: "New Journey", action: () => setShowPaymentOptions(true) },
-    { text: "Continue Path", action: onLoadGame },
-    { text: "Settings", action: () => setShowPlayerSettings(true) },
-    { text: "Gallery", action: () => setShowGallery(true) },
-  ];
+
+  // If avatar is already selected, "New Journey" resets game and lets user pick again, otherwise it starts payment/avatar flow
+  const menuButtons = hasSelectedAvatar
+    ? [
+        { text: "Continue Path", action: onLoadGame },
+        { text: "New Journey", action: () => {
+            // Optionally confirm reset, then clear avatar and flags
+            setGameStoreAvatar("");
+            setShowPaymentOptions(true);
+          }
+        },
+        { text: "Settings", action: () => setShowPlayerSettings(true) },
+        { text: "Gallery", action: () => setShowGallery(true) },
+      ]
+    : [
+        { text: "New Journey", action: () => setShowPaymentOptions(true) },
+        { text: "Settings", action: () => setShowPlayerSettings(true) },
+        { text: "Gallery", action: () => setShowGallery(true) },
+      ];
 
   const avatarButtons =
     showAvatarSelect && selectedAvatar
@@ -336,8 +361,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     }
   };
 
-  // Show payment options first
-  if (showPaymentOptions) {
+
+  // Show payment/avatar selection only if not already selected
+  if (!hasSelectedAvatar && showPaymentOptions) {
     return (
       <>
         <div className="main-menu">
@@ -357,7 +383,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     );
   }
 
-  if (showAvatarSelect) {
+  if (!hasSelectedAvatar && showAvatarSelect) {
     return (
       <div className="main-menu avatar-selection">
         <div

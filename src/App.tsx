@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { GameEngine } from "./components/core/GameEngine";
 import { MainMenu } from "./components/ui/MainMenu";
 import ContentWarning from "./components/ContentWarning";
 import { useGameStore } from "./stores/gameStore";
 import "./App.css";
+
 
 function App() {
   const [gameState, setGameState] = useState<"menu" | "playing">("menu");
@@ -13,6 +14,14 @@ function App() {
     setPlayerSettings,
     markContentWarningSeen,
   } = useGameStore();
+
+  // Listen for custom event to show main menu (from in-game menu)
+  // Only set up once on mount
+  React.useEffect(() => {
+    const handler = () => setGameState("menu");
+    window.addEventListener("show-main-menu", handler);
+    return () => window.removeEventListener("show-main-menu", handler);
+  }, []);
 
   const handleStartGame = () => {
     // Stop all audio before starting game

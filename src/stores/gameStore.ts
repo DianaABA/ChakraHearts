@@ -52,6 +52,7 @@ interface GameStore extends GameState {
   awardBadge: (badgeId: string) => void;
   unlockCodexEntry: (entryId: string) => void;
   saveGame: (slotId: number) => void;
+  autosaveGame: () => void;
   loadGame: (slotId: number) => void;
   resetGame: () => void;
 
@@ -247,6 +248,7 @@ export const useGameStore = create<GameStore>()(
           codexEntries: [...new Set([...state.codexEntries, entryId])],
         })),
 
+
       saveGame: (slotId: number) => {
         const currentState = get();
         const saveData: SaveSlot = {
@@ -264,7 +266,32 @@ export const useGameStore = create<GameStore>()(
             codexEntries: currentState.codexEntries,
           },
         };
+        set((state) => ({
+          saveSlots: state.saveSlots.map((slot, i) =>
+            i === slotId ? saveData : slot
+          ),
+        }));
+      },
 
+      // Autosave to slot 9 (last slot)
+      autosaveGame: () => {
+        const currentState = get();
+        const slotId = 9; // Use last slot for autosave
+        const saveData: SaveSlot = {
+          id: slotId,
+          timestamp: Date.now(),
+          sceneName: currentState.currentScene,
+          dialogueIndex: currentState.currentDialogue,
+          gameState: {
+            currentEpisode: currentState.currentEpisode,
+            flags: currentState.flags,
+            karma: currentState.karma,
+            romance: currentState.romance,
+            unlockedArt: currentState.unlockedArt,
+            badges: currentState.badges,
+            codexEntries: currentState.codexEntries,
+          },
+        };
         set((state) => ({
           saveSlots: state.saveSlots.map((slot, i) =>
             i === slotId ? saveData : slot
