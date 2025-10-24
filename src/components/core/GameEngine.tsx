@@ -34,6 +34,8 @@ export const GameEngine: React.FC = () => {
     addKarma,
     addRomance,
     addNotification,
+    awardBadge,
+    unlockCodexEntry,
     getSelectedAvatar,
     addBacklogFromLine,
     addBacklogEntry,
@@ -246,30 +248,80 @@ export const GameEngine: React.FC = () => {
             devLog(`   Title: ${currentLine.action.title}`);
           }
           break;
-        case "award_badge":
+  case "award_badge": {
           devLog(
             `🏆 Badge awarded: ${JSON.stringify(currentLine.action.payload)}`
           );
+          const payload = currentLine.action.payload as
+            | { id?: string; title?: string }
+            | undefined;
+          const badgeId: string | undefined = payload?.id;
+          const badgeTitle: string | undefined = payload?.title ?? payload?.id;
+          if (badgeId) {
+            try {
+              awardBadge(badgeId);
+            } catch {
+              /* ignore */
+            }
+          }
+          if (badgeTitle) {
+            addNotification(`Badge: ${badgeTitle}`, { variant: "badge" });
+          }
           break;
+        }
         case "set_flag":
           devLog(
             `🚩 Flag set: ${JSON.stringify(currentLine.action.payload)}`
           );
           break;
-        case "unlock_codex_entry":
+  case "unlock_codex_entry": {
           devLog(
             `📚 Codex entry unlocked: ${JSON.stringify(
               currentLine.action.payload
             )}`
           );
+          const payload = currentLine.action.payload as
+            | { id?: string; title?: string }
+            | undefined;
+          const entryId: string | undefined = payload?.id;
+          const entryTitle: string | undefined = payload?.title ?? payload?.id;
+          if (entryId) {
+            try {
+              unlockCodexEntry(entryId);
+            } catch {
+              /* ignore */
+            }
+          }
+          if (entryTitle) {
+            addNotification(`Codex: ${entryTitle}`, { variant: "codex" });
+          }
           break;
-        case "unlock_codex_entries":
+        }
+  case "unlock_codex_entries": {
           devLog(
             `📚 Multiple codex entries unlocked: ${JSON.stringify(
               currentLine.action.payload
             )}`
           );
+          const payload = currentLine.action.payload as
+            | Array<{ id?: string; title?: string }>
+            | undefined;
+          if (Array.isArray(payload)) {
+            try {
+              payload.forEach((e) => e?.id && unlockCodexEntry(e.id));
+            } catch {
+              /* ignore */
+            }
+            const count = payload.length;
+            if (count === 1) {
+              const title = payload[0]?.title ?? payload[0]?.id ?? "Entry";
+              addNotification(`Codex: ${title}`, { variant: "codex" });
+            } else if (count > 1) {
+              addNotification(`Codex updated (${count} entries)`, { variant: "codex" });
+            }
+          }
           break;
+        }
         case "sfx":
           devLog(`🔊 SFX: ${currentLine.action.payload}`);
           break;
@@ -314,6 +366,9 @@ export const GameEngine: React.FC = () => {
     playBGM,
     playSFX,
     getCharacterPortrait,
+    addNotification,
+    awardBadge,
+    unlockCodexEntry,
   ]);
 
   useEffect(() => {
