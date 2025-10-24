@@ -69,6 +69,19 @@ export const GameMenu: React.FC<GameMenuProps> = ({ onClose }) => {
         <button onClick={resetGame} className="menu-button warning">
           New Game
         </button>
+        <button
+          onClick={() => {
+            // Reset to main menu (episode 1, prologue, dialogue 0)
+            const store = useGameStore.getState();
+            store.setCurrentEpisode(1);
+            store.setCurrentScene("prologue");
+            store.setCurrentDialogue(0);
+            onClose();
+          }}
+          className="menu-button"
+        >
+          Main Menu
+        </button>
         <button onClick={onClose} className="menu-button resume">
           Resume
         </button>
